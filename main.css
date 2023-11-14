@@ -1,0 +1,38 @@
+html
+{
+    font-family: "DejaVu Sans";
+    background-color: #C0C0C0;
+    overflow: hidden;
+}
+
+body
+{
+}
+
+.div_principal
+{
+    border-style: solid;
+    border-color: #101010;
+    border-radius: 5px;
+    background-color: #d0c0b0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 8%;
+    margin-bottom: 35%;
+    padding-top: 2%;
+    padding-bottom: 3%;
+}
+
+.entree_texte, .entree_bouton
+{
+    margin: 2% 2% 2% 2%;
+    padding: 5%;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
