@@ -1,23 +1,25 @@
-CREATE TABLE utilisateur(
-    id INT AUTO_INCREMENT,
+CREATE TABLE UTILISATEUR(
+    id INT UNIQUE AUTO_INCREMENT,
     nom VARCHAR(32) NOT NULL,
     prenom VARCHAR(32) NOT NULL,
+    mdp VARCHAR(256) NOT NULL,
     email VARCHAR(32) NOT NULL,
+    genre VARCHAR(16) NOT NULL,
     date_naissance DATE NOT NULL,
-    sexe VARCHAR(16) NOT NULL,
+    grade INT,
     PRIMARY KEY (id),
 );
 
-CREATE TABLE livre(
+CREATE TABLE LIVRE(
     id INT AUTO_INCREMENT,
     titre VARCHAR(32) NOT NULL,
     genre VARCHAR(32) NOT NULL,
-    data_parution DATE NOT NULL,
+    date_parution DATE NOT NULL,
     rayon VARCHAR(16) NOT NULL,
     PRIMARY KEY (id),
 );
 
-CREATE TABLE emprunts(
+CREATE TABLE EMPRUNTS(
     id INT AUTO_INCREMENT NOT NULL,
     id_u INT NOT NULL,
     id_l INT NOT NULL,

@@ -3,18 +3,21 @@
     <head>
         <meta charset="UTF-8">
         <title>Inscription</title>
-        <link rel="stylesheet" href="../css/main.css">
-        <meta name="viewport" content="width=device-width, user-scalable=no">
+        <link rel="stylesheet" href="/css/main.css">
     </head>
     <body>
         <div class="div_principal">
             <h1>Inscription</h1>
             <form>
-                <input id="nom_u" class="entree_texte" placeholder="Nom d'utilisateur" type="text" size="32"/><br/>
-                <input id="motdepasse" class="entree_texte" placeholder="Mot de passe" type="password" size="32"/><br/>
-                <input class="entree_bouton"  onclick="sinscrire()" value="S'inscrire" type="button"/><br/>
+                <input id="nom" class="entree_texte" placeholder="Nom" type="text" size="32"/><br/>
+                <input id="prenom" class="entree_texte" placeholder="Prénom" type="text" size="32"/><br/>
+                <input id="email" class="entree_texte" placeholder="Email" type="text" size="32"/><br/>
+                <input id="genre" class="entree_texte" placeholder="Genre" type="text" size="32"/><br/>
+                <input id="naissance" class="entree_texte" placeholder="Date de Naissance" type="text" size="32"/><br/>
+                <input id="motdepasse" class="entree_texte" placeholder="Mot de Passe" type="password" size="32"/><br/>
+                <input class="entree_bouton" onclick="sinscrire()" value="S'inscrire" type="button"/><br/>
             </form>
-            <script src="../js/comptes.js"></script>
+            <script src="/js/comptes.js"></script>
         </div>
     </body>
 </html>
