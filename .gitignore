@@ -1,0 +1,3 @@
+/uvicorn
+/.cache
+**/__pycache__/

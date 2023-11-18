@@ -1,37 +1,41 @@
 html
 {
     font-family: "DejaVu Sans";
-    background-color: #C0C0C0;
+    color: #202020;
+    background-color: #f0f0f0;
 }
 
 body
 {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 25%;
+    margin-right: 25%;
 }
 
 .div_principal
 {
     border-style: solid;
-    border-color: #101010;
+    border-color: #303030;
     border-radius: 5px;
-    background-color: #d0c0b0;
+    background-color: #4ed395;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-left: 25%;
-    margin-right: 25%;
-    margin-top: 8%;
-    margin-bottom: 35%;
-    padding-top: 2%;
-    padding-bottom: 3%;
+    margin: auto;
+    padding: 5px;
 }
 
-.entree_texte, .entree_bouton
+input
 {
-    margin: 2% 2% 2% 2%;
-    padding: 5%;
-    display: block;
-    margin: 0 auto;
+    margin: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
     text-align: center;
 }

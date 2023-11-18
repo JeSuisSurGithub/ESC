@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Inscription</title>
+        <link rel="stylesheet" href="/css/main.css">
+        <meta name="viewport" content="width=device-width, user-scalable=no">
+    </head>
+    <body>
+        <div class="div_principal">
+            <h1>Inscription</h1>
+            <form>
+                <input id="email" placeholder="Email" type="text" size="24"/><br/>
+                <input id="motdepasse" placeholder="Mot de Passe" type="password" size="24"/><br/>
+                <input id="nom" placeholder="Nom" type="text" size="24"/><br/>
+                <input id="prenom" placeholder="Prénom" type="text" size="24"/><br/>
+                <input id="naissance" placeholder="Date de Naissance" type="date"/><br/>
+                <input onclick="sinscrire()" value="S'inscrire" type="button"/><br/>
+            </form>
+            <div id="info_erreurs"></div>
+            <script src="/js/comptes.js"></script>
+        </div>
+    </body>
+</html>
