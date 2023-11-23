@@ -7,18 +7,10 @@
     <link rel="stylesheet" href="/css/main.css">
   </head>
     <body>
-    <div id="info_statut"></div>
-    <div class="div_principal">
-      <ul>
-        <li><a href="/html/connexion.html">Connexion</a></li>
-        <li><a href="/html/deconnexion.html">Deconnexion</a></li>
-        <li><a href="/html/inscription.html">Inscription</a></li>
-        <li><a href="/html/supression.html">Supression</a></li>
-      </ul>
-      <div id="liste_livres">
-      </div>
-      <script src="/js/index.js"></script>
-      <script>
+    <div id="info_statut" class="div_principal"></div>
+    <script src="/js/index.js"></script>
+    <script>
+        await deconnexion();
         est_connecte()
             .then(info_statut => {
                 let msg_connect = info_statut.resultat ? "Connecté" : "Pas connecté";
@@ -27,7 +19,6 @@
             .catch(error => {
                 document.getElementById("info_statut").innerHTML = `<p>Statut de connexion indisponible (${error.message})</p><br/>`;
             });
-      </script>
-    </div>
+    </script>
   </body>
 </html>
