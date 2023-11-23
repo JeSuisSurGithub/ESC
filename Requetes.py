@@ -23,8 +23,13 @@ def supprimer_compte(id):
 
 def verifier_mdp(mdp,email):
     try:
-        cursor.execute('''SELECT mdp FROM utilisateur 
-        WHERE  )
+        cursor.execute('''SELECT COUNT(mdp) FROM utilisateur 
+        WHERE  mdp==? and email==?''' ,(mdp,email))
+        cursor.fetchone()
+    except:
+        return("verifiermotdepasseechoue")
+    conn.commit()
+    return("mdp verifie")
 
 
 
