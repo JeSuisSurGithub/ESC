@@ -40,7 +40,7 @@ def obtenir_livre():
         for row in cursor.fetchall():
             # Création d'un dictionnaire pour chaque ligne de résultat
             result_dict = {
-                'id': row[0]
+                'id': row[0],
                 'titre': row[1],
                 'genre': row[2],
                 'date_de_parution': row[3],
@@ -53,23 +53,68 @@ def obtenir_livre():
 
 def livre_emprunte(id_u):
     try:
-        cursor.execute('''SELECT id, titre, genre, date_parution,date_debut, date_fin
+        cursor.execute('''SELECT id, titre, genre, date_parution,date_debut, date_fin, rendu
         FROM LIVRE JOIN EMPRUNT ON LIVRE.id==EMPRUNT.id_l WHERE id_u==?''',(id_u))
         results = []
         for row in cursor.fetchall():
             # Création d'un dictionnaire pour chaque ligne de résultat
             result_dict = {
-                'id': row[0]
+                'id': row[0],
                 'titre': row[1],
                 'genre': row[2],
                 'date_de_parution': row[3],
                 'date_debut': row[4],
                 'date_fin': row[5],
+                'rendu': row[6],
                 }
             results.append(result_dict)
     except:
         return("livreemprunteechoue")
     return(results)
+
+def ajout_livre(id, titre, genre, date_parution):
+    try:
+        cursor.execute('''INSERT INTO LIVRE (id, titre, genre, rendu)
+                        VALUES (?, ?, ?, ?)''',
+                    (id, titre, genre, date_parution))
+    except:
+        return ("echoueajoutelivre")
+    conn.commit()
+    return("livre ajouté avec succès.")
+
+
+
+
+
+def emprunter(id_l,id_u,date_debut,date_fin):
+    try:
+        
+
+
+
+
+
+
+
+
+def rendre():
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

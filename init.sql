@@ -25,6 +25,7 @@ CREATE TABLE EMPRUNT (
     id_l INTEGER NOT NULL,
     date_debut DATE NOT NULL,
     date_fin DATE NOT NULL,
+    rendu BOOLEAN
     FOREIGN KEY (id_u) REFERENCES UTILISATEUR(id),
     FOREIGN KEY (id_l) REFERENCES LIVRE(id)
 );
