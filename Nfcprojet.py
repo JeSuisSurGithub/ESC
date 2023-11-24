@@ -28,3 +28,31 @@ tag = lire_tag_nfc()
 if tag:
     donnees_a_ecrire = b"Bonjour, NFC!"
     ecrire_sur_tag_nfc(tag, donnees_a_ecrire)
+
+#2 code au cas ou le premier ne marche pas
+
+import nfc
+
+def on_connect(tag):
+    print("Tag detected:", tag)
+
+# Créer une instance du lecteur NFC
+clf = nfc.ContactlessFrontend()
+
+# Essayer de se connecter au lecteur NFC
+try:
+    clf.connect(rdwr={'on-connect': on_connect})
+except Exception as e:
+    print("Error connecting to NFC reader:", e)
+    clf.close()
+
+# Garder le programme en cours d'exécution
+try:
+    while True:
+        pass
+except KeyboardInterrupt:
+    pass
+finally:
+    # Fermer la connexion lorsque le programme se termine
+    clf.close()
+
