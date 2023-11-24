@@ -1,20 +1,22 @@
+import time
 import nfc
 
-# Utilisez le port GPIO approprié pour votre connexion matérielle
-# Remplacez '18' par le numéro de votre port GPIO si différent
-port_gpio = '18'
-clf = nfc.ContactlessFrontend(f'tty:AMA0:pn532:{port_gpio}')
-
-print("NDEF Reader")
+# Créez une instance de l'objet ContactlessFrontend pour le lecteur NFC I2C
+clf = nfc.ContactlessFrontend('tty:AMA0:pn532')
 
 def read_nfc():
-    print("\nScan a NFC tag\n")
-    tag = clf.connect(rdwr={'on-connect': lambda tag: False})
-    print(tag)
+    print("Approchez un tag NFC...")
+    try:
+        tag = clf.connect(rdwr={'on-connect': lambda tag: False})
+        print("Tag NFC lu :")
+        print(tag)
+    except Exception as e:
+        print(f"Erreur lors de la lecture du tag NFC : {e}")
 
 try:
     while True:
         read_nfc()
+        time.sleep(1)
 except KeyboardInterrupt:
     pass
 finally:
