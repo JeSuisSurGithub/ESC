@@ -36,6 +36,8 @@ app.mount("/js", StaticFiles(directory="js"), name="js")
 app.mount("/html", StaticFiles(directory="html"), name="html")
 
 EST_CONNECTE = False
+GRADE_CONNECT = 0
+ID_CONNECT = None
 
 @app.get("/")
 def racine() -> str:
@@ -43,7 +45,7 @@ def racine() -> str:
 
 @app.get("/sql_statut")
 async def sql_statut():
-    return {"resultat": EST_CONNECTE, "grade": 0}
+    return {"resultat": EST_CONNECTE, "grade": GRADE_CONNECT, "id": ID_CONNECT}
 
 @app.post("/sql_deconnexion")
 async def sql_deconnexion():

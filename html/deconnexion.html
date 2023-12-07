@@ -10,7 +10,7 @@
     <div id="info_statut" class="div_principal"></div>
     <script src="/js/index.js"></script>
     <script>
-        await deconnexion();
+        deconnexion();
         est_connecte()
             .then(info_statut => {
                 let msg_connect = info_statut.resultat ? "Connecté" : "Pas connecté";

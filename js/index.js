@@ -28,7 +28,7 @@ function est_connecte() {
     });
 }
 
-async function connexion()
+function connexion()
 {
     var tag_email = document.getElementById("email");
     var tag_motdepasse = document.getElementById("motdepasse");
@@ -63,7 +63,7 @@ async function connexion()
     ));
 }
 
-async function deconnexion(silence = false)
+function deconnexion(silence = false)
 {
     var tag_info = document.getElementById("info_erreurs");
     var xhr = new XMLHttpRequest();
@@ -83,7 +83,7 @@ async function deconnexion(silence = false)
     xhr.send();
 }
 
-async function sinscrire()
+function sinscrire()
 {
     var tag_email = document.getElementById("email");
     var tag_motdepasse = document.getElementById("motdepasse");
@@ -133,7 +133,7 @@ async function sinscrire()
     ));
 }
 
-async function supprimer()
+function supprimer()
 {
     var tag_email = document.getElementById("email");
     var tag_motdepasse = document.getElementById("motdepasse");
@@ -169,7 +169,7 @@ async function supprimer()
     ));
 }
 
-function liste_livres(empruntes = false) {
+function liste_livres(empruntes) {
     return new Promise((resolve, reject) => {
         fetch(empruntes ? '/sql_livres_empruntes' : '/sql_livres')
             .then(response => {
