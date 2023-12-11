@@ -1,3 +1,4 @@
 /uvicorn
 /.cache
+/esc.db
 **/__pycache__/
