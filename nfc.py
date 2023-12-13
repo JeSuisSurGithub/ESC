@@ -29,7 +29,6 @@ def lire_uid_nfc():
             (status, uid) = MIFAREReader.MFRC522_Anticoll()
 
             if status == MIFAREReader.MI_OK:
-                print("UID de la carte : " + ".".join(map(str, uid)))
                 return uid
 
                 # Clee d'authentification par defaut
