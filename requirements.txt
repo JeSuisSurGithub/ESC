@@ -1,0 +1,9 @@
+#MFRC522
+databases
+fastapi
+pydantic
+bcrypt
+starlette
+uvicorn
+aiosqlite
+sqlalchemy
