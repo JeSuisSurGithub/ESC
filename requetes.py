@@ -40,7 +40,7 @@ async def rqt_deconnexion():
 
 async def rqt_ajouter_compte(email, mdp, nom, prenom, date_naissance) -> typing.Tuple[bool, str]:
     try:
-        hash_mdp = bcrypt.hashpw(mdp.encode('utf-8'), bcrypt.gensalt())
+        hash_mdp = bcrypt.hashpw(mdp.encode("utf-8"), bcrypt.gensalt())
         requete = '''INSERT INTO UTILISATEUR (email, mdp, nom, prenom, date_naissance, grade)
             VALUES (:email, :mdp, :nom, :prenom, :date_naissance, :grade)'''
         await G_DB.execute(requete, {
@@ -63,7 +63,7 @@ async def rqt_connexion_compte(email, mdp) -> typing.Tuple[bool, dict]:
             raise ValueError("Aucun compte associé")
 
         hash_mdp_db = resultats[0]["mdp"]
-        if not (bcrypt.checkpw(mdp.encode('utf-8'), hash_mdp_db.encode('utf-8'))):
+        if not (bcrypt.checkpw(mdp.encode("utf-8"), hash_mdp_db)):
             raise ValueError("Mot de passe incorrect")
 
         resultat_dict = {
@@ -94,7 +94,7 @@ async def rqt_supprimer_compte(id) -> typing.Tuple[bool, str]:
         print(f"Error: {e}")
         return (False, "Suppression du compte échouée")
 
-async def rqt_ajout_livre(id, titre, genre, date_parution, guid_nfc):
+async def rqt_ajout_livre(id, titre, genre, date_parution, guid_nfc) -> typing.Tuple[bool, str]:
     try:
         requete = "INSERT INTO LIVRE (titre, genre, date_parution, guid_nfc) VALUES (:titre, :genre, :date_parution, :guid_nfc)"
         await G_DB.execute(requete, {"titre": titre, "genre": genre, "date_parution": date_parution, "guid_nfc": guid_nfc})
@@ -127,7 +127,7 @@ async def rqt_retirer_livre(id) -> typing.Tuple[bool, str]:
         print(f"Error: {e}")
         return (False, "Suppression du livre échouée")
 
-async def rqt_emprunter(id_u, id_l, date_debut, date_fin):
+async def rqt_emprunter(id_u, id_l, date_debut, date_fin) -> typing.Tuple[bool, str]:
     try:
         requete = "INSERT INTO EMPRUNT (id_u, id_l, date_debut, date_fin, rendu) VALUES (:id_u, :id_l, :date_debut, :date_fin, :rendu)"
         await G_DB.execute(requete,

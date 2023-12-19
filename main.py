@@ -19,17 +19,8 @@ class JSONConnexion(BaseModel):
     email: str
     motdepasse: str
 
-class JSONLivres(BaseModel):
-    titres: list[str]
-    genres: list[str]
-    date_parution: list[str]
-
 class JSONEmprunts(BaseModel):
-    titres: list[str]
-    genres: list[str]
-    date_parution: list[str]
-    date_emprunt_debut: list[str]
-    date_emprunt_fin: list[str]
+    id_u: str
 
 app = FastAPI()
 
@@ -43,8 +34,17 @@ class InfoConnexion:
         self.email = email
         self.nom = nom
         self.prenom = prenom
-        self.data_naissance = data_naissance
+        self.date_naissance = date_naissance
         self.grade = grade
+
+def conv_class_dict(infoconn):
+    return {
+        "id": infoconn.id,
+        "email": infoconn.email,
+        "nom": infoconn.nom,
+        "prenom": infoconn.prenom,
+        "date_naissance": infoconn.date_naissance,
+        "grade": infoconn.grade}
 
 G_INFO_CONNEXION = None
 
@@ -62,12 +62,14 @@ def racine() -> str:
 
 @app.get("/sql_statut")
 async def sql_statut():
-    return {"resultat": EST_CONNECTE, "grade": GRADE_CONNECT, "id": ID_CONNECT}
+    if G_INFO_CONNEXION == None:
+        return {"resultat": False}
+    return {"resultat": True, "donnees": conv_class_dict(G_INFO_CONNEXION)}
 
 @app.post("/sql_deconnexion")
 async def sql_deconnexion():
-    global EST_CONNECTE
-    EST_CONNECTE = False
+    global G_INFO_CONNEXION
+    G_INFO_CONNEXION = None
     return {"resultat": True}
 
 @app.post("/sql_inscription")
@@ -78,33 +80,37 @@ async def sql_inscription(user: JSONInscription):
     prenom = user.prenom
     naissance = user.naissance
     res, msg = await requetes.rqt_ajouter_compte(email, motdepasse, nom, prenom, naissance)
-    return {"resultat": res}
+    return {"resultat": res, "donnees": msg}
 
 @app.post("/sql_connexion")
 async def sql_connexion(user: JSONConnexion):
+    global G_INFO_CONNEXION
     email = user.email
     motdepasse = user.motdepasse
-    print(email, motdepasse)
-    EST_CONNECTE = True
-    return {"resultat": True}
+    res, info = await requetes.rqt_connexion_compte(email, motdepasse)
+    G_INFO_CONNEXION = InfoConnexion(info["id"], info["email"], info["nom"], info["prenom"], info["date_naissance"], info["grade"])
+    return {"resultat": res, "donnees": conv_class_dict(G_INFO_CONNEXION)}
 
 @app.post("/sql_desinscription")
 async def sql_desinscription(user: JSONConnexion):
-    global EST_CONNECTE
+    global G_INFO_CONNEXION
     email = user.email
     motdepasse = user.motdepasse
-    print(email, motdepasse)
-    EST_CONNECTE = False
-    return {"resultat": True}
+    res, msg = await requetes.rqt_connexion_compte(email, motdepasse)
+    if (res):
+        res, msg = await requetes.rqt_supprimer_compte(G_INFO_CONNEXION.id)
+    G_INFO_CONNEXION = None
+    return {"resultat": res, "donnees": msg}
 
 @app.get("/sql_livres")
-async def sql_statut():
-    return {"titres": ["bible", "coran"], "genres": ["religion", "religion"], "date_parution": ["????", "????"]}
+async def sql_livres():
+    res, donnees = await requetes.rqt_obtenir_livre()
+    return {"resultat": res, "donnees": donnees}
 
 @app.get("/sql_livres_empruntes")
-async def sql_statut():
-    return {"titres": ["bible", "coran"], "genres": ["religion", "religion"], "date_parution": ["????", "????"], \
-"date_emprunt_debut": ["2023-06-11", "2023-08-11"], "date_emprunt_fin": ["2023-06-25", "2023-08-25"]}
+async def sql_livres_empruntes(info_emprunts: JSONEmprunts):
+    res, donnees = await requetes.rqt_obtenir_emprunts(info_emprunts.id_u)
+    return {"resultat": res, "donnees": donnees}
 
 if __name__ == "__main__":
     uvicorn.run(app, port=8080, host='0.0.0.0')

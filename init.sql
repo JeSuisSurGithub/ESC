@@ -17,7 +17,7 @@ CREATE TABLE LIVRE (
     titre INTEGER NOT NULL,
     genre INTEGER NOT NULL,
     date_parution DATE NOT NULL,
-    guid_nfc TEXT NOT NULL,
+    guid_nfc TEXT NOT NULL
 );
 
 CREATE TABLE EMPRUNT (

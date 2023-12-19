@@ -19,20 +19,20 @@
       </div>
       <script src="/js/index.js"></script>
       <script>
-        const livres = liste_livres({empruntes: false});
-        var tag_livres = document.getElementById("liste_livres");
-        tag_livres.innerHTML += "<ul>";
-        livres.forEach(livre => {
-          tag_livres.innerHTML += `<li>${livre.id} ${livre.titre} ${livre.genre} ${livre.date_parution}</li>`;
-        });
-        tag_livres.innerHTML += "</ul>";
+        //const livres = liste_livres({empruntes: false});
+        //var tag_livres = document.getElementById("liste_livres");
+        //tag_livres.innerHTML += "<ul>";
+        //livres.forEach(livre => {
+        //  tag_livres.innerHTML += `<li>${livre.id} ${livre.titre} ${livre.genre} ${livre.date_parution}</li>`;
+        //});
+        //tag_livres.innerHTML += "</ul>";
         est_connecte()
             .then(info_statut => {
                 let msg_connect = info_statut.resultat ? "Connecté" : "Pas connecté";
-                document.getElementById("info_statut").innerHTML = `<p>${msg_connect}, Grade Nv: ${info_statut.grade}</p><br/>`;
+                document.getElementById("info_statut").innerHTML = `<p>${msg_connect}, Grade Nv: ${info_statut.donnees.grade}</p><br/>`;
             })
             .catch(error => {
-                document.getElementById("info_statut").innerHTML = `<p>Statut de connexion indisponible (${error.message})</p><br/>`;
+                document.getElementById("info_statut").innerHTML = `<p>Statut de connexion indisponible</p><br/>`;
             });
       </script>
     </div>

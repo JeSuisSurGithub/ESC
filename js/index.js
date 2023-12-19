@@ -49,6 +49,7 @@ function connexion()
         if (this.status == 200)
         {
             var reponse = JSON.parse(this.responseText);
+            console.log(reponse)
             tag_info.innerHTML = reponse.resultat ? "La connexion a réussi" : "La connexion a échoué";
         }
     };
@@ -116,6 +117,7 @@ function sinscrire()
         if (this.status == 200)
         {
             var reponse = JSON.parse(this.responseText);
+            console.log(reponse)
             tag_info.innerHTML = reponse.resultat ? "L'inscription a réussi" : "L'inscription a échoué";
         }
     };
@@ -155,6 +157,7 @@ function supprimer()
         {
             var reponse = JSON.parse(this.responseText);
             deconnexion({silence: true});
+            console.log(reponse)
             tag_info.innerHTML += reponse.resultat ? "La suppression a réussi" : "La suppression a échoué";
         }
     };

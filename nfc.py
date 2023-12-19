@@ -29,7 +29,10 @@ def lire_uid_nfc():
             (status, uid) = MIFAREReader.MFRC522_Anticoll()
 
             if status == MIFAREReader.MI_OK:
-                return uid
+                uid_style_ip = ".".join(map(str, uid))
+                uid_sep = uid_style_ip.split(".")
+                uid_hexa = "".join([format(int(part), '02X') for part in uid_sep])
+                return uid_hexa
 
                 # Clee d'authentification par defaut
                 key = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
@@ -48,5 +51,4 @@ def lire_uid_nfc():
 
 # Utilisez la fonction pour lire l'UID
 uid_carte_nfc = lire_uid_nfc()
-print("UID de la carte NFC détectée :", ".".join(map(str, uid_carte_nfc)))
-
+print("UID de la carte NFC détectée :", uid_carte_nfc)
