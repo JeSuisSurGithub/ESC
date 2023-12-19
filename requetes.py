@@ -105,7 +105,7 @@ async def rqt_ajout_livre(id, titre, genre, date_parution, guid_nfc) -> typing.T
 
 async def rqt_obtenir_livre() -> typing.Tuple[bool, dict]:
     try:
-        requete = "SELECT id, titre, genre, date_parution FROM LIVRE"
+        requete = "SELECT id, titre, genre, date_parution, guid_nfc FROM LIVRE"
         resultats = await G_DB.fetch_all(requete)
         resultat_dict = {"ids": [], "titres": [], "genres": [], "dates": [], "guids": []}
         for ligne in resultats:
@@ -115,7 +115,8 @@ async def rqt_obtenir_livre() -> typing.Tuple[bool, dict]:
             resultat_dict["dates"].append(ligne["date_parution"])
             resultat_dict["guids"].append(ligne["guid_nfc"])
         return (True, resultat_dict)
-    except:
+    except Exception as e:
+        print(f"Error: {e}")
         return(True, {"ids": [-1], "titres": ["ERREUR"], "genres": ["ERREUR"], "dates": ["ERREUR"], "guids": ["ERREUR"]})
 
 async def rqt_retirer_livre(id) -> typing.Tuple[bool, str]:
@@ -142,7 +143,7 @@ async def rqt_emprunter(id_u, id_l, date_debut, date_fin) -> typing.Tuple[bool, 
 async def rqt_obtenir_emprunts(id_u) -> typing.Tuple[bool, dict]:
     try:
         requete = '''
-SELECT LIVRE.id as id_l, titre, genre, date_parution, EMPRUNT.id as id_e, date_debut, date_fin, rendu
+SELECT LIVRE.id as id_l, titre, genre, date_parution, guid_nfc, EMPRUNT.id as id_e, date_debut, date_fin, rendu
     FROM LIVRE JOIN EMPRUNT
     ON LIVRE.id==EMPRUNT.id_l WHERE id_u=:id_u'''
         resultats = await G_DB.fetch_all(requete, {"id_u": id_u})
@@ -159,7 +160,8 @@ SELECT LIVRE.id as id_l, titre, genre, date_parution, EMPRUNT.id as id_e, date_d
             resultat_dict["fin_emprunts"].append(ligne["date_fin"])
             resultat_dict["rendu_emprunts"].append(ligne["rendu"])
         return (True, resultat_dict)
-    except:
+    except Exception as e:
+        print(f"Error: {e}")
         return(True, {"id_livres": [-1], "titres": ["ERREUR"], "genres": ["ERREUR"], "dates": ["ERREUR"], "guids": ["ERREUR"],
         "id_emprunts": [-1], "debut_emprunts": ["ERREUR"], "fin_emprunts": ["ERREUR"], "rendu_emprunts": ["ERREUR"]})
 
