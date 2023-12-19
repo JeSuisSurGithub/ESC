@@ -2,13 +2,12 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>Connexion</title>
+        <title>Connexion-fin</title>
         <link rel="stylesheet" href="../css/main.css">
     </head>
-    <body>
+    <body class="conn">
         <div class="div_principal">
             <h1>Connexion</h1>
-            <center>
             <div class="wrapper">
                 <div class="card-switch">
                     <label class="switch">
@@ -19,17 +18,20 @@
                           <div class="flip-card__front">
                              <div class="title">Se connecter</div>
                              <form class="flip-card__form" action="">
-                                <input class="flip-card__input" name="email" placeholder="Email" type="email">
-                                <input class="flip-card__input" name="password" placeholder="Password" type="password">
+                                <input class="flip-card__input" name="username" placeholder="Nom d'utilisateur" type="username">
+                                <input class="flip-card__input" name="mot de passe" placeholder="Mot de Passe" type="password">
                                 <button class="flip-card__btn">Allons-y!</button>
                              </form>
                           </div>
                           <div class="flip-card__back">
                              <div class="title">S'inscrire</div>
                              <form class="flip-card__form" action="">
-                                <input class="flip-card__input" placeholder="Name" type="name">
+                                <input class="flip-card__input" placeholder="Nom d'utilisateur" type="username">
                                 <input class="flip-card__input" name="email" placeholder="Email" type="email">
-                                <input class="flip-card__input" name="password" placeholder="Password" type="password">
+                                <input class="flip-card__input" name="nom" placeholder="Nom" type="nom">
+                                <input class="flip-card__input" name="prenom" placeholder="Prenom" type="prenom">
+                                <input class="flip-card__input" name="password" placeholder="Mot de Passe" type="password">
+                                <input class="flip-card__input" name="birthday" placeholder="Date de naissance" type="dates">
                                 <button class="flip-card__btn">Confirmer !</button>
                              </form>
                           </div>
@@ -37,10 +39,10 @@
                     </label>
                 </div>   
            </div>
-         </center>
-            <div id="info_erreurs"></div>
-            <script src="/js/index.js"></script>
+         <div id="info_erreurs"></div>
+         <script src="/js/index.js"></script>
         </div>
+        <div class="black-side"></div>
     </body>
 </html>
 
