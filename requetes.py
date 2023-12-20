@@ -1,5 +1,3 @@
-#!/bin/python3
-
 # IMPORTE
 # databases pour des opérations sqlite asynchrones
 # bcrypt pour le hachage des mot de passes
@@ -107,17 +105,17 @@ async def rqt_obtenir_livre() -> typing.Tuple[bool, dict]:
     try:
         requete = "SELECT id, titre, genre, date_parution, guid_nfc FROM LIVRE"
         resultats = await G_DB.fetch_all(requete)
-        resultat_dict = {"ids": [], "titres": [], "genres": [], "dates": [], "guids": []}
+        resultat_dict = {"id": [], "titre": [], "genre": [], "date_parution": [], "guid_nfc": []}
         for ligne in resultats:
-            resultat_dict["ids"].append(ligne["id"])
-            resultat_dict["titres"].append(ligne["titre"])
-            resultat_dict["genres"].append(ligne["genre"])
-            resultat_dict["dates"].append(ligne["date_parution"])
-            resultat_dict["guids"].append(ligne["guid_nfc"])
+            resultat_dict["id"].append(ligne["id"])
+            resultat_dict["titre"].append(ligne["titre"])
+            resultat_dict["genre"].append(ligne["genre"])
+            resultat_dict["date_parution"].append(ligne["date_parution"])
+            resultat_dict["guid_nfc"].append(ligne["guid_nfc"])
         return (True, resultat_dict)
     except Exception as e:
         print(f"Error: {e}")
-        return(True, {"ids": [-1], "titres": ["ERREUR"], "genres": ["ERREUR"], "dates": ["ERREUR"], "guids": ["ERREUR"]})
+        return(False, {"id": [-1], "titre": ["ERREUR"], "genre": ["ERREUR"], "date_parution": ["ERREUR"], "guid_nfc": ["ERREUR"]})
 
 async def rqt_retirer_livre(id) -> typing.Tuple[bool, str]:
     try:
@@ -140,30 +138,55 @@ async def rqt_emprunter(id_u, id_l, date_debut, date_fin) -> typing.Tuple[bool, 
         print(f"Error: {e}")
         return (False, "Emprunt échoué")
 
-async def rqt_obtenir_emprunts(id_u) -> typing.Tuple[bool, dict]:
+async def rqt_obtenir_emprunts_u(id_u) -> typing.Tuple[bool, dict]:
     try:
         requete = '''
 SELECT LIVRE.id as id_l, titre, genre, date_parution, guid_nfc, EMPRUNT.id as id_e, date_debut, date_fin, rendu
     FROM LIVRE JOIN EMPRUNT
     ON LIVRE.id==EMPRUNT.id_l WHERE id_u=:id_u'''
         resultats = await G_DB.fetch_all(requete, {"id_u": id_u})
-        resultat_dict = {"id_livres": [], "titres": [], "genres": [], "dates": [], "guids": [], "id_emprunts": [],
+        resultat_dict = {"id_livre": [], "titre": [], "genre": [], "date_parution": [], "guid_nfc": [], "id_emprunt": [],
             "debut_emprunts": [], "fin_emprunts": [], "rendu_emprunts": []}
         for ligne in resultats:
-            resultat_dict["id_livres"].append(ligne["id_l"])
-            resultat_dict["titres"].append(ligne["titre"])
-            resultat_dict["genres"].append(ligne["genre"])
-            resultat_dict["dates"].append(ligne["date_parution"])
-            resultat_dict["guids"].append(ligne["guid_nfc"])
-            resultat_dict["id_emprunts"].append(ligne["id_e"])
-            resultat_dict["debut_emprunts"].append(ligne["date_debut"])
-            resultat_dict["fin_emprunts"].append(ligne["date_fin"])
-            resultat_dict["rendu_emprunts"].append(ligne["rendu"])
+            resultat_dict["id_livre"].append(ligne["id_l"])
+            resultat_dict["titre"].append(ligne["titre"])
+            resultat_dict["genre"].append(ligne["genre"])
+            resultat_dict["date_parution"].append(ligne["date_parution"])
+            resultat_dict["guid_nfc"].append(ligne["guid_nfc"])
+            resultat_dict["id_emprunt"].append(ligne["id_e"])
+            resultat_dict["date_debut"].append(ligne["date_debut"])
+            resultat_dict["date_fin"].append(ligne["date_fin"])
+            resultat_dict["rendu"].append(ligne["rendu"])
         return (True, resultat_dict)
     except Exception as e:
         print(f"Error: {e}")
-        return(True, {"id_livres": [-1], "titres": ["ERREUR"], "genres": ["ERREUR"], "dates": ["ERREUR"], "guids": ["ERREUR"],
-        "id_emprunts": [-1], "debut_emprunts": ["ERREUR"], "fin_emprunts": ["ERREUR"], "rendu_emprunts": ["ERREUR"]})
+        return(False, {"id_livre": [-1], "titre": ["ERREUR"], "genre": ["ERREUR"], "date_parution": ["ERREUR"], "guid_nfc": ["ERREUR"],
+        "id_emprunt": [-1], "date_debut": ["ERREUR"], "date_fin": ["ERREUR"], "rendu": ["ERREUR"]})
+
+async def rqt_obtenir_emprunts_l(id_l) -> typing.Tuple[bool, dict]:
+    try:
+        requete = '''
+SELECT LIVRE.id as id_l, titre, genre, date_parution, guid_nfc, EMPRUNT.id as id_e, date_debut, date_fin, rendu
+    FROM LIVRE JOIN EMPRUNT
+    ON LIVRE.id==EMPRUNT.id_l WHERE id_l=:id_l'''
+        resultats = await G_DB.fetch_all(requete, {"id_l": id_l})
+        resultat_dict = {"id_livre": [], "titre": [], "genre": [], "date_parution": [], "guid_nfc": [], "id_emprunt": [],
+            "debut_emprunts": [], "fin_emprunts": [], "rendu_emprunts": []}
+        for ligne in resultats:
+            resultat_dict["id_livre"].append(ligne["id_l"])
+            resultat_dict["titre"].append(ligne["titre"])
+            resultat_dict["genre"].append(ligne["genre"])
+            resultat_dict["date_parution"].append(ligne["date_parution"])
+            resultat_dict["guid_nfc"].append(ligne["guid_nfc"])
+            resultat_dict["id_emprunt"].append(ligne["id_e"])
+            resultat_dict["date_debut"].append(ligne["date_debut"])
+            resultat_dict["date_fin"].append(ligne["date_fin"])
+            resultat_dict["rendu"].append(ligne["rendu"])
+        return (True, resultat_dict)
+    except Exception as e:
+        print(f"Error: {e}")
+        return(False, {"id_livre": [-1], "titre": ["ERREUR"], "genre": ["ERREUR"], "date_parution": ["ERREUR"], "guid_nfc": ["ERREUR"],
+        "id_emprunt": [-1], "date_debut": ["ERREUR"], "date_fin": ["ERREUR"], "rendu": ["ERREUR"]})
 
 async def rqt_retour(id):
     try:

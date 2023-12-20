@@ -16,7 +16,7 @@ function aujourdhui_yyyy_mm_dd()
 
 function est_connecte() {
     return new Promise((resolve, reject) => {
-        fetch('/sql_statut')
+        fetch('/api_statut')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Request failed');

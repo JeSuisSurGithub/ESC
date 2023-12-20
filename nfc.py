@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import MFRC522
 import signal
 
-def lire_uid_nfc():
+def lire_uid_nfc() -> str:
     continue_reading = True
 
     def end_read(signal, frame):
@@ -29,9 +29,7 @@ def lire_uid_nfc():
             (status, uid) = MIFAREReader.MFRC522_Anticoll()
 
             if status == MIFAREReader.MI_OK:
-                uid_style_ip = ".".join(map(str, uid))
-                uid_sep = uid_style_ip.split(".")
-                uid_hexa = "".join([format(int(part), '02X') for part in uid_sep])
+                uid_hexa = "".join([format(int(part), '02X') for part in uid])
                 return uid_hexa
 
                 # Clee d'authentification par defaut

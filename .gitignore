@@ -1,4 +1,2 @@
-/uvicorn
-/.cache
-/esc.db
 **/__pycache__/
+/esc.db
