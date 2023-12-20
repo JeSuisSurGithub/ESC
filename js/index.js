@@ -14,78 +14,37 @@ function aujourdhui_yyyy_mm_dd()
     return yyyy_mm_dd;
 }
 
-function est_connecte() {
-    return new Promise((resolve, reject) => {
-        fetch('/api_statut')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Request failed');
-                }
-                return response.json();
-            })
-            .then(data => resolve(data))
-            .catch(error => reject(error));
-    });
+function requete_get(url) {
+    return fetch(url, {
+        method: 'GET',
+    })
+    .then(response => response.json())
+    .then(json_data => { return json_data; })
+    .catch(error => { console.error('Error:', error); });
 }
 
-function connexion()
-{
-    var tag_email = document.getElementById("email");
-    var tag_motdepasse = document.getElementById("motdepasse");
-    var tag_info = document.getElementById("info_erreurs");
-
-    tag_info.innerHTML = "";
-    if (!est_un_email(tag_email.value)) {
-        tag_info.innerHTML += "<p>L'email n'est pas valide</p>";
-    }
-    if (tag_motdepasse.value.length < 4) {
-        tag_info.innerHTML += "<p>Le mot de passe doit faire au moins de 4 caractères</p>";
-    }
-    if (tag_info.innerHTML != "") return;
-
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (this.readyState != 4) return;
-        if (this.status == 200)
-        {
-            var reponse = JSON.parse(this.responseText);
-            console.log(reponse)
-            tag_info.innerHTML = reponse.resultat ? "La connexion a réussi" : "La connexion a échoué";
-        }
-    };
-
-    xhr.open('POST', "/sql_connexion", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(
-        {
-            email: email.value,
-            motdepasse: motdepasse.value,
-        }
-    ));
+function requete_post(url, donnees) {
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(donnees),
+    })
+    .then(response => response.json())
+    .then(json_data => { return json_data; })
+    .catch(error => { console.error('Error:', error); });
 }
 
-function deconnexion(silence = false)
-{
-    var tag_info = document.getElementById("info_erreurs");
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (this.readyState != 4) return;
-        if (this.status == 200)
-        {
-            var reponse = JSON.parse(this.responseText);
-            if (silence === false) {
-                tag_info.innerHTML = reponse.resultat ? "La déconnexion a réussi" : "La déconnexion a échoué";
-            }
-        }
-    };
-
-    xhr.open('POST', "/sql_deconnexion", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send();
+function api_statut() {
+    return requete_get("/api_statut");
 }
 
-function sinscrire()
-{
+function api_deconnexion() {
+    return requete_post("/api_deconnexion", {});
+}
+
+function api_inscription() {
     var tag_email = document.getElementById("email");
     var tag_motdepasse = document.getElementById("motdepasse");
     var tag_nom = document.getElementById("nom");
@@ -111,32 +70,16 @@ function sinscrire()
     }
     if (tag_info.innerHTML != "") return;
 
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (this.readyState != 4) return;
-        if (this.status == 200)
-        {
-            var reponse = JSON.parse(this.responseText);
-            console.log(reponse)
-            tag_info.innerHTML = reponse.resultat ? "L'inscription a réussi" : "L'inscription a échoué";
-        }
-    };
-
-    xhr.open('POST', "/sql_inscription", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(
-        {
-            email: tag_email.value,
-            motdepasse: tag_motdepasse.value,
-            nom: tag_nom.value,
-            prenom: tag_prenom.value,
-            naissance: tag_naissance.value
-        }
-    ));
+    return requete_post("/api_deconnexion", {
+        email: tag_email.value,
+        motdepasse: tag_motdepasse.value,
+        nom: tag_nom.value,
+        prenom: tag_prenom.value,
+        naissance: tag_naissance.value
+    });
 }
 
-function supprimer()
-{
+function api_connexion() {
     var tag_email = document.getElementById("email");
     var tag_motdepasse = document.getElementById("motdepasse");
     var tag_info = document.getElementById("info_erreurs");
@@ -150,38 +93,73 @@ function supprimer()
     }
     if (tag_info.innerHTML != "") return;
 
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (this.readyState != 4) return;
-        if (this.status == 200)
-        {
-            var reponse = JSON.parse(this.responseText);
-            deconnexion({silence: true});
-            console.log(reponse)
-            tag_info.innerHTML += reponse.resultat ? "La suppression a réussi" : "La suppression a échoué";
-        }
-    };
-
-    xhr.open('POST', "/sql_desinscription", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(
-        {
-            email: email.value,
-            motdepasse: motdepasse.value,
-        }
-    ));
+    return requete_post("/api_connexion", {
+        email: tag_email.value,
+        motdepasse: tag_motdepasse.value,
+    });
 }
 
-function liste_livres(empruntes) {
-    return new Promise((resolve, reject) => {
-        fetch(empruntes ? '/sql_livres_empruntes' : '/sql_livres')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Request failed');
-                }
-                return response.json();
-            })
-            .then(data => resolve(data))
-            .catch(error => reject(error));
+function api_desinscription() {
+    var tag_email = document.getElementById("email");
+    var tag_motdepasse = document.getElementById("motdepasse");
+    var tag_info = document.getElementById("info_erreurs");
+
+    tag_info.innerHTML = "";
+    if (!est_un_email(tag_email.value)) {
+        tag_info.innerHTML += "<p>L'email n'est pas valide</p>";
+    }
+    if (tag_motdepasse.value.length < 4) {
+        tag_info.innerHTML += "<p>Le mot de passe doit faire au moins de 4 caractères</p>";
+    }
+    if (tag_info.innerHTML != "") return;
+
+    return requete_post("/api_desinscription", {
+        email: tag_email.value,
+        motdepasse: tag_motdepasse.value,
     });
+}
+
+function api_ajout() {
+    var tag_titre = document.getElementById("titre");
+    var tag_genre = document.getElementById("genre");
+    var tag_date_parution = document.getElementById("date_parution");
+    var tag_guid_nfc = document.getElementById("guid_nfc");
+    var tag_info = document.getElementById("info_erreurs");
+
+    tag_info.innerHTML = "";
+    if (tag_guid_nfc.value.length == 8) {
+        tag_info.innerHTML += "<p>Le guid doit être composé de 8 chiffres héxadécimaux</p>";
+    }
+    if (tag_info.innerHTML != "") return;
+
+    return requete_post("/api_ajout", {
+        titre: tag_titre.value,
+        genre: tag_genre.value,
+        date_parution: tag_date_parution.value,
+        guid_nfc: tag_guid_nfc.value,
+    });
+}
+
+function api_livres() {
+    return requete_get("/api_livres");
+}
+
+function api_retrait(id_l) {
+    return requete_post("/api_retrait", {"id_l": id_l});
+}
+
+function api_emprunt(id_l) {
+    return requete_post("/api_emprunt", {"id_l": id_l});
+}
+
+function api_emprunt_livres() {
+    return requete_get("/api_emprunt_livres");
+}
+
+function api_hist_livre() {
+    return requete_get("/api_hist_livre", {"id_l": id_l});
+}
+
+function api_retour() {
+    return requete_get("/api_retour", {"id_l": id_l});
 }

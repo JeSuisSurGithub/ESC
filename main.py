@@ -25,7 +25,6 @@ class JSONConnexion(BaseModel):
     motdepasse: str
 
 class JSONAjoutLivre(BaseModel):
-    id: str
     titre: str
     genre: str
     date_parution: str
@@ -100,12 +99,11 @@ async def api_desinscription(info_conn: JSONConnexion):
 @app.post("/api_ajout")
 async def api_ajout(info_ajout: JSONAjoutLivre):
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):
-        id = info_ajout.id
         titre = info_ajout.titre
         genre = info_ajout.genre
         date_parution = info_ajout.date_parution
         guid_nfc = info_ajout.guid_nfc
-        res, msg = await requetes.rqt_ajout_livre(id, titre, genre, date_parution, guid_nfc)
+        res, msg = await requetes.rqt_ajout_livre(titre, genre, date_parution, guid_nfc)
         return {"resultat": res, "donnees": msg}
     return {"resultat": False, "donnees": "Vous n'êtes pas administrateur"}
 
@@ -138,7 +136,7 @@ async def api_emprunt_livres():
         return {"resultat": res, "donnees": info}
     return {"resultat": False, "donnees": "Vous n'êtes pas un usager"}
 
-@app.get("/api_hist_livre")
+@app.post("/api_hist_livre")
 async def api_hist_livre(info_hist: JSONIDLivre):
     id_l = info_hist.id_l
     res, info = await requetes.rqt_obtenir_emprunts_l(id_l)

@@ -92,7 +92,7 @@ async def rqt_supprimer_compte(id) -> typing.Tuple[bool, str]:
         print(f"Error: {e}")
         return (False, "Suppression du compte échouée")
 
-async def rqt_ajout_livre(id, titre, genre, date_parution, guid_nfc) -> typing.Tuple[bool, str]:
+async def rqt_ajout_livre(titre, genre, date_parution, guid_nfc) -> typing.Tuple[bool, str]:
     try:
         requete = "INSERT INTO LIVRE (titre, genre, date_parution, guid_nfc) VALUES (:titre, :genre, :date_parution, :guid_nfc)"
         await G_DB.execute(requete, {"titre": titre, "genre": genre, "date_parution": date_parution, "guid_nfc": guid_nfc})
