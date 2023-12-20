@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from starlette.responses import FileResponse
 from pydantic import BaseModel
 from datetime import datetime, timedelta
+import time
 
 import requetes
 #import nfc
@@ -25,7 +26,6 @@ class JSONConnexion(BaseModel):
     motdepasse: str
 
 class JSONAjoutLivre(BaseModel):
-    id: str
     titre: str
     genre: str
     date_parution: str
@@ -53,14 +53,14 @@ def racine() -> str:
 @app.get("/api_statut")
 async def api_statut():
     if G_INFO_CONNEXION == None:
-        return {"resultat": False}
+        return {"resultat": False, "donnees": "Déconnecté"}
     return {"resultat": True, "donnees": G_INFO_CONNEXION}
 
 @app.post("/api_deconnexion")
 async def api_deconnexion():
     global G_INFO_CONNEXION
     G_INFO_CONNEXION = None
-    return {"resultat": True}
+    return {"resultat": True, "donnees": "Déconnecté"}
 
 @app.post("/api_inscription")
 async def api_inscription(info_reg: JSONInscription):
@@ -100,12 +100,11 @@ async def api_desinscription(info_conn: JSONConnexion):
 @app.post("/api_ajout")
 async def api_ajout(info_ajout: JSONAjoutLivre):
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):
-        id = info_ajout.id
         titre = info_ajout.titre
         genre = info_ajout.genre
         date_parution = info_ajout.date_parution
         guid_nfc = info_ajout.guid_nfc
-        res, msg = await requetes.rqt_ajout_livre(id, titre, genre, date_parution, guid_nfc)
+        res, msg = await requetes.rqt_ajout_livre(titre, genre, date_parution, guid_nfc)
         return {"resultat": res, "donnees": msg}
     return {"resultat": False, "donnees": "Vous n'êtes pas administrateur"}
 
@@ -139,8 +138,7 @@ async def api_emprunt_livres():
     return {"resultat": False, "donnees": "Vous n'êtes pas un usager"}
 
 @app.get("/api_hist_livre")
-async def api_hist_livre(info_hist: JSONIDLivre):
-    id_l = info_hist.id_l
+async def api_hist_livre(id_l: str):
     res, info = await requetes.rqt_obtenir_emprunts_l(id_l)
     return {"resultat": res, "donnees": info}
 
@@ -160,6 +158,18 @@ async def api_retour(info_retour: JSONIDLivre):
         res, msg = await requetes.rqt_retour(id_emprunt)
         return {"resultat": res, "donnees": msg}
     return {"resultat": False, "donnees": "Vous n'êtes pas un usager"}
+
+# @app.get("/api_uid_nfc")
+# async def api_uid_nfc():
+#     uid = nfc.lire_uid_nfc()
+#     if (uid != False):
+#         return {"resultat": True, "donnees": uid}
+#     return {"resultat": False, "donnees": "Déconnecté"}
+
+@app.get("/api_uid_nfc_fake")
+async def api_uid_nfc_fake():
+    time.sleep(3)
+    return {"resultat": True, "donnees": "55AA55AA"}
 
 if __name__ == "__main__":
     uvicorn.run(app, port=8080, host='0.0.0.0')

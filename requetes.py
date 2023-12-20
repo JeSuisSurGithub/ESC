@@ -75,13 +75,7 @@ async def rqt_connexion_compte(email, mdp) -> typing.Tuple[bool, dict]:
         return (True, resultat_dict)
     except Exception as e:
         print(f"Error: {e}")
-        return (False, {
-            "id": "ERREUR",
-            "email": "ERREUR",
-            "nom": "ERREUR",
-            "prenom": "ERREUR",
-            "date_naissance": "ERREUR",
-            "grade": "ERREUR"})
+        return (False, "Connexion échouée")
 
 async def rqt_supprimer_compte(id) -> typing.Tuple[bool, str]:
     try:
@@ -92,7 +86,7 @@ async def rqt_supprimer_compte(id) -> typing.Tuple[bool, str]:
         print(f"Error: {e}")
         return (False, "Suppression du compte échouée")
 
-async def rqt_ajout_livre(id, titre, genre, date_parution, guid_nfc) -> typing.Tuple[bool, str]:
+async def rqt_ajout_livre(titre, genre, date_parution, guid_nfc) -> typing.Tuple[bool, str]:
     try:
         requete = "INSERT INTO LIVRE (titre, genre, date_parution, guid_nfc) VALUES (:titre, :genre, :date_parution, :guid_nfc)"
         await G_DB.execute(requete, {"titre": titre, "genre": genre, "date_parution": date_parution, "guid_nfc": guid_nfc})
@@ -115,7 +109,7 @@ async def rqt_obtenir_livre() -> typing.Tuple[bool, dict]:
         return (True, resultat_dict)
     except Exception as e:
         print(f"Error: {e}")
-        return(False, {"id": [-1], "titre": ["ERREUR"], "genre": ["ERREUR"], "date_parution": ["ERREUR"], "guid_nfc": ["ERREUR"]})
+        return(False, "Obtention des livres échoué")
 
 async def rqt_retirer_livre(id) -> typing.Tuple[bool, str]:
     try:
@@ -141,12 +135,12 @@ async def rqt_emprunter(id_u, id_l, date_debut, date_fin) -> typing.Tuple[bool, 
 async def rqt_obtenir_emprunts_u(id_u) -> typing.Tuple[bool, dict]:
     try:
         requete = '''
-SELECT LIVRE.id as id_l, titre, genre, date_parution, guid_nfc, EMPRUNT.id as id_e, date_debut, date_fin, rendu
+SELECT LIVRE.id as id_l, titre, genre, date_parution, guid_nfc, EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
     FROM LIVRE JOIN EMPRUNT
     ON LIVRE.id==EMPRUNT.id_l WHERE id_u=:id_u'''
         resultats = await G_DB.fetch_all(requete, {"id_u": id_u})
         resultat_dict = {"id_livre": [], "titre": [], "genre": [], "date_parution": [], "guid_nfc": [], "id_emprunt": [],
-            "debut_emprunts": [], "fin_emprunts": [], "rendu_emprunts": []}
+            "id_utilisateur": [], "date_debut": [], "date_fin": [], "rendu": []}
         for ligne in resultats:
             resultat_dict["id_livre"].append(ligne["id_l"])
             resultat_dict["titre"].append(ligne["titre"])
@@ -154,24 +148,24 @@ SELECT LIVRE.id as id_l, titre, genre, date_parution, guid_nfc, EMPRUNT.id as id
             resultat_dict["date_parution"].append(ligne["date_parution"])
             resultat_dict["guid_nfc"].append(ligne["guid_nfc"])
             resultat_dict["id_emprunt"].append(ligne["id_e"])
+            resultat_dict["id_utilisateur"].append(ligne["id_u"])
             resultat_dict["date_debut"].append(ligne["date_debut"])
             resultat_dict["date_fin"].append(ligne["date_fin"])
             resultat_dict["rendu"].append(ligne["rendu"])
         return (True, resultat_dict)
     except Exception as e:
         print(f"Error: {e}")
-        return(False, {"id_livre": [-1], "titre": ["ERREUR"], "genre": ["ERREUR"], "date_parution": ["ERREUR"], "guid_nfc": ["ERREUR"],
-        "id_emprunt": [-1], "date_debut": ["ERREUR"], "date_fin": ["ERREUR"], "rendu": ["ERREUR"]})
+        return(False, "Obtention des livres échoué")
 
 async def rqt_obtenir_emprunts_l(id_l) -> typing.Tuple[bool, dict]:
     try:
         requete = '''
-SELECT LIVRE.id as id_l, titre, genre, date_parution, guid_nfc, EMPRUNT.id as id_e, date_debut, date_fin, rendu
+SELECT LIVRE.id as id_l, titre, genre, date_parution, guid_nfc, EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
     FROM LIVRE JOIN EMPRUNT
     ON LIVRE.id==EMPRUNT.id_l WHERE id_l=:id_l'''
         resultats = await G_DB.fetch_all(requete, {"id_l": id_l})
         resultat_dict = {"id_livre": [], "titre": [], "genre": [], "date_parution": [], "guid_nfc": [], "id_emprunt": [],
-            "debut_emprunts": [], "fin_emprunts": [], "rendu_emprunts": []}
+            "id_utilisateur": [], "date_debut": [], "date_fin": [], "rendu": []}
         for ligne in resultats:
             resultat_dict["id_livre"].append(ligne["id_l"])
             resultat_dict["titre"].append(ligne["titre"])
@@ -179,14 +173,14 @@ SELECT LIVRE.id as id_l, titre, genre, date_parution, guid_nfc, EMPRUNT.id as id
             resultat_dict["date_parution"].append(ligne["date_parution"])
             resultat_dict["guid_nfc"].append(ligne["guid_nfc"])
             resultat_dict["id_emprunt"].append(ligne["id_e"])
+            resultat_dict["id_utilisateur"].append(ligne["id_u"])
             resultat_dict["date_debut"].append(ligne["date_debut"])
             resultat_dict["date_fin"].append(ligne["date_fin"])
             resultat_dict["rendu"].append(ligne["rendu"])
         return (True, resultat_dict)
     except Exception as e:
         print(f"Error: {e}")
-        return(False, {"id_livre": [-1], "titre": ["ERREUR"], "genre": ["ERREUR"], "date_parution": ["ERREUR"], "guid_nfc": ["ERREUR"],
-        "id_emprunt": [-1], "date_debut": ["ERREUR"], "date_fin": ["ERREUR"], "rendu": ["ERREUR"]})
+        return(False, "Obtention des livres échoué")
 
 async def rqt_retour(id):
     try:
