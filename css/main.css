@@ -1,8 +1,4 @@
-html{
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
+
 
 
 .conn {
@@ -28,6 +24,60 @@ html{
 
 }
 
+.searchbar{
+  position:relative;
+  width:1040px;
+  height:auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchbar{
+  border: 3px;
+
+
+}
+.divloupebar{
+  position: relative;
+
+
+
+}
+
+.search{
+  width: 400px;
+  height: 30px;
+
+}
+
+.divloupe{
+  position: absolute;
+  top : 25%;
+  left:2%
+
+
+}
+
+.formulaire{
+  display:inline-block;
+}
+
+
+.champ{
+  width:450px ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 5px;
+}
+
+
+nav {
+  background-color: black;
+  padding-bottom: 20px;
+  border-bottom: 1px solid black;
+}
 
 
 h1{
