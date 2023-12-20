@@ -44,5 +44,5 @@ def lire_uid_nfc() -> str:
                     return False
 
 # Utilisez la fonction pour lire l'UID
-uid_carte_nfc = lire_uid_nfc()
-print("UID de la carte NFC détectée :", uid_carte_nfc)
+#uid_carte_nfc = lire_uid_nfc()
+#print("UID de la carte NFC détectée :", uid_carte_nfc)
