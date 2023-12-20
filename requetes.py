@@ -171,7 +171,7 @@ SELECT LIVRE.id as id_l, titre, genre, date_parution, guid_nfc, EMPRUNT.id as id
     ON LIVRE.id==EMPRUNT.id_l WHERE id_l=:id_l'''
         resultats = await G_DB.fetch_all(requete, {"id_l": id_l})
         resultat_dict = {"id_livre": [], "titre": [], "genre": [], "date_parution": [], "guid_nfc": [], "id_emprunt": [],
-            "debut_emprunts": [], "fin_emprunts": [], "rendu_emprunts": []}
+            "date_debut": [], "date_fin": [], "rendu": []}
         for ligne in resultats:
             resultat_dict["id_livre"].append(ligne["id_l"])
             resultat_dict["titre"].append(ligne["titre"])

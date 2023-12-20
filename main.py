@@ -136,9 +136,8 @@ async def api_emprunt_livres():
         return {"resultat": res, "donnees": info}
     return {"resultat": False, "donnees": "Vous n'êtes pas un usager"}
 
-@app.post("/api_hist_livre")
-async def api_hist_livre(info_hist: JSONIDLivre):
-    id_l = info_hist.id_l
+@app.get("/api_hist_livre")
+async def api_hist_livre(id_l: str):
     res, info = await requetes.rqt_obtenir_emprunts_l(id_l)
     return {"resultat": res, "donnees": info}
 
@@ -158,6 +157,13 @@ async def api_retour(info_retour: JSONIDLivre):
         res, msg = await requetes.rqt_retour(id_emprunt)
         return {"resultat": res, "donnees": msg}
     return {"resultat": False, "donnees": "Vous n'êtes pas un usager"}
+
+# @app.get("/api_uid_nfc")
+# async def api_uid_nfc():
+#     uid = nfc.lire_uid_nfc()
+#     if (uid != False):
+#         return {"resultat": True, "donnees": uid}
+#     return {"resultat": False}
 
 if __name__ == "__main__":
     uvicorn.run(app, port=8080, host='0.0.0.0')

@@ -14,8 +14,10 @@ function aujourdhui_yyyy_mm_dd()
     return yyyy_mm_dd;
 }
 
-function requete_get(url) {
-    return fetch(url, {
+function requete_get(url, param) {
+    const url_param = new URL(window.location.origin + url);
+    Object.keys(param).forEach(key => url_param.searchParams.append(key, param[key]));
+    return fetch(url_param, {
         method: 'GET',
     })
     .then(response => response.json())
@@ -37,7 +39,7 @@ function requete_post(url, donnees) {
 }
 
 function api_statut() {
-    return requete_get("/api_statut");
+    return requete_get("/api_statut", {});
 }
 
 function api_deconnexion() {
@@ -141,7 +143,7 @@ function api_ajout() {
 }
 
 function api_livres() {
-    return requete_get("/api_livres");
+    return requete_get("/api_livres", {});
 }
 
 function api_retrait(id_l) {
@@ -153,13 +155,17 @@ function api_emprunt(id_l) {
 }
 
 function api_emprunt_livres() {
-    return requete_get("/api_emprunt_livres");
+    return requete_get("/api_emprunt_livres", {});
 }
 
-function api_hist_livre() {
+function api_hist_livre(id_l) {
     return requete_get("/api_hist_livre", {"id_l": id_l});
 }
 
-function api_retour() {
-    return requete_get("/api_retour", {"id_l": id_l});
+function api_retour(id_l) {
+    return requete_post("/api_retour", {"id_l": id_l});
+}
+
+function api_uid_nfc() {
+    return requete_get("/api_uid_nfc", {})
 }
