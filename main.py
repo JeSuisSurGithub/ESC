@@ -55,7 +55,7 @@ def racine() -> str:
 @app.get("/api_statut")
 async def api_statut():
     if G_INFO_CONNEXION == None:
-        return {"resultat": False, "donnees": "Statut de connexion indisponible (vous n'êtes pas connectés)"}
+        return {"resultat": False, "donnees": "Vous n'êtes pas connecté"}
     return {"resultat": True, "donnees": G_INFO_CONNEXION}
 
 @app.post("/api_deconnexion")
