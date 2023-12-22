@@ -36,16 +36,15 @@ async def rqt_connexion():
 async def rqt_deconnexion():
     await G_DB.disconnect()
 
-async def rqt_ajouter_compte(email, mdp, nom, prenom, date_naissance) -> typing.Tuple[bool, str]:
+async def rqt_ajouter_compte(email, mdp, pseudo, date_naissance) -> typing.Tuple[bool, str]:
     try:
         hash_mdp = bcrypt.hashpw(mdp.encode("utf-8"), bcrypt.gensalt())
-        requete = '''INSERT INTO UTILISATEUR (email, mdp, nom, prenom, date_naissance, grade)
-            VALUES (:email, :mdp, :nom, :prenom, :date_naissance, :grade)'''
+        requete = '''INSERT INTO UTILISATEUR (email, mdp, pseudo, date_naissance, grade)
+            VALUES (:email, :mdp, :pseudo, :date_naissance, :grade)'''
         await G_DB.execute(requete, {
             "email": email,
             "mdp": hash_mdp,
-            "nom": nom,
-            "prenom": prenom,
+            "pseudo": pseudo,
             "date_naissance": date_naissance,
             "grade": 1})
         return (True, "Création du compte réussie")
@@ -55,7 +54,7 @@ async def rqt_ajouter_compte(email, mdp, nom, prenom, date_naissance) -> typing.
 
 async def rqt_connexion_compte(email, mdp) -> typing.Tuple[bool, dict]:
     try:
-        requete = "SELECT id, email, mdp, nom, prenom, date_naissance, grade FROM UTILISATEUR WHERE email=:email"
+        requete = "SELECT id, email, mdp, pseudo, date_naissance, grade FROM UTILISATEUR WHERE email=:email"
         resultats = await G_DB.fetch_all(requete, {"email": email})
         if len(resultats) == 0:
             raise ValueError("Aucun compte associé")
@@ -67,8 +66,7 @@ async def rqt_connexion_compte(email, mdp) -> typing.Tuple[bool, dict]:
         resultat_dict = {
             "id": resultats[0]["id"],
             "email": resultats[0]["email"],
-            "nom": resultats[0]["nom"],
-            "prenom": resultats[0]["prenom"],
+            "pseudo": resultats[0]["pseudo"],
             "date_naissance": resultats[0]["date_naissance"],
             "grade": resultats[0]["grade"]}
 
@@ -86,10 +84,10 @@ async def rqt_supprimer_compte(id) -> typing.Tuple[bool, str]:
         print(f"Error: {e}")
         return (False, "Suppression du compte échouée")
 
-async def rqt_ajout_livre(titre, genre, date_parution, guid_nfc) -> typing.Tuple[bool, str]:
+async def rqt_ajout_livre(titre, genre, rayon, date_parution, guid_nfc) -> typing.Tuple[bool, str]:
     try:
-        requete = "INSERT INTO LIVRE (titre, genre, date_parution, guid_nfc) VALUES (:titre, :genre, :date_parution, :guid_nfc)"
-        await G_DB.execute(requete, {"titre": titre, "genre": genre, "date_parution": date_parution, "guid_nfc": guid_nfc})
+        requete = "INSERT INTO LIVRE (titre, genre, rayon, date_parution, guid_nfc) VALUES (:titre, :genre, :date_parution, :guid_nfc)"
+        await G_DB.execute(requete, {"titre": titre, "genre": genre, "rayon": rayon, "date_parution": date_parution, "guid_nfc": guid_nfc})
         return (True, "Ajout du livre réussi")
     except Exception as e:
         print(f"Error: {e}")
@@ -97,13 +95,14 @@ async def rqt_ajout_livre(titre, genre, date_parution, guid_nfc) -> typing.Tuple
 
 async def rqt_obtenir_livre() -> typing.Tuple[bool, dict]:
     try:
-        requete = "SELECT id, titre, genre, date_parution, guid_nfc FROM LIVRE"
+        requete = "SELECT id, titre, genre, rayon, date_parution, guid_nfc FROM LIVRE"
         resultats = await G_DB.fetch_all(requete)
-        resultat_dict = {"id": [], "titre": [], "genre": [], "date_parution": [], "guid_nfc": []}
+        resultat_dict = {"id": [], "titre": [], "genre": [], "rayon": [], "date_parution": [], "guid_nfc": []}
         for ligne in resultats:
             resultat_dict["id"].append(ligne["id"])
             resultat_dict["titre"].append(ligne["titre"])
             resultat_dict["genre"].append(ligne["genre"])
+            resultat_dict["rayon"].append(ligne["rayon"])
             resultat_dict["date_parution"].append(ligne["date_parution"])
             resultat_dict["guid_nfc"].append(ligne["guid_nfc"])
         return (True, resultat_dict)
@@ -135,16 +134,18 @@ async def rqt_emprunter(id_u, id_l, date_debut, date_fin) -> typing.Tuple[bool, 
 async def rqt_obtenir_emprunts_u(id_u) -> typing.Tuple[bool, dict]:
     try:
         requete = '''
-SELECT LIVRE.id as id_l, titre, genre, date_parution, guid_nfc, EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
+SELECT LIVRE.id as id_l, titre, genre, rayon, date_parution, guid_nfc, EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
     FROM LIVRE JOIN EMPRUNT
     ON LIVRE.id==EMPRUNT.id_l WHERE id_u=:id_u'''
         resultats = await G_DB.fetch_all(requete, {"id_u": id_u})
-        resultat_dict = {"id_livre": [], "titre": [], "genre": [], "date_parution": [], "guid_nfc": [], "id_emprunt": [],
+        resultat_dict = {"id_livre": [], "titre": [], "genre": [], "rayon": [], "date_parution": [],
+            "guid_nfc": [], "id_emprunt": [],
             "id_utilisateur": [], "date_debut": [], "date_fin": [], "rendu": []}
         for ligne in resultats:
             resultat_dict["id_livre"].append(ligne["id_l"])
             resultat_dict["titre"].append(ligne["titre"])
             resultat_dict["genre"].append(ligne["genre"])
+            resultat_dict["rayon"].append(ligne["rayon"])
             resultat_dict["date_parution"].append(ligne["date_parution"])
             resultat_dict["guid_nfc"].append(ligne["guid_nfc"])
             resultat_dict["id_emprunt"].append(ligne["id_e"])
@@ -160,16 +161,18 @@ SELECT LIVRE.id as id_l, titre, genre, date_parution, guid_nfc, EMPRUNT.id as id
 async def rqt_obtenir_emprunts_l(id_l) -> typing.Tuple[bool, dict]:
     try:
         requete = '''
-SELECT LIVRE.id as id_l, titre, genre, date_parution, guid_nfc, EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
+SELECT LIVRE.id as id_l, titre, genre, rayon, date_parution, guid_nfc, EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
     FROM LIVRE JOIN EMPRUNT
     ON LIVRE.id==EMPRUNT.id_l WHERE id_l=:id_l'''
         resultats = await G_DB.fetch_all(requete, {"id_l": id_l})
-        resultat_dict = {"id_livre": [], "titre": [], "genre": [], "date_parution": [], "guid_nfc": [], "id_emprunt": [],
+        resultat_dict = {"id_livre": [], "titre": [], "genre": [], "rayon": [], "date_parution": [],
+        "guid_nfc": [], "id_emprunt": [],
             "id_utilisateur": [], "date_debut": [], "date_fin": [], "rendu": []}
         for ligne in resultats:
             resultat_dict["id_livre"].append(ligne["id_l"])
             resultat_dict["titre"].append(ligne["titre"])
             resultat_dict["genre"].append(ligne["genre"])
+            resultat_dict["rayon"].append(ligne["rayon"])
             resultat_dict["date_parution"].append(ligne["date_parution"])
             resultat_dict["guid_nfc"].append(ligne["guid_nfc"])
             resultat_dict["id_emprunt"].append(ligne["id_e"])
