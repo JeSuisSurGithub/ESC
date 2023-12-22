@@ -167,23 +167,8 @@ async def api_uid_nfc():
     def timeout10():
         return nfc.lire_uid_nfc()
 
-    res = timeout10()
-    if res != False:
-        return {"resultat": True, "donnees": res}
-    else:
-        return {"resultat": False, "donnees": "Temps limite écoulé (10s)"}
-
-@app.get("/api_uid_nfc_fake")
-async def api_uid_nfc_fake():
-    @timeout(10)
-    def timeout10_fake12():
-        return nfc.lire_uid_nfc_fake12()
-
-    res = timeout10_fake12()
-    if res != False:
-        return {"resultat": True, "donnees": res}
-    else:
-        return {"resultat": False, "donnees": "Temps limite écoulé (10s)"}
+    res, donnees = timeout10()
+    return {"resultat": res, "donnees": donnees}
 
 if __name__ == "__main__":
     uvicorn.run(app, port=8080, host='0.0.0.0')

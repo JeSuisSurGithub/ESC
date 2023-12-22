@@ -107,10 +107,6 @@ function api_uid_nfc() {
     return requete_get("/api_uid_nfc", {})
 }
 
-function api_uid_nfc_fake() {
-    return requete_get("/api_uid_nfc_fake", {})
-}
-
 function recherche(entree, vtitre, vgenre, vdate) {
     const termes = entree.split(" ");
     var vid = []

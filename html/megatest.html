@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
-    <link rel="stylesheet" href="/css/main.css">
-  </head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Megatest</title>
+    </head>
     <body>
         <div id="sortie">
-
         </div>
         <script src="/js/index.js"></script>
         <script>
             (async () => {
                 const sortie = document.getElementById("sortie")
+
                 // /api_statut
                 const res1 = await api_statut();
                 if (res1.resultat) {
@@ -49,6 +47,7 @@
                                         </p>`
                 }
 
+                // /api_hist_livre
                 const res3 = await api_hist_livre(1)
                 if (res3.resultat) {
                     for (let i = 0; i < res3.donnees.id_livre.length; i++) {
@@ -71,6 +70,7 @@
                                         </p>`
                 }
 
+                // /api_uid_nfc
                 const res4 = await api_uid_nfc();
                 if (res4.resultat) {
                     window.alert(`UID: ${res4.donnees}`)
