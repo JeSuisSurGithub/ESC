@@ -90,7 +90,7 @@
                 }
                 if (info != "") return;
 
-                api_connexion(tag_email.value, tag_motdepasse.value);
+                let res = await api_connexion(tag_email.value, tag_motdepasse.value);
                 if (res.resultat) {
                     window.location.replace(window.location.origin);
                 } else {
