@@ -28,7 +28,7 @@ import databases
 import bcrypt
 import typing
 
-G_DB = databases.Database("sqlite:///./esc.db")
+G_DB = databases.Database("sqlite:///./db/esc.db")
 
 async def rqt_connexion():
     await G_DB.connect()

@@ -45,6 +45,7 @@ app = FastAPI(lifespan=lifespan)
 app.mount("/css", StaticFiles(directory="css"), name="css")
 app.mount("/js", StaticFiles(directory="js"), name="js")
 app.mount("/html", StaticFiles(directory="html"), name="html")
+app.mount("/img", StaticFiles(directory="img"), name="img")
 
 @app.get("/")
 def racine() -> str:
