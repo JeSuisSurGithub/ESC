@@ -20,8 +20,7 @@
                     sortie.innerHTML += `<p>
                                             Id: ${res1.donnees.id}
                                             Email: ${res1.donnees.email}
-                                            Nom: ${res1.donnees.nom}
-                                            Prénom: ${res1.donnees.prenom}
+                                            Nom: ${res1.donnees.pseudo}
                                             Date de Naissance: ${res1.donnees.date_naissance}
                                             Grade: ${res1.donnees.grade}
                                         </p>`
@@ -70,6 +69,13 @@
                     sortie.innerHTML += `<p>
                                             Livres indisponibles
                                         </p>`
+                }
+
+                const res4 = await api_uid_nfc();
+                if (res4.resultat) {
+                    window.alert(`UID: ${res4.donnees}`)
+                } else {
+                    window.alert(`Echec: ${res4.donnees}`)
                 }
             })();
         </script>

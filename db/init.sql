@@ -6,8 +6,7 @@ CREATE TABLE UTILISATEUR (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL UNIQUE,
     mdp TEXT NOT NULL,
-    nom TEXT NOT NULL,
-    prenom TEXT NOT NULL,
+    pseudo TEXT NOT NULL,
     date_naissance DATE NOT NULL,
     grade INTEGER
 );
@@ -16,6 +15,7 @@ CREATE TABLE LIVRE (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     titre INTEGER NOT NULL,
     genre INTEGER NOT NULL,
+    rayon TEXT NOT NULL,
     date_parution DATE NOT NULL,
     guid_nfc TEXT NOT NULL
 );

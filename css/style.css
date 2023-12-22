@@ -6,7 +6,7 @@ html {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 100vh; /* Ajustez la hauteur selon vos besoins */
+    height: 50vh;
 }
 
 .logo {

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Connexion</title>
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="logo">
+                <img src="/img/esc-high-resolution-logo.png">
+            </div>
+            <div id="aligner" class="form-container">
+                <div class="wrapper">
+                    <div class="card-switch">
+                    <label class="switch">
+                        <input class="toggle" type="checkbox">
+                        <span class="slider"></span>
+                        <span class="card-side"></span>
+                        <div class="flip-card__inner">
+                            <div class="flip-card__front">
+                                <div class="title">Se connecter</div>
+                                <form class="flip-card__form">
+                                    <input type="email" id="email_connexion" placeholder="Email" name="email" class="flip-card__input">
+                                    <input type="password" id="motdepasse_connexion" placeholder="Mot de passe" name="password" class="flip-card__input">
+                                    <input type="button" class="flip-card__btn" onclick="connexion()" value="Connexion">
+                                </form>
+                            </div>
+                            <div class="flip-card__back">
+                                <div class="title">S'inscrire</div>
+                                <form class="flip-card__form">
+                                    <input type="name" placeholder="Pseudo" id="pseudo" class="flip-card__input">
+                                    <input type="date" placeholder="Date de naissance" id="naissance" class="flip-card__input">
+                                    <input type="email" placeholder="Email" id="email_inscription" class="flip-card__input">
+                                    <input type="password" placeholder="Mot de passe" id="motdepasse_inscription" class="flip-card__input">
+                                    <input type="button" class="flip-card__btn" onclick="inscription()" value="Inscription">
+                                </form>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <script src="/js/index.js"></script>
+        <script>
+            async function inscription() {
+                const tag_email = document.getElementById("email_inscription");
+                const tag_motdepasse = document.getElementById("motdepasse_inscription");
+                const tag_pseudo = document.getElementById("pseudo");
+                const tag_naissance = document.getElementById("naissance");
+                let info = "";
+                if (!est_un_email(tag_email.value)) {
+                    info += "L'email n'est pas valide";
+                }
+                if (tag_motdepasse.value.length < 4) {
+                    info += "Le mot de passe doit faire au moins de 4 caractères";
+                }
+                if (tag_pseudo.value.length < 1) {
+                    info += "Vous devez spécifier un pseudo";
+                }
+                if (tag_naissance.value == "" || aujourdhui_yyyy_mm_dd() <= tag_naissance.value) {
+                    info += "Date invalide";
+                }
+                if (info != "") return;
+
+                let res = await api_inscription(tag_email.value, tag_motdepasse.value, tag_pseudo.value, tag_naissance.value);
+                if (res.resultat) {
+                    let res_conn = await api_connexion(tag_email.value, tag_motdepasse.value);
+                    if (res_conn) {
+                        window.location.replace(window.location.origin);
+                    } else {
+                        window.alert(res_conn.donnees);
+                    }
+                } else {
+                    window.alert(res.donnees);
+                }
+            }
+
+            async function connexion() {
+                const tag_email = document.getElementById("email_connexion");
+                const tag_motdepasse = document.getElementById("motdepasse_connexion");
+                const tag_info = document.getElementById("info_erreurs");
+
+                let info = "";
+                if (!est_un_email(tag_email.value)) {
+                    info += "L'email n'est pas valide";
+                }
+                if (tag_motdepasse.value.length < 4) {
+                    info += "Le mot de passe doit faire au moins de 4 caractères";
+                }
+                if (info != "") return;
+
+                api_connexion(tag_email.value, tag_motdepasse.value);
+                if (res.resultat) {
+                    window.location.replace(window.location.origin);
+                } else {
+                    window.alert(res.donnees);
+                }
+            }
+        </script>
+    </body>
+</html>

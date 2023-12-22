@@ -7,3 +7,4 @@ starlette
 uvicorn
 aiosqlite
 sqlalchemy
+timeout_decorator
