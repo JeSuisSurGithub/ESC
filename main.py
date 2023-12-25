@@ -129,8 +129,12 @@ async def api_emprunt(info_emprunt: JSONIDLivre):
     date_debut = datetime.now()
     date_fin = datetime.now() + timedelta(weeks=2)
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
-        res, msg = await requetes.rqt_emprunter(G_INFO_CONNEXION["id"], id_l, date_debut.strftime("%Y-%m-%d"), date_fin.strftime("%Y-%m-%d"))
-        return {"resultat": res, "donnees": msg}
+        res, info = await requetes.rqt_obtenir_emprunts_l(id_l)
+        if (len(info) != 0 and info[-1]["rendu"] == False):
+            return {"resultat": False, "donnees": "Livre déja emprunté"}
+        else:
+            res, msg = await requetes.rqt_emprunter(G_INFO_CONNEXION["id"], id_l, date_debut.strftime("%Y-%m-%d"), date_fin.strftime("%Y-%m-%d"))
+            return {"resultat": res, "donnees": msg}
     return {"resultat": False, "donnees": "Vous n'êtes pas un usager"}
 
 @app.get("/api_emprunt_livres")
@@ -149,21 +153,19 @@ async def api_hist_livre(id_l: str):
 async def api_retour(info_retour: JSONIDLivre):
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
         id_l = info_retour.id_l
-        res, info = await requetes.rqt_obtenir_emprunts(G_INFO_CONNEXION["id"])
-
-        id_emprunt = None
-        for i in range(len(info) - 1, -1, -1):
-            if info[i]["id_livre"] == id_l:
-                id_emprunt = info[i]["id_emprunt"]
-        if id_emprunt == None:
-            return {"resultat": False, "donnees": "Livre non emprunté"}
-
-        res, msg = await requetes.rqt_retour(id_emprunt)
-        return {"resultat": res, "donnees": msg}
+        res, info = await requetes.rqt_obtenir_emprunts_l(id_l)
+        if (len(info) == 0):
+            return {"resultat": False, "donnees": "Livre jamais emprunté"}
+        elif (info[-1]["rendu"] == True):
+            return {"resultat": False, "donnees": "Livre déja rendu"}
+        else:
+            res, msg = await requetes.rqt_retour(info[-1]["id_emprunt"])
+            return {"resultat": res, "donnees": msg}
     return {"resultat": False, "donnees": "Vous n'êtes pas un usager"}
 
 @app.get("/api_uid_nfc")
 async def api_uid_nfc():
+    global G_CAPTEUR_EN_UTILISATION
     if (G_CAPTEUR_EN_UTILISATION):
         return {"resultat": false, "donnees": "Capteur en cours d'utilisation"}
     else:
@@ -177,4 +179,4 @@ async def api_uid_nfc():
         return {"resultat": res, "donnees": donnees}
 
 if __name__ == "__main__":
-    uvicorn.run(app, port=80, host='0.0.0.0')
+    uvicorn.run(app, port=8080, host='0.0.0.0')

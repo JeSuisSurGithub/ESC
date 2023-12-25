@@ -15,10 +15,10 @@
                 if (parametre_get("resultat") === "true") {
                     const info_conn = await api_statut();
                     if (info_conn.resultat) {
-                        const liste_livres = await api_livres();
-                        let index = liste_livres.guid_nfc.indexOf(parametre_get("uid"))
-                        if (liste_livres.guid_nfc.indexOf(parametre_get("uid")) !== -1) {
-                            let resultat = await api_emprunt(liste_livres.guid_nfc[index]);
+                        const requete_livre = await api_livres();
+                        let index = requete_livre.donnees.guid_nfc.indexOf(parametre_get("uid"))
+                        if (requete_livre.donnees.guid_nfc.indexOf(parametre_get("uid")) !== -1) {
+                            let resultat = await api_emprunt(requete_livre.donnees.guid_nfc[index]);
                             window.alert(resultat.donnees);
                         } else {
                             window.alert("Carte de livre inconnue");
