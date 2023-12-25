@@ -22,8 +22,9 @@ OK_RQT_EMPRUNT_MOD_RETOUR   =  10
 ER_RQT_EMPRUNT_MOD_RETOUR   = -10
 
 OK_API_INFO_CONN            =  11
+OK_API_INFO_CONN            = -11
 OK_API_DECONNECT            =  12
-ER_API_DECONNECT            = -12
+
 ER_API_DROIT_ADMIN          = -13
 ER_API_DROIT_USAGER         = -14
 ER_API_EMPRUNT_ACTIF        = -15
@@ -61,7 +62,6 @@ G_CODE_ERREURS = {
     OK_API_INFO_CONN            : "Obtention du statut de connexion réussi",
     ER_API_INFO_CONN            : "Obtention du statut de connexion échoué",
     OK_API_DECONNECT            : "Déconnexion réussie",
-    ER_API_DECONNECT            : "Déconnexion échouée",
     ER_API_DROIT_ADMIN          : "Vous n'êtes pas un administrateur",
     ER_API_DROIT_USAGER         : "Vous n'êtes pas un usager",
     ER_API_EMPRUNT_ACTIF        : "Livre déja emprunté",

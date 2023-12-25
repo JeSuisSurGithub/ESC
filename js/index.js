@@ -22,8 +22,8 @@ const OK_RQT_EMPRUNT_MOD_RETOUR = 10;
 const ER_RQT_EMPRUNT_MOD_RETOUR = -10;
 
 const OK_API_INFO_CONN = 11;
+const ER_API_INFO_CONN = -11;
 const OK_API_DECONNECT = 12;
-const ER_API_DECONNECT = -12;
 const ER_API_DROIT_ADMIN = -13;
 const ER_API_DROIT_USAGER = -14;
 const ER_API_EMPRUNT_ACTIF = -15;
@@ -61,7 +61,6 @@ const G_CODE_ERREURS = {
     [OK_API_INFO_CONN]: "Obtention du statut de connexion réussi",
     [ER_API_INFO_CONN]: "Obtention du statut de connexion échoué",
     [OK_API_DECONNECT]: "Déconnexion réussie",
-    [ER_API_DECONNECT]: "Déconnexion échouée",
     [ER_API_DROIT_ADMIN]: "Vous n'êtes pas un administrateur",
     [ER_API_DROIT_USAGER]: "Vous n'êtes pas un usager",
     [ER_API_EMPRUNT_ACTIF]: "Livre déjà emprunté",
