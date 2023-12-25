@@ -130,7 +130,7 @@ async def api_emprunt(info_emprunt: JSONIDLivre):
     date_fin = datetime.now() + timedelta(weeks=2)
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
         res, info = await requetes.rqt_obtenir_emprunts_l(id_l)
-        if (len(info) != 0 and info[-1]["rendu"] == False):
+        if (len(info["rendu"]) != 0) and (info["rendu"][-1] == False):
             return {"resultat": False, "donnees": "Livre déja emprunté"}
         else:
             res, msg = await requetes.rqt_emprunter(G_INFO_CONNEXION["id"], id_l, date_debut.strftime("%Y-%m-%d"), date_fin.strftime("%Y-%m-%d"))
@@ -154,12 +154,12 @@ async def api_retour(info_retour: JSONIDLivre):
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
         id_l = info_retour.id_l
         res, info = await requetes.rqt_obtenir_emprunts_l(id_l)
-        if (len(info) == 0):
+        if (len(info["rendu"]) == 0):
             return {"resultat": False, "donnees": "Livre jamais emprunté"}
-        elif (info[-1]["rendu"] == True):
+        elif (info["rendu"][-1] == True):
             return {"resultat": False, "donnees": "Livre déja rendu"}
         else:
-            res, msg = await requetes.rqt_retour(info[-1]["id_emprunt"])
+            res, msg = await requetes.rqt_retour(info["id_emprunt"][-1])
             return {"resultat": res, "donnees": msg}
     return {"resultat": False, "donnees": "Vous n'êtes pas un usager"}
 
@@ -167,7 +167,7 @@ async def api_retour(info_retour: JSONIDLivre):
 async def api_uid_nfc():
     global G_CAPTEUR_EN_UTILISATION
     if (G_CAPTEUR_EN_UTILISATION):
-        return {"resultat": false, "donnees": "Capteur en cours d'utilisation"}
+        return {"resultat": False, "donnees": "Capteur en cours d'utilisation"}
     else:
         G_CAPTEUR_EN_UTILISATION = True
         @timeout(10)
