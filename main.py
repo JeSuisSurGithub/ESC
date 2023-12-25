@@ -145,7 +145,7 @@ async def api_emprunt(info_emprunt: JSONIDLivre):
         code, val = await requetes.rqt_obtenir_emprunts_l(id_l)
         if (code > 0):
             if (len(val["rendu"]) != 0) and (val["rendu"][-1] == False):
-                return {"code": ER_API_EMPRUNT_ACTIF}
+                return {"code": erreurs.ER_API_EMPRUNT_ACTIF}
             else:
                 code, val = await requetes.rqt_emprunter(G_INFO_CONNEXION["id"], id_l, date_debut.strftime("%Y-%m-%d"), date_fin.strftime("%Y-%m-%d"))
                 return {"code": code, "val": val}

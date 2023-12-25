@@ -140,9 +140,8 @@ SELECT LIVRE.id as id_l, titre, genre, rayon, date_parution, guid_nfc, EMPRUNT.i
     FROM LIVRE JOIN EMPRUNT
     ON LIVRE.id==EMPRUNT.id_l WHERE id_u=:id_u'''
         resultats = await G_DB.fetch_all(requete, {"id_u": id_u})
-        resultat_dict = {"id_livre": [], "titre": [], "genre": [], "rayon": [], "date_parution": [],
-            "guid_nfc": [], "id_emprunt": [],
-            "id_utilisateur": [], "date_debut": [], "date_fin": [], "rendu": []}
+        resultat_dict = {"id_l": [], "titre": [], "genre": [], "rayon": [], "date_parution": [],
+            "guid_nfc": [], "id_e": [], "id_u": [], "date_debut": [], "date_fin": [], "rendu": []}
         for ligne in resultats:
             resultat_dict["id_l"].append(ligne["id_l"])
             resultat_dict["titre"].append(ligne["titre"])
@@ -167,9 +166,8 @@ SELECT LIVRE.id as id_l, titre, genre, rayon, date_parution, guid_nfc, EMPRUNT.i
     FROM LIVRE JOIN EMPRUNT
     ON LIVRE.id==EMPRUNT.id_l WHERE id_l=:id_l'''
         resultats = await G_DB.fetch_all(requete, {"id_l": id_l})
-        resultat_dict = {"id_livre": [], "titre": [], "genre": [], "rayon": [], "date_parution": [],
-        "guid_nfc": [], "id_emprunt": [],
-            "id_utilisateur": [], "date_debut": [], "date_fin": [], "rendu": []}
+        resultat_dict = {"id_l": [], "titre": [], "genre": [], "rayon": [], "date_parution": [],
+        "guid_nfc": [], "id_e": [], "id_u": [], "date_debut": [], "date_fin": [], "rendu": []}
         for ligne in resultats:
             resultat_dict["id_l"].append(ligne["id_l"])
             resultat_dict["titre"].append(ligne["titre"])
