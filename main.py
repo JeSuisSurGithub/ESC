@@ -158,6 +158,8 @@ async def api_retour(info_retour: JSONIDLivre):
             return {"resultat": False, "donnees": "Livre jamais emprunté"}
         elif (info["rendu"][-1] == True):
             return {"resultat": False, "donnees": "Livre déja rendu"}
+        elif (info["id_utilisateur"][-1] != G_INFO_CONNEXION["id"]):
+            return {"resultat": False, "donnees": "Livre à rendre depuis le compte ou il été emprunté"}
         else:
             res, msg = await requetes.rqt_retour(info["id_emprunt"][-1])
             return {"resultat": res, "donnees": msg}

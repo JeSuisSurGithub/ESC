@@ -18,7 +18,7 @@
                         const requete_livre = await api_livres();
                         let index = requete_livre.donnees.guid_nfc.indexOf(parametre_get("uid"))
                         if (requete_livre.donnees.guid_nfc.indexOf(parametre_get("uid")) !== -1) {
-                            let resultat = await api_emprunt(requete_livre.donnees.id_livre[index]);
+                            let resultat = await api_retour(requete_livre.donnees.id[index]);
                             window.alert(resultat.donnees);
                         } else {
                             window.alert("Carte de livre inconnue");
