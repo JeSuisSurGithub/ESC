@@ -22,7 +22,7 @@ OK_RQT_EMPRUNT_MOD_RETOUR   =  10
 ER_RQT_EMPRUNT_MOD_RETOUR   = -10
 
 OK_API_INFO_CONN            =  11
-OK_API_INFO_CONN            = -11
+ER_API_INFO_CONN            = -11
 OK_API_DECONNECT            =  12
 
 ER_API_DROIT_ADMIN          = -13
