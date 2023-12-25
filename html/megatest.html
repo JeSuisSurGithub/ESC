@@ -24,17 +24,17 @@
                         if (requete_livre.code > 0) {
                             let index = requete_livre.val.guid_nfc.indexOf(parametre_get("uid"))
 
-                            if (parametre_get("action") == "emprunter") {
+                            if (parametre_get("action") == "emprunt") {
                                 if (index !== -1) {
-                                    let resultat = await api_emprunter(requete_livre.val.id[index]);
-                                    window.alert(resultat.code);
+                                    let resultat = await api_emprunt(requete_livre.val.id[index]);
+                                    window.alert(G_CODE_ERREURS[resultat.code]);
                                 } else {
                                     window.alert("Carte de livre inconnue");
                                 }
                             } else if (parametre_get("action") == "retour") {
                                 if (index !== -1) {
                                     let resultat = await api_retour(requete_livre.val.id[index]);
-                                    window.alert(resultat.code);
+                                    window.alert(G_CODE_ERREURS[resultat.code]);
                                 } else {
                                     window.alert("Carte de livre inconnue");
                                 }
@@ -56,7 +56,7 @@
             async function emprunter() {
                 const redirection = construire_requete_get(`${window.location.origin}/html/nfc.html`, {
                     provenance: `${encodeURIComponent(window.location.href.split("?")[0])}`,
-                    action: "emprunter",
+                    action: "emprunt",
                 });
                 window.location.replace(redirection);
             }

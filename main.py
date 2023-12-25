@@ -143,11 +143,14 @@ async def api_emprunt(info_emprunt: JSONIDLivre):
     date_fin = datetime.now() + timedelta(weeks=2)
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
         code, val = await requetes.rqt_obtenir_emprunts_l(id_l)
-        if (len(val["rendu"]) != 0) and (val["rendu"][-1] == False):
-            return {"code": ER_API_EMPRUNT_ACTIF}
-        else:
-            code, val = await requetes.rqt_emprunter(G_INFO_CONNEXION["id"], id_l, date_debut.strftime("%Y-%m-%d"), date_fin.strftime("%Y-%m-%d"))
-            return {"code": code, "val": val}
+        if (code > 0):
+            if (len(val["rendu"]) != 0) and (val["rendu"][-1] == False):
+                return {"code": ER_API_EMPRUNT_ACTIF}
+            else:
+                code, val = await requetes.rqt_emprunter(G_INFO_CONNEXION["id"], id_l, date_debut.strftime("%Y-%m-%d"), date_fin.strftime("%Y-%m-%d"))
+                return {"code": code, "val": val}
+        else :
+            return {"code": code}
     return {"code": erreurs.ER_API_DROIT_USAGER}
 
 @app.get("/api_emprunt_livres")
