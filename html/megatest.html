@@ -11,6 +11,23 @@
         </div>
         <script src="/js/index.js"></script>
         <script>
+            async function verifier_emprunt() {
+                if (parametre_get("resultat") === "true") {
+                    const info_conn = await api_statut();
+                    if (info_conn.resultat) {
+                        const liste_livres = await api_livres();
+                        let index = liste_livres.guid_nfc.indexOf(parametre_get("uid"))
+                        if (liste_livres.guid_nfc.indexOf(parametre_get("uid")) !== -1) {
+                            let resultat = await api_emprunt(liste_livres.guid_nfc[index]);
+                            window.alert(resultat.donnees);
+                        } else {
+                            window.alert("Carte de livre inconnue");
+                        }
+                    } else {
+                        window.alert("Vous n'êtes pas connecté");
+                    }
+                }
+            }
             // /api_deconnexion
             async function deconnexion() {
                 await api_deconnexion();
@@ -20,7 +37,8 @@
                 window.location.replace(
                     `${window.location.origin}/html/nfc.html?provenance=${encodeURIComponent(window.location.href.split("?")[0])}`);
             }
-            (async () => {
+            verifier_emprunt();
+/*            (async () => {
                 const sortie = document.getElementById("sortie")
 
                 // /api_statut
@@ -110,7 +128,7 @@
                                             ${res5.donnees}
                                         </p>`
                 }
-            })();
+            })();*/
         </script>
     </div>
   </body>

@@ -1,5 +1,5 @@
 INSERT INTO LIVRE (titre, genre, rayon, date_parution, guid_nfc)
-    VALUES ('livre1', 'poésie', '27A', '1999-01-01', '00-0000-00');
+    VALUES ('les fleurs du mal', 'poésie', '27A', '1999-01-01', '5E1CF2C777');
 
 INSERT INTO LIVRE (titre, genre, rayon, date_parution, guid_nfc)
     VALUES ('livre2', 'roman', '2B', '1800-12-12', '00-0001-00');

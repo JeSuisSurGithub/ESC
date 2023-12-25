@@ -14,6 +14,7 @@ import requetes
 import nfc
 
 G_INFO_CONNEXION = None
+G_CAPTEUR_EN_UTILISATION = False
 
 class JSONInscription(BaseModel):
     email: str
@@ -163,12 +164,17 @@ async def api_retour(info_retour: JSONIDLivre):
 
 @app.get("/api_uid_nfc")
 async def api_uid_nfc():
-    @timeout(10)
-    def timeout10():
-        return nfc.lire_uid_nfc()
+    if (G_CAPTEUR_EN_UTILISATION):
+        return {"resultat": false, "donnees": "Capteur en cours d'utilisation"}
+    else:
+        G_CAPTEUR_EN_UTILISATION = True
+        @timeout(10)
+        def timeout10():
+            return nfc.lire_uid_nfc()
 
-    res, donnees = timeout10()
-    return {"resultat": res, "donnees": donnees}
+        res, donnees = timeout10()
+        G_CAPTEUR_EN_UTILISATION = False
+        return {"resultat": res, "donnees": donnees}
 
 if __name__ == "__main__":
-    uvicorn.run(app, port=8080, host='0.0.0.0')
+    uvicorn.run(app, port=80, host='0.0.0.0')
