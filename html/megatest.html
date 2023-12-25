@@ -18,7 +18,7 @@
             }
             async function emprunter() {
                 window.location.replace(
-                    `${window.location.origin}/html/nfc.html?provenance=${encodeURIComponent(window.location.href)}`);
+                    `${window.location.origin}/html/nfc.html?provenance=${encodeURIComponent(window.location.href.split("?")[0])}`);
             }
             (async () => {
                 const sortie = document.getElementById("sortie")

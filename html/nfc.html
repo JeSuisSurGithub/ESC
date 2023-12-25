@@ -51,25 +51,19 @@
 
         const tag_compteur = document.getElementById("compteur");
         const provenance = parametre_get("provenance");
-        var resultat = false;
-        var uid = "";
 
         tag_compteur.innerHTML = `Il vous reste ${temps_limite}s...`
         let intervalle = setInterval(function () {
             tag_compteur.innerHTML = `Il vous reste ${--temps_limite}s...`
             if (temps_limite == 0) {
                 clearInterval(intervalle);
-                if (resultat) {
-                    window.location.replace(`${provenance}?resultat=${resultat}&uid=${uid}`);
-                } else {
-                    window.location.replace(`${provenance}?resultat=${resultat}`);
-                }
+                window.location.replace(`${provenance}?resultat=false`);
             }
         }, 1000);
         api_uid_nfc().then((requete_uid) => {
             if (requete_uid.resultat) {
-                resultat = true;
-                uid = requete_uid.donnees;
+                clearInterval(intervalle);
+                window.location.replace(`${provenance}?resultat=true&uid=${requete_uid.donnees}`);
             }
         });
     </script>
