@@ -12,7 +12,7 @@
         <script>
             async function deconnexion() {
                 await api_deconnexion();
-                location.reload();
+                window.location.replace(window.location.origin);
             }
 
             async function verifier_action() {
