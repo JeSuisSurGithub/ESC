@@ -1,6 +1,11 @@
+html {
+    background-color: #010101;
+    color: #D0D0D0;
+    font-family: arial-black, sans-serif;
+}
+
 .loader {
-    --background: linear-gradient(135deg, #000, #000);
-    --text: #6C7486;
+    --background: linear-gradient(135deg, #202020, #505050);
     --page: rgba(255, 255, 2555, 0.8);
     --page-fold: rgba(0, 0,0, 0.52);
     --duration: 3s;

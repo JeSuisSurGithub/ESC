@@ -6,6 +6,7 @@
     </head>
     <body>
         <input type="button" onclick="deconnexion()" value="Déconnexion">
+        <button onclick="emprunter()">Emprunter</button>
         <div id="sortie">
         </div>
         <script src="/js/index.js"></script>
@@ -14,6 +15,10 @@
             async function deconnexion() {
                 await api_deconnexion();
                 location.reload();
+            }
+            async function emprunter() {
+                window.location.replace(
+                    `${window.location.origin}/html/nfc.html?provenance=${encodeURIComponent(window.location.href)}`);
             }
             (async () => {
                 const sortie = document.getElementById("sortie")
@@ -104,14 +109,6 @@
                     sortie.innerHTML += `<p>
                                             ${res5.donnees}
                                         </p>`
-                }
-
-                // /api_uid_nfc
-                const res4 = await api_uid_nfc();
-                if (res4.resultat) {
-                    window.alert(`UID: ${res4.donnees}`)
-                } else {
-                    window.alert(`Echec: ${res4.donnees}`)
                 }
             })();
         </script>

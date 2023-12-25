@@ -14,6 +14,11 @@ function aujourdhui_yyyy_mm_dd()
     return yyyy_mm_dd;
 }
 
+function parametre_get(key) {
+    const url_param = new URLSearchParams(window.location.search);
+    return url_param.get(key);
+}
+
 function requete_get(url, param) {
     const url_param = new URL(window.location.origin + url);
     Object.keys(param).forEach(key => url_param.searchParams.append(key, param[key]));
