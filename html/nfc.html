@@ -59,7 +59,7 @@
             if (temps_limite == 0) {
                 clearInterval(intervalle);
 
-                const redirection = construire_requete_get(provenance, {
+                const redirection = construire_requete_get(decodeURIComponent(provenance), {
                     code: ER_NFC_CAPTEUR_TIMEOUT,
                     action: action,
                 });
@@ -71,7 +71,7 @@
             if (requete_uid.code > 0) {
                 clearInterval(intervalle);
 
-                const redirection = construire_requete_get(provenance, {
+                const redirection = construire_requete_get(decodeURIComponent(provenance), {
                     code: requete_uid.code,
                     action: action,
                     uid: requete_uid.val
