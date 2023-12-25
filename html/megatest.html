@@ -5,39 +5,71 @@
         <title>Megatest</title>
     </head>
     <body>
-        <input type="button" onclick="deconnexion()" value="Déconnexion">
+        <button onclick="deconnexion()">Déconnexion</button>
         <button onclick="emprunter()">Emprunter</button>
-        <div id="sortie">
-        </div>
+        <button onclick="retour()">Retour</button>
         <script src="/js/index.js"></script>
         <script>
-            async function verifier_emprunt() {
-                if (parametre_get("resultat") === "true") {
-                    const info_conn = await api_statut();
-                    if (info_conn.resultat) {
-                        const requete_livre = await api_livres();
-                        let index = requete_livre.donnees.guid_nfc.indexOf(parametre_get("uid"))
-                        if (requete_livre.donnees.guid_nfc.indexOf(parametre_get("uid")) !== -1) {
-                            let resultat = await api_retour(requete_livre.donnees.id[index]);
-                            window.alert(resultat.donnees);
-                        } else {
-                            window.alert("Carte de livre inconnue");
-                        }
-                    } else {
-                        window.alert("Vous n'êtes pas connecté");
-                    }
-                }
-            }
-            // /api_deconnexion
             async function deconnexion() {
                 await api_deconnexion();
                 location.reload();
             }
-            async function emprunter() {
-                window.location.replace(
-                    `${window.location.origin}/html/nfc.html?provenance=${encodeURIComponent(window.location.href.split("?")[0])}`);
+
+            async function verifier_action() {
+                let code = parametre_get("code");
+                if (code > 0) {
+                    const info_conn = await api_statut();
+                    if (info_conn.code > 0) {
+                        const requete_livre = await api_livres();
+                        if (requete_livre.code > 0) {
+                            let index = requete_livre.val.guid_nfc.indexOf(parametre_get("uid"))
+
+                            if (parametre_get("action") == "emprunter") {
+                                if (index !== -1) {
+                                    let resultat = await api_emprunter(requete_livre.val.id[index]);
+                                    window.alert(resultat.code);
+                                } else {
+                                    window.alert("Carte de livre inconnue");
+                                }
+                            } else if (parametre_get("action") == "retour") {
+                                if (index !== -1) {
+                                    let resultat = await api_retour(requete_livre.val.id[index]);
+                                    window.alert(resultat.code);
+                                } else {
+                                    window.alert("Carte de livre inconnue");
+                                }
+                            } else {
+                                window.alert("Action impossible")
+                            }
+                        }
+                        else {
+                            window.alert(G_CODE_ERREURS[requete_livre.code]);
+                        }
+                    } else {
+                        window.alert(G_CODE_ERREURS[info_conn.code]);
+                    }
+                } else {
+                    window.alert(G_CODE_ERREURS[code]);
+                }
             }
-            verifier_emprunt();
+
+            async function emprunter() {
+                const redirection = construire_requete_get(`${window.location.origin}/html/nfc.html`, {
+                    provenance: `${encodeURIComponent(window.location.href.split("?")[0])}`,
+                    action: "emprunter",
+                });
+                window.location.replace(redirection);
+            }
+
+            async function retour() {
+                const redirection = construire_requete_get(`${window.location.origin}/html/nfc.html`, {
+                    provenance: `${encodeURIComponent(window.location.href.split("?")[0])}`,
+                    action: "retour",
+                });
+                window.location.replace(redirection);
+            }
+            verifier_action();
+
 /*            (async () => {
                 const sortie = document.getElementById("sortie")
 

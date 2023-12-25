@@ -48,22 +48,35 @@
     <script src="/js/index.js"></script>
     <script>
         let temps_limite = 10;
-
         const tag_compteur = document.getElementById("compteur");
+
         const provenance = parametre_get("provenance");
+        const action = parametre_get("action");
 
         tag_compteur.innerHTML = `Il vous reste ${temps_limite}s...`
         let intervalle = setInterval(function () {
             tag_compteur.innerHTML = `Il vous reste ${--temps_limite}s...`
             if (temps_limite == 0) {
                 clearInterval(intervalle);
-                window.location.replace(`${provenance}?resultat=false`);
+
+                const redirection = construire_requete_get(provenance, {
+                    code: ER_NFC_CAPTEUR_TIMEOUT,
+                    action: action,
+                });
+                window.location.replace(redirection);
             }
         }, 1000);
+
         api_uid_nfc().then((requete_uid) => {
-            if (requete_uid.resultat) {
+            if (requete_uid.code > 0) {
                 clearInterval(intervalle);
-                window.location.replace(`${provenance}?resultat=true&uid=${requete_uid.donnees}`);
+
+                const redirection = construire_requete_get(provenance, {
+                    code: requete_uid.code,
+                    action: action,
+                    uid: requete_uid.val
+                });
+                window.location.replace(redirection);
             }
         });
     </script>
