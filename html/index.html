@@ -54,8 +54,7 @@
   <script src="https://code.highcharts.com/modules/data.js"></script>
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-
-  <div class="statistiques">
+  <div id="statistiques">
 
 
   <div id="container"></div>
@@ -64,7 +63,7 @@
 Highcharts.chart('container', {
     chart: {
         type: 'bar',
-        height: 600
+        height: 600,
     },
     title: {
         text: 'vos genres préférés :'
@@ -83,10 +82,10 @@ Highcharts.chart('container', {
     plotOptions: {
         bar: {
             colorByPoint: true,
-            borderRadius: '50%'
+            borderRadius: '50%',
         },
-         series: {
-          colorByPoint: true
+         series: [{
+            
             /*zones: [{
                 color: '#4CAF50',
                 value: 0
@@ -120,13 +119,19 @@ Highcharts.chart('container', {
             }, {
                 color: '#F44336',
                 value: Number.MAX_VALUE
-            }]*/,
+            }],*/
 /*             dataLabels: {
                 enabled: true,
                 format: '{point.y:.0f}%'
             } */
-        } 
+        }]
     },
+/*     series:{
+        name: 'Données grises à 100%',
+        color: '#CCCCCC', // Couleur grise
+        data: [100, 100, 100, 100, 100], // Valeurs fixes à 100%
+        showInLegend: false // Ne pas afficher dans la légende si nécessaire
+    }, */
     tooltip: {
         valueDecimals: 1,
         valueSuffix: '%'
@@ -141,6 +146,7 @@ Highcharts.chart('container', {
         }
     },
     yAxis: {
+        min : 0,
         max: 100,
         title: false,
 /*         plotBands: [{
@@ -160,17 +166,15 @@ Highcharts.chart('container', {
 });
 
 
+
     </script>
 
 
-  </div> 
-
-
-
-    </div>
-  </body>
-	<head>
-		<meta charset="UTF-8">
+    </div> 
+</div>
+</body>
+<!-- 	<head> -->
+<!-- 		<meta charset="UTF-8">
 		<title>Index</title>
 		<link rel="stylesheet" href="/css/main.css">
 	</head>
@@ -196,5 +200,5 @@ Highcharts.chart('container', {
 				<li><a href="/html/nfc.html">NFC</a></li>
 			</ul>
 		</div>
-	</body>
+	</body> -->
 </html>
