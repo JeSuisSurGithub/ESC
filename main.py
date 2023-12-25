@@ -91,7 +91,7 @@ async def api_connexion(info_conn: JSONConnexion):
     code, val = await requetes.rqt_connexion_compte(email, motdepasse)
     if (code > 0):
         G_INFO_CONNEXION = val
-    return {"code": res, "val": val}
+    return {"code": code, "val": val}
 
 @app.post("/api_desinscription")
 async def api_desinscription(info_conn: JSONConnexion):
