@@ -1,4 +1,7 @@
 # ESC
+
+![logo](/img/esc_ratio_43_2000px.png)
+
 ## A faire (classé par priorité)
 
 - [ ] Accueil avec listage livres disponibles, emprunts actifs et historique (Page)
