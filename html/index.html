@@ -53,6 +53,7 @@
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/modules/data.js"></script>
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/highcharts-more.js"></script>
 
   <div id="statistiques">
 
@@ -63,7 +64,7 @@
 Highcharts.chart('container', {
     chart: {
         type: 'bar',
-        height: 600,
+        height: 400,
     },
     title: {
         text: 'vos genres préférés :'
@@ -75,63 +76,42 @@ Highcharts.chart('container', {
         enabled: false
     },
     data: {
-        csvURL: 'https://demo-live-data.highcharts.com/vs-load.csv',
-        enablePolling: true,
-        dataRefreshRate: 1
     },
     plotOptions: {
         bar: {
-            colorByPoint: true,
-            borderRadius: '50%',
+            colorByPoint: false,
+            borderRadius: '10px',
+            stacking: 'normal',
+            borderWidth: 0
         },
          series: [{
-            
-            /*zones: [{
-                color: '#4CAF50',
-                value: 0
-            }, {
-                color: '#8BC34A',
-                value: 10
-            }, {
-                color: '#CDDC39',
-                value: 20
-            }, {
-                color: '#CDDC39',
-                value: 30
-            }, {
-                color: '#FFEB3B',
-                value: 40
-            }, {
-                color: '#FFEB3B',
-                value: 50
-            }, {
-                color: '#FFC107',
-                value: 60
-            }, {
-                color: '#FF9800',
-                value: 70
-            }, {
-                color: '#FF5722',
-                value: 80
-            }, {
-                color: '#F44336',
-                value: 90
-            }, {
-                color: '#F44336',
-                value: Number.MAX_VALUE
-            }],*/
-/*             dataLabels: {
-                enabled: true,
-                format: '{point.y:.0f}%'
-            } */
+
+
         }]
     },
-/*     series:{
-        name: 'Données grises à 100%',
-        color: '#CCCCCC', // Couleur grise
-        data: [100, 100, 100, 100, 100], // Valeurs fixes à 100%
-        showInLegend: false // Ne pas afficher dans la légende si nécessaire
-    }, */
+    series:[
+    { /* csvURL: 'https://demo-live-data.highcharts.com/vs-load.csv',
+    enablePolling: true,
+    dataRefreshRate: 1
+ */
+
+    name: 'Données grises à 100%',
+    color: '#CCCCCC', // Couleur grise
+    data: [100, 100, 100, 100, 100, 100], // Valeurs fixes à 100%
+    showInLegend: false , // Ne pas afficher dans la légende si nécessaire
+    stack: 'stack'
+
+
+
+    },
+    {
+    name: 'Barres vertes',
+    color: '#00FF00', // Couleur verte
+    data: [50, 60, 45, 55, 50,50], // Données pour les barres vertes
+    stack: 'stack'
+
+    },
+    ],
     tooltip: {
         valueDecimals: 1,
         valueSuffix: '%'
@@ -149,6 +129,7 @@ Highcharts.chart('container', {
         min : 0,
         max: 100,
         title: false,
+        gridLineWidth: 0,
 /*         plotBands: [{
             from: 0,
             to: 30,
