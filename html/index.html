@@ -2,21 +2,38 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
-    <link rel="stylesheet" href="/css/index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/index.js"></script>
+    <script src="../js/Interaction_index.js"></script>
   </head>
-    <body class="">
-    <div id="info_statut"></div>
-  <nav>
-    <div class="searchbar">
-      <div class="divloupebar">
-        <div class="divloupe">
-          <span class="loupe">
-            <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" class="zds-icon RC794g X9n9TI DlJ4rT _5Yd-hZ HlZ_Tf I_qHp3" focusable="false" aria-hidden="true" style="font-size: 20px;">
-              <path d="m23.03 21.97-7.164-7.164A8.969 8.969 0 0 0 18 9a9 9 0 1 0-9 9 8.969 8.969 0 0 0 5.806-2.134l7.164 7.164a.748.748 0 0 0 1.06 0 .75.75 0 0 0 0-1.06zM1.5 9A7.5 7.5 0 0 1 9 1.5 7.509 7.509 0 0 1 16.5 9a7.5 7.5 0 1 1-15 0z"></path>
-            </svg>
-          </span>
+    <body>
+      <header>
+        <a href="#" class="logo">ESC</a>
+        <div class="group">
+          <ul class="navigation">
+            <li><a onclick="emprunter()" >Emprunter</a></li>
+            <li><a onclick="retour()" >Rendre</a></li>
+            <li><a onclick="deconnexion()">Déconnection</a></li>
+          </ul>
+          <div class="search">
+            <span class="icon">
+              <ion-icon name="search-outline" class="searchBtn"></ion-icon>
+              <ion-icon name="close-outline" class="closeBtn"></ion-icon>
+            </span>
+          </div>
+        </div>
+        <div class="searchBox">
+          <input type="text" id="valeurs" placeholder="rechercher . . .">
+        </div>
+
+      </header>
+
+
+    <div class="left-info">
+      <h2 id="titre-gauche">Vos Emprunts : </h2>
+        <div id="sortie">
+
         </div>
         <input class="search" id="header-search-input" type="text" name="q" autocomplete="off" spellcheck="false" placeholder="Rechercher" style="padding-left:30px" value="">
       </div>
@@ -37,98 +54,79 @@
   <div id="statistiques">
 
 
-  <div id="container"></div>
-
-    <script>
-Highcharts.chart('container', {
-    chart: {
-        type: 'bar',
-        height: 400,
-    },
-    title: {
-        text: 'vos genres préférés :'
-    },
-    legend: {
-        enabled: false
-    },
-    subtitle: {
-        enabled: false
-    },
-    data: {
-    },
-    plotOptions: {
-        bar: {
-            colorByPoint: false,
-            borderRadius: '10px',
-            stacking: 'normal',
-            borderWidth: 0
-        },
-         series: [{
-
-
-        }]
-    },
-    series:[
-    { /* csvURL: 'https://demo-live-data.highcharts.com/vs-load.csv',
-    enablePolling: true,
-    dataRefreshRate: 1
- */
-
-    name: 'Données grises à 100%',
-    color: '#CCCCCC', // Couleur grise
-    data: [100, 100, 100, 100, 100, 100], // Valeurs fixes à 100%
-    showInLegend: false , // Ne pas afficher dans la légende si nécessaire
-    stack: 'stack'
-
-
-
-    },
-    {
-    name: 'Barres vertes',
-    color: '#00FF00', // Couleur verte
-    data: [50, 60, 45, 55, 50,50], // Données pour les barres vertes
-    stack: 'stack'
-
-    },
-    ],
-    tooltip: {
-        valueDecimals: 1,
-        valueSuffix: '%'
-    },
-    xAxis: {
-        type: 'category',
-        categories: ['roman', 'science-fi', 'thriller', 'policier','fantaisie','autobio'],
-        labels: {
-            style: {
-                fontSize: '10px'
-            }
-        }
-    },
-    yAxis: {
-        min : 0,
-        max: 100,
-        title: false,
-        gridLineWidth: 0,
-/*         plotBands: [{
-            from: 0,
-            to: 30,
-            color: '#E8F5E9'
-        }, {
-            from: 30,
-            to: 70,
-            color: '#FFFDE7'
-        }, {
-            from: 70,
-            to: 100,
-            color: '#FFEBEE'
-        }] */
-    }
-});
-
-
-
-    </script>
+    <div class="body">
+      <div class="skill">
+        <div class="skill-name" style="font-size: 12px ;">Roman</div>
+        <div class="skill-level">
+          <div class="skill-percent" style="width: 90%; background-color: blue;" ></div>
+        </div>
+        <div class="skill-percent-number"></div>
+      </div>
+      <div class="skill">
+        <div class="skill-name" style="font-size: 12px">Science-fiction</div>
+        <div class="skill-level">
+          <div class="skill-percent" style="width: 80%; background-color: yellow;"></div>
+        </div>
+        <div class="skill-percent-number"></div>
+      </div>
+      <div class="skill">
+        <div class="skill-name" style="font-size: 12px">Thiller</div>
+        <div class="skill-level">
+          <div class="skill-percent" style="width: 75% ; background-color: green;"></div>
+        </div>
+        <div class="skill-percent-number"></div>
+      </div>
+      <div class="skill">
+        <div class="skill-name" style="font-size: 12px">Policier</div>
+        <div class="skill-level">
+          <div class="skill-percent" style="width: 90%; background-color: purple;"></div>
+        </div>
+        <div class="skill-percent-number"></div>
+      </div>
+      <div class="skill">
+        <div class="skill-name" style="font-size: 12px">Fantaisie</div>
+        <div class="skill-level">
+          <div class="skill-percent" style="width: 90%;background-color: red;"></div>
+        </div>
+        <div class="skill-percent-number"></div>
+      </div>
+      <div class="skill">
+        <div class="skill-name" style="font-size: 12px">Autobiographique</div>
+        <div class="skill-level">
+          <div class="skill-percent" style="width: 90%; background-color: cyan;"></div>
+        </div>
+        <div class="skill-percent-number"></div>
+      </div>
     </div>
+  </div>
+
+
+
+    </div>
+  
+    <script>
+      // Données fictives représentant les emprunts par genre
+const data = [
+    { genre: 'Roman', emprunts: 2 },
+    { genre: 'Science-fiction', emprunts: 1 },
+    { genre: 'Thiller', emprunts: 1 },
+    { genre: 'Policier', emprunts: 1 },
+    { genre: 'Fantaisie', emprunts: 1 },
+    { genre: 'Autobiographique', emprunts: 1 },
+
+];
+const totalEmprunts = data.reduce((total, item) => total + item.emprunts, 0);
+
+function calculerLargeurPourcentage(empruntsGenre) {
+    const pourcentage = (empruntsGenre / totalEmprunts) * 100;
+    return pourcentage
+}
+
+
+
+
+
+</script>
 </div>
 </body>
 </html>

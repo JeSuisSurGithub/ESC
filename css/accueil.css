@@ -1,34 +1,34 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-
+    font-family: Poppins, sans-serif;
 }
 
-body{
+body {
     background: #000000;
     min-height: 100vh;
     overflow-x: hidden;
     font-family: Poppins, sans-serif;
-
 }
-header{
+
+header {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 80px;
     background: #fff;
-    padding:20px 40px;
+    padding: 20px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 15px 15px rgba(0,0,0,0.05);
 }
-.logo{
+
+.logo {
     color:  #333;
     text-decoration: none;
     font-size: 1.5em;
@@ -36,23 +36,23 @@ header{
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
-.group{
+
+.group {
     display: flex;
     align-items: center;
 }
 
-header ul{
-    position:relative;
+header ul {
+    position: relative;
     display: flex;
-    gap:30px;
-
+    gap: 30px;
 }
 
-header ul li{
+header ul li {
     list-style: none;
 }
 
-header ul li a{
+header ul li a {
     position: relative;
     text-decoration: none;
     font-size: 1em;
@@ -60,36 +60,35 @@ header ul li a{
     letter-spacing: 0.2em;
 }
 
-header ul li a::before{
+header ul li a::before {
     content: '';
-    position:absolute;
-    bottom: -2px ;
+    position: absolute;
+    bottom: -2px;
     width: 100%;
     height: 2px;
     background: #333;
     transform: scaleX(0);
     transition: transform 0.5s ease-in-out;
     transform-origin: right;
-     
 }
 
-header ul li a:hover::before{
+header ul li a:hover::before {
     transform: scaleX(1);
     transform-origin: left;
 }
 
-header .search{
+header .search {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size:1.5em ;
+    font-size: 1.5em ;
     z-index: 10;
-    cursor:pointer;
+    cursor: pointer;
 }
 
-.searchBox{
-    position:absolute;
+.searchBox {
+    position: absolute;
     right: -100%;
     width: 100%;
     height: 100%;
@@ -98,65 +97,65 @@ header .search{
     align-items: center;
     padding: 0 30px;
     transform: 0.5s ease-in-out;
-
 }
 
-.searchBox.active{
+.searchBox.active {
     right: 0;
 }
 
-.searchBox input{
+.searchBox input {
     width: 100%;
     border: none;
     outline: none;
     height: 50px;
-    color:#333;
-    font-size:1.25em ;
+    color: #333;
+    font-size: 1.25em ;
     background: #fff;
     border-bottom: 1px solid rgba(0,0,0,0.05);
-
 }
 
-.searchBtn{
+.searchBtn {
     position: relative;
     left: 30px;
     top: 2.5px;
     transition : 0.5s ease-in-out;
 }
-.searchBtn.active{
+
+.searchBtn.active {
     left: 0;
 }
-.closeBtn{
+
+.closeBtn {
     opacity: 0;
     visibility: hidden;
     transition: 0.5s;
     scale: 0;
 }
-.closeBtn.active{
+
+.closeBtn.active {
     opacity: 1;
     visibility: visible;
     transition: 0.5s;
     scale: 1;
 }
 
-
-.left-info{
+.left-info {
     padding-top: 100px;
     padding-left: 50px;
 }
 
-#titre-gauche{
+#titre-gauche {
     color: #fff;
     margin-bottom: 20px;
     margin-left: 150px;
 }
 
-img{
+img {
     max-width: 90px;
     padding: 5px;
 }
 
-.texte{
+.texte {
     display: inline-block;
 }
 
@@ -169,18 +168,17 @@ img{
     transition: border 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: rgb(250, 250, 250) 0.2em solid;
     margin-bottom: 30px;
-   }
-   
+}
+
 .card:hover {
     border: #ffffff 0.2em solid;
-   }
+}
 
-.right-info{
+.right-info {
     position: absolute;
     display: inline-block;
     transform: translateX(180%);
-
-
+    margin-top: -180px;
 }
 
 h1 {
@@ -188,11 +186,13 @@ h1 {
     text-align: center;
     color: #fff;
     margin-bottom: 2rem;
-  }
-  h3 {
+}
+
+h3 {
     font-weight: 600;
-  }
-  .calendar {
+}
+
+.calendar {
     margin: auto;
     width: 98%;
     max-width: 380px;
@@ -202,39 +202,43 @@ h1 {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     padding: 2rem;
     background: white;
-  }
-  .calendar table {
+}
+
+.calendar table {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  .calendar nav {
+}
+
+.calendar nav {
     display: flex;
     align-items: center;
-  }
-  .calendar ul {
+}
+
+.calendar ul {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
     text-align: center;
-  }
-  .calendar ul li {
+}
+
+.calendar ul li {
     width: calc(100% / 7);
     margin-top: 25px;
     position: relative;
     z-index: 2;
-  }
-  #prev,
-  #next {
+}
+
+#prev, #next {
     width: 20px;
     height: 20px;
     position: relative;
     border: none;
     background: transparent;
     cursor: pointer;
-  }
-  #prev::before,
-  #next::before {
+}
+
+#prev::before, #next::before {
     content: "";
     width: 50%;
     height: 50%;
@@ -244,24 +248,29 @@ h1 {
     border-style: solid;
     border-width: 0.25em 0.25em 0 0;
     border-color: #000000;
-  }
-  #next::before {
+}
+
+#next::before {
     transform: translate(-50%, -50%) rotate(45deg);
-  }
-  #prev::before {
+}
+
+#prev::before {
     transform: translate(-50%, -50%) rotate(-135deg);
-  }
-  #prev:hover::before,
-  #next:hover::before {
+}
+
+#prev:hover::before, #next:hover::before {
     border-color: #000;
-  }
-  .days {
+}
+
+.days {
     font-weight: 600;
-  }
-  .dates li.today {
+}
+
+.dates li.today {
     color: #fff;
-  }
-  .dates li.today::before {
+}
+
+.dates li.today::before {
     content: "";
     width: 2rem;
     height: 2rem;
@@ -272,8 +281,8 @@ h1 {
     background: #000;
     border-radius: 50%;
     z-index: -1;
-  }
-  .dates li.inactive {
-    color: #ccc;
-  }
+}
 
+.dates li.inactive {
+    color: #ccc;
+}
