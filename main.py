@@ -146,6 +146,7 @@ async def api_retrait(info_supp: JSONIDLivre):
     global G_INFO_CONNEXION
 
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):
+        # Effacer l'image de couverture ?
         code, val = await requetes.rqt_retirer_livre(info_supp.id_l)
         return {"code": code, "val": val}
     return {"code": erreurs.ER_API_DROIT_ADMIN}
