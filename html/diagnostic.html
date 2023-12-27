@@ -5,17 +5,20 @@
     </head>
     <body>
         <input type="button" onclick="diagnostic()" value="Diagnostic">
+        <p id="compteur"></p>
         <p id="diagnostic"></p>
     </body>
     <script src="/js/general.js"></script>
     <script>
         async function diagnostic() {
+            const tag_compteur = document.getElementById("compteur");
             let temps_limite = 10;
             let intervalle = setInterval(() => {
-                window.alert(`Veuillez scanner la carte du livre à diagnostiquer (il vous reste ${--temps_limite}s)`)
+                tag_compteur.innerHTML
+                    = `Veuillez scanner la carte du livre à diagnostiquer (il vous reste ${--temps_limite}s)`;
                 if (temps_limite == 0) {
                     clearInterval(intervalle);
-                    window.alert("Temps écoulé, veuillez réinitier la procédure");
+                    tag_compteur.innerHTML = "Temps écoulé, veuillez réinitier la procédure";
                 }
             }, 1000);
 

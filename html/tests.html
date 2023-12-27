@@ -11,6 +11,7 @@
         <input type="file" id="image_couverture" placeholder="Image de Couverture" name="image_couverture">
         <input type="button" onclick="ajout_livre()" value="Ajout">
         <input type="button" onclick="retrait_livre()" value="Retrait">
+        <p id="compteur"></p>
     </body>
     <script src="/js/general.js"></script>
     <script>
@@ -20,6 +21,7 @@
             const tag_rayon         = document.getElementById("rayon");
             const tag_parution      = document.getElementById("date_parution");
             const tag_couverture    = document.getElementById("image_couverture");
+            const tag_compteur      = document.getElementById("compteur");
 
             let info = "";
             if (tag_titre.value.length < 1) {
@@ -44,10 +46,11 @@
 
             let temps_limite = 10;
             let intervalle = setInterval(() => {
-                window.alert(`Veuillez scanner une carte LIBRE à associer au livre (il vous reste ${--temps_limite}s)`)
+                tag_compteur.innerHTML
+                    = `Veuillez scanner une carte LIBRE à associer au livre (il vous reste ${--temps_limite}s)`;
                 if (temps_limite == 0) {
                     clearInterval(intervalle);
-                    window.alert("Temps écoulé, veuillez réinitier la procédure");
+                    tag_compteur.innerHTML = "Temps écoulé, veuillez réinitier la procédure";
                 }
             }, 1000);
 
@@ -70,10 +73,11 @@
         async function retrait_livre() {
             let temps_limite = 10;
             let intervalle = setInterval(() => {
-                window.alert(`Veuillez scanner la carte du livre à retirer de la circulation (il vous reste ${--temps_limite}s)`)
+                tag_compteur.innerHTML
+                    = `Veuillez scanner la carte du livre à retirer de la circulation (il vous reste ${--temps_limite}s)`;
                 if (temps_limite == 0) {
                     clearInterval(intervalle);
-                    window.alert("Temps écoulé, veuillez réinitier la procédure");
+                    tag_compteur.innerHTML = "Temps écoulé, veuillez réinitier la procédure";
                 }
             }, 1000);
 
