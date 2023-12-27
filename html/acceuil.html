@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <title>Accueil</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=0.1">
+  </head>
+    <body>
+      <header>
+        <a href="#" class="logo">ESC</a>
+        <div class="group">
+          <ul class="navigation">
+            <li><a >Emprunter</a></li>
+            <li><a >Rendre</a></li>
+            <li><a >Déconnection</a></li>
+          </ul>
+          <div class="search">
+            <span class="icon">
+              <ion-icon name="search-outline" class="searchBtn"></ion-icon>
+              <ion-icon name="close-outline" class="closeBtn"></ion-icon>
+            </span>
+          </div>
+        </div>
+        <div class="searchBox">
+          <input type="text" id="valeurs" placeholder="rechercher . . .">
+        </div>
+
+      </header>
+
+
+    <div class="left-info">
+      <h2 id="titre-gauche">Vos Emprunts : </h2>
+      <div class="card">
+        <img src="../img/petitprince.jpg" >
+        <div class="texte">
+          <p>
+            Titre :  
+            <br> Auteur:  
+            <br> Genre: 
+            <br> Date d'emprunt: 
+            <br> Date de retour: 
+            <br> 
+            <br> 
+            
+
+          </p>
+        </div>
+      </div>
+
+      <div class="right-info">
+        <div class="calendar">
+          <table>
+            <h3></h3>
+            <nav>
+              <button id="prev"></button>
+              <button id="next"></button>
+            </nav>
+          </table>
+          <section>
+            <ul class="days">
+              <li>Dim</li>
+              <li>Lun</li>
+              <li>Mar</li>
+              <li>Mer</li>
+              <li>Jeu</li>
+              <li>Ven</li>
+              <li>Sam</li>
+            </ul>
+            <ul class="dates"></ul>
+          </section>
+        </div>  
+      </div>
+
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script> 
+  <script src="/js/general.js"></script>
+    <script src="/js/index.js"></script>
+  </body>
+</html>
