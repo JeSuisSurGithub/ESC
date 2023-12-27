@@ -51,7 +51,7 @@ app.mount("/img", StaticFiles(directory="img"), name="img")
 
 @app.get("/")
 def racine() -> str:
-    return RedirectResponse(url="html/accueil.html", status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(url="/html/accueil.html")
 
 @app.get("/api_statut")
 async def api_statut():
