@@ -88,7 +88,7 @@ async def rqt_supprimer_compte(id_u):
 async def rqt_ajout_livre(titre, genre, rayon, date_parution, uid_nfc, chemin_image):
     try:
         requete = '''INSERT INTO LIVRE (titre, genre, rayon, date_parution, uid_nfc, chemin_image)
-            VALUES (:titre, :genre, :date_parution, :uid_nfc, :chemin_image)'''
+            VALUES (:titre, :genre, :rayon, :date_parution, :uid_nfc, :chemin_image)'''
         await G_DB.execute(requete, {
             "titre": titre,
             "genre": genre,
