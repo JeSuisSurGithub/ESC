@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
-    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="/css/index.css">
   </head>
     <body class="">
     <div id="info_statut"></div>
@@ -22,33 +22,12 @@
       </div>
   </div>
   </nav>
-  
     <div class="div_principal">
       <ul>
         <li><a href="/html/connexion.html">Connexion</a></li>
-        <li><a href="/html/deconnexion.html">Deconnexion</a></li>
-        <li><a href="/html/inscription.html">Inscription</a></li>
-        <li><a href="/html/supression.html">Supression</a></li>
+        <li><a href="/html/megatest.html">megatest</a></li>
+        <li><a href="/html/nfc.html">NFC</a></li>
       </ul>
-      <div id="liste_livres"></div>
-      <script src="/js/index.js"></script>
-      <script>
-        //const livres = liste_livres({empruntes: false});
-        //var tag_livres = document.getElementById("liste_livres");
-        //tag_livres.innerHTML += "<ul>";
-        //livres.forEach(livre => {
-        //  tag_livres.innerHTML += `<li>${livre.id} ${livre.titre} ${livre.genre} ${livre.date_parution}</li>`;
-        //});
-        //tag_livres.innerHTML += "</ul>";
-        est_connecte()
-            .then(info_statut => {
-                let msg_connect = info_statut.resultat ? "Connecté" : "Pas connecté";
-                document.getElementById("info_statut").innerHTML = `<p>${msg_connect}, Grade Nv: ${info_statut.donnees.grade}</p><br/>`;
-            })
-            .catch(error => {
-                document.getElementById("info_statut").innerHTML = `<p>Statut de connexion indisponible</p><br/>`;
-            });
-      </script>
 
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/modules/data.js"></script>
@@ -172,37 +151,7 @@ Highcharts.chart('container', {
 
 
     </script>
-
-
-    </div> 
+    </div>
 </div>
 </body>
-<!-- 	<head> -->
-<!-- 		<meta charset="UTF-8">
-		<title>Index</title>
-		<link rel="stylesheet" href="/css/main.css">
-	</head>
-	<body>
-		<nav>
-			<div class="searchbar">
-				<div class="divloupebar">
-					<div class="divloupe">
-						<span class="loupe">
-							<svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" class="zds-icon RC794g X9n9TI DlJ4rT _5Yd-hZ HlZ_Tf I_qHp3" focusable="false" aria-hidden="true" style="font-size: 20px;">
-								<path d="m23.03 21.97-7.164-7.164A8.969 8.969 0 0 0 18 9a9 9 0 1 0-9 9 8.969 8.969 0 0 0 5.806-2.134l7.164 7.164a.748.748 0 0 0 1.06 0 .75.75 0 0 0 0-1.06zM1.5 9A7.5 7.5 0 0 1 9 1.5 7.509 7.509 0 0 1 16.5 9a7.5 7.5 0 1 1-15 0z"></path>
-							</svg>
-						</span>
-					</div>
-					<input class="search" id="header-search-input" type="text" name="q" autocomplete="off" spellcheck="false" placeholder="Rechercher" style="padding-left:30px" value="">
-				</div>
-			</div>
-		</nav>
-		<div class="div_principal">
-			<ul>
-				<li><a href="/html/connexion.html">Connexion</a></li>
-				<li><a href="/html/megatest.html">Test</a></li>
-				<li><a href="/html/nfc.html">NFC</a></li>
-			</ul>
-		</div>
-	</body> -->
 </html>

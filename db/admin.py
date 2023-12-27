@@ -2,7 +2,6 @@
 import databases
 import bcrypt
 import asyncio
-import typing
 import sys
 
 G_DB = databases.Database("sqlite:///./esc.db")
@@ -13,7 +12,7 @@ async def connexion_bd():
 async def deconnexion_bd():
     await G_DB.disconnect()
 
-async def ajouter_compte(email, mdp, pseudo, date_naissance, grade) -> typing.Tuple[bool, str]:
+async def ajouter_compte(email, mdp, pseudo, date_naissance, grade):
     try:
         hash_mdp = bcrypt.hashpw(mdp.encode("utf-8"), bcrypt.gensalt())
         requete = '''INSERT INTO UTILISATEUR (email, mdp, pseudo, date_naissance, grade)
@@ -24,10 +23,8 @@ async def ajouter_compte(email, mdp, pseudo, date_naissance, grade) -> typing.Tu
             "pseudo": pseudo,
             "date_naissance": date_naissance,
             "grade": grade})
-        return (True, "Création du compte réussie")
     except Exception as e:
         print(f"Error: {e}")
-        return (False, "Création du compte échouée")
 
 if len(sys.argv) != 6:
     print(f"Utilisation: {sys.argv[0]} exemple@email.com motdepasse pseudo AAAA-MM-JJ (date de naissance) GRADE")

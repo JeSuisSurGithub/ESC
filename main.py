@@ -8,12 +8,13 @@ from starlette.responses import FileResponse
 from pydantic import BaseModel
 from datetime import datetime, timedelta
 from timeout_decorator import timeout
-import time
 
 import requetes
 import nfc
+import erreurs
 
 G_INFO_CONNEXION = None
+G_CAPTEUR_EN_UTILISATION = False
 
 class JSONInscription(BaseModel):
     email: str
@@ -54,121 +55,155 @@ def racine() -> str:
 
 @app.get("/api_statut")
 async def api_statut():
+    global G_INFO_CONNEXION
+
     if G_INFO_CONNEXION == None:
-        return {"resultat": False, "donnees": "Vous n'êtes pas connecté"}
-    return {"resultat": True, "donnees": G_INFO_CONNEXION}
+        return {"code": erreurs.ER_API_INFO_CONN}
+    return {"code": erreurs.OK_API_INFO_CONN, "val": G_INFO_CONNEXION}
 
 @app.post("/api_deconnexion")
 async def api_deconnexion():
     global G_INFO_CONNEXION
+
     G_INFO_CONNEXION = None
-    return {"resultat": True, "donnees": "Déconnecté"}
+    return {"code": erreurs.OK_API_DECONNECT}
 
 @app.post("/api_inscription")
 async def api_inscription(info_reg: JSONInscription):
+    global G_INFO_CONNEXION
+
     email = info_reg.email
     motdepasse = info_reg.motdepasse
     pseudo = info_reg.pseudo
     naissance = info_reg.naissance
-    res, msg = await requetes.rqt_ajouter_compte(email, motdepasse, pseudo, naissance)
-    if (res):
+    code, val = await requetes.rqt_ajouter_compte(email, motdepasse, pseudo, naissance)
+    if (code > 0):
         # On déconnecte le compte au cas ou il est actuellement connecté à un compte
         G_INFO_CONNEXION = None
-    return {"resultat": res, "donnees": msg}
+    return {"code": code, "val": val}
 
 @app.post("/api_connexion")
 async def api_connexion(info_conn: JSONConnexion):
     global G_INFO_CONNEXION
+
     email = info_conn.email
     motdepasse = info_conn.motdepasse
-    res, info = await requetes.rqt_connexion_compte(email, motdepasse)
-    if (res):
-        G_INFO_CONNEXION = info
-    return {"resultat": res, "donnees": info}
+    code, val = await requetes.rqt_connexion_compte(email, motdepasse)
+    if (code > 0):
+        G_INFO_CONNEXION = val
+    return {"code": code, "val": val}
 
 @app.post("/api_desinscription")
 async def api_desinscription(info_conn: JSONConnexion):
     global G_INFO_CONNEXION
+
     email = info_conn.email
     motdepasse = info_conn.motdepasse
-    res, msg = await requetes.rqt_connexion_compte(email, motdepasse)
-    if (res):
-        res, msg = await requetes.rqt_supprimer_compte(G_INFO_CONNEXION["id"])
-        if (res):
+    code, val = await requetes.rqt_connexion_compte(email, motdepasse)
+    if (code > 0):
+        code, val = await requetes.rqt_supprimer_compte(G_INFO_CONNEXION["id"])
+        if (code > 0):
             G_INFO_CONNEXION = None
-    return {"resultat": res, "donnees": msg}
+    return {"code": code, "val": val}
 
 @app.post("/api_ajout")
 async def api_ajout(info_ajout: JSONAjoutLivre):
+    global G_INFO_CONNEXION
+
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):
         titre = info_ajout.titre
         genre = info_ajout.genre
         rayon = info_ajout.rayon
         date_parution = info_ajout.date_parution
         guid_nfc = info_ajout.guid_nfc
-        res, msg = await requetes.rqt_ajout_livre(titre, genre, rayon, date_parution, guid_nfc)
-        return {"resultat": res, "donnees": msg}
-    return {"resultat": False, "donnees": "Vous n'êtes pas administrateur"}
+        code, val = await requetes.rqt_ajout_livre(titre, genre, rayon, date_parution, guid_nfc)
+        return {"code": code, "val": val}
+    return {"code": erreurs.ER_API_DROIT_ADMIN}
 
 @app.get("/api_livres")
 async def api_livres():
-    res, info = await requetes.rqt_obtenir_livre()
-    return {"resultat": res, "donnees": info}
+    code, val = await requetes.rqt_obtenir_livre()
+    return {"code": code, "val": val}
 
 @app.post("/api_retrait")
 async def api_retrait(info_supp: JSONIDLivre):
+    global G_INFO_CONNEXION
+
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):
-        res, msg = await requetes.rqt_retirer_livre(info_supp.id_l)
-        return {"resultat": res, "donnees": msg}
-    return {"resultat": False, "donnees": "Vous n'êtes pas administrateur"}
+        code, val = await requetes.rqt_retirer_livre(info_supp.id_l)
+        return {"code": code, "val": val}
+    return {"code": erreurs.ER_API_DROIT_ADMIN}
 
 @app.post("/api_emprunt")
 async def api_emprunt(info_emprunt: JSONIDLivre):
+    global G_INFO_CONNEXION
+
     id_l = info_emprunt.id_l
     date_debut = datetime.now()
     date_fin = datetime.now() + timedelta(weeks=2)
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
-        res, msg = await requetes.rqt_emprunter(G_INFO_CONNEXION["id"], id_l, date_debut.strftime("%Y-%m-%d"), date_fin.strftime("%Y-%m-%d"))
-        return {"resultat": res, "donnees": msg}
-    return {"resultat": False, "donnees": "Vous n'êtes pas un usager"}
+        code, val = await requetes.rqt_obtenir_emprunts_l(id_l)
+        if (code > 0):
+            if (len(val["rendu"]) != 0) and (val["rendu"][-1] == False):
+                return {"code": erreurs.ER_API_EMPRUNT_ACTIF}
+            else:
+                code, val = await requetes.rqt_emprunter(G_INFO_CONNEXION["id"], id_l, date_debut.strftime("%Y-%m-%d"), date_fin.strftime("%Y-%m-%d"))
+                return {"code": code, "val": val}
+        else :
+            return {"code": code}
+    return {"code": erreurs.ER_API_DROIT_USAGER}
 
 @app.get("/api_emprunt_livres")
 async def api_emprunt_livres():
+    global G_INFO_CONNEXION
+
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
-        res, info = await requetes.rqt_obtenir_emprunts_u(G_INFO_CONNEXION["id"])
-        return {"resultat": res, "donnees": info}
-    return {"resultat": False, "donnees": "Vous n'êtes pas un usager"}
+        code, val = await requetes.rqt_obtenir_emprunts_u(G_INFO_CONNEXION["id"])
+        return {"code": code, "val": val}
+    return {"code": erreurs.ER_API_DROIT_USAGER}
 
 @app.get("/api_hist_livre")
 async def api_hist_livre(id_l: str):
-    res, info = await requetes.rqt_obtenir_emprunts_l(id_l)
-    return {"resultat": res, "donnees": info}
+    code, val = await requetes.rqt_obtenir_emprunts_l(id_l)
+    return {"code": code, "val": val}
 
 @app.post("/api_retour")
 async def api_retour(info_retour: JSONIDLivre):
+    global G_INFO_CONNEXION
+
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
         id_l = info_retour.id_l
-        res, info = await requetes.rqt_obtenir_emprunts(G_INFO_CONNEXION["id"])
+        code, val = await requetes.rqt_obtenir_emprunts_l(id_l)
 
-        id_emprunt = None
-        for i in range(len(info) - 1, -1, -1):
-            if info[i]["id_livre"] == id_l:
-                id_emprunt = info[i]["id_emprunt"]
-        if id_emprunt == None:
-            return {"resultat": False, "donnees": "Livre non emprunté"}
+        if (len(val["rendu"]) == 0):
+            return {"code": erreurs.ER_API_EMPRUNT_INACTIF}
 
-        res, msg = await requetes.rqt_retour(id_emprunt)
-        return {"resultat": res, "donnees": msg}
-    return {"resultat": False, "donnees": "Vous n'êtes pas un usager"}
+        elif (val["rendu"][-1] == True):
+            return {"code": erreurs.ER_API_EMPRUNT_INACTIF}
+
+        elif (val["id_u"][-1] != G_INFO_CONNEXION["id"]):
+            return {"code": erreurs.ER_API_EMPRUNT_DROIT_COMPTE}
+
+        else:
+            code, val = await requetes.rqt_retour(val["id_e"][-1])
+            return {"code": code, "val": val}
+    return {"code": erreurs.ER_API_DROIT_USAGER}
 
 @app.get("/api_uid_nfc")
 async def api_uid_nfc():
-    @timeout(10)
-    def timeout10():
-        return nfc.lire_uid_nfc()
+    global G_CAPTEUR_EN_UTILISATION
 
-    res, donnees = timeout10()
-    return {"resultat": res, "donnees": donnees}
+    if (G_CAPTEUR_EN_UTILISATION):
+        return {"code": erreurs.ER_API_CAPTEUR_OCCUPE}
+    else:
+        G_CAPTEUR_EN_UTILISATION = True
+        @timeout(10)
+        def timeout10():
+            return nfc.lire_uid_nfc()
+
+        code, val = timeout10()
+        G_CAPTEUR_EN_UTILISATION = False
+        return {"code": code, "val": val}
 
 if __name__ == "__main__":
     uvicorn.run(app, port=8080, host='0.0.0.0')

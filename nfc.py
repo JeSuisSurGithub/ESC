@@ -3,10 +3,11 @@
 # import MFRC522
 # import signal
 from timeout_decorator import TimeoutError
+import erreurs
 
 def lire_uid_nfc() -> str:
     # Commenter sur RPi
-    return (False, "Capteur NFC indisponible")
+    return (erreurs.ER_NFC_CAPTEUR_DESACTIVE, None)
     try:
         continue_reading = True
 
@@ -31,7 +32,7 @@ def lire_uid_nfc() -> str:
 
                 if status == MIFAREReader.MI_OK:
                     uid_hexa = "".join([format(int(part), '02X') for part in uid])
-                    return (True, uid_hexa)
+                    return (erreurs.OK_NFC_CAPTEUR_UID, uid_hexa)
 
                     # Clee d'authentification par defaut
                     key = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
@@ -46,6 +47,6 @@ def lire_uid_nfc() -> str:
                         MIFAREReader.MFRC522_Read(8)
                         MIFAREReader.MFRC522_StopCrypto1()
                     else:
-                        return (False, "Authentification échouée")
+                        return (erreurs.ER_NFC_CAPTEUR_AUTORISATION, None)
     except TimeoutError:
-        return (False, "Temps limite écoulé")
+        return (erreurs.ER_NFC_CAPTEUR_TIMEOUT, None)

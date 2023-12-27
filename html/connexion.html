@@ -64,15 +64,15 @@
                 if (info != "") return;
 
                 let res = await api_inscription(tag_email.value, tag_motdepasse.value, tag_pseudo.value, tag_naissance.value);
-                if (res.resultat) {
+                if (res.code > 0) {
                     let res_conn = await api_connexion(tag_email.value, tag_motdepasse.value);
-                    if (res_conn) {
+                    if (res_conn > 0) {
                         window.location.replace(window.location.origin);
                     } else {
-                        window.alert(res_conn.donnees);
+                        window.alert(G_CODE_ERREURS[res_conn.code]);
                     }
                 } else {
-                    window.alert(res.donnees);
+                    window.alert(G_CODE_ERREURS[res.code]);
                 }
             }
 
@@ -91,10 +91,10 @@
                 if (info != "") return;
 
                 let res = await api_connexion(tag_email.value, tag_motdepasse.value);
-                if (res.resultat) {
+                if (res.code > 0) {
                     window.location.replace(window.location.origin);
                 } else {
-                    window.alert(res.donnees);
+                    window.alert(G_CODE_ERREURS[res.code]);
                 }
             }
         </script>

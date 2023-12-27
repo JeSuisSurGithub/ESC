@@ -5,17 +5,72 @@
         <title>Megatest</title>
     </head>
     <body>
-        <input type="button" onclick="deconnexion()" value="Déconnexion">
-        <div id="sortie">
-        </div>
+        <button onclick="deconnexion()">Déconnexion</button>
+        <button onclick="emprunter()">Emprunter</button>
+        <button onclick="retour()">Retour</button>
         <script src="/js/index.js"></script>
         <script>
-            // /api_deconnexion
             async function deconnexion() {
                 await api_deconnexion();
-                location.reload();
+                window.location.replace(window.location.origin);
             }
-            (async () => {
+
+            async function verifier_action() {
+                let code = parametre_get("code");
+                if (code > 0) {
+                    const info_conn = await api_statut();
+                    if (info_conn.code > 0) {
+                        const requete_livre = await api_livres();
+                        if (requete_livre.code > 0) {
+                            let index = requete_livre.val.guid_nfc.indexOf(parametre_get("uid"))
+
+                            if (parametre_get("action") == "emprunt") {
+                                if (index !== -1) {
+                                    let resultat = await api_emprunt(requete_livre.val.id[index]);
+                                    window.alert(G_CODE_ERREURS[resultat.code]);
+                                } else {
+                                    window.alert("Carte de livre inconnue");
+                                }
+                            } else if (parametre_get("action") == "retour") {
+                                if (index !== -1) {
+                                    let resultat = await api_retour(requete_livre.val.id[index]);
+                                    window.alert(G_CODE_ERREURS[resultat.code]);
+                                } else {
+                                    window.alert("Carte de livre inconnue");
+                                }
+                            } else {
+                                window.alert("Action impossible")
+                            }
+                        }
+                        else {
+                            window.alert(G_CODE_ERREURS[requete_livre.code]);
+                        }
+                    } else {
+                        window.alert(G_CODE_ERREURS[info_conn.code]);
+                    }
+                } else if (code !== null) {
+                    window.alert(G_CODE_ERREURS[code]);
+                }
+            }
+
+            async function emprunter() {
+                const redirection = construire_requete_get(`${window.location.origin}/html/nfc.html`, {
+                    provenance: `${encodeURIComponent(window.location.href.split("?")[0])}`,
+                    action: "emprunt",
+                });
+                window.location.replace(redirection);
+            }
+
+            async function retour() {
+                const redirection = construire_requete_get(`${window.location.origin}/html/nfc.html`, {
+                    provenance: `${encodeURIComponent(window.location.href.split("?")[0])}`,
+                    action: "retour",
+                });
+                window.location.replace(redirection);
+            }
+            verifier_action();
+
+/*            (async () => {
                 const sortie = document.getElementById("sortie")
 
                 // /api_statut
@@ -105,15 +160,7 @@
                                             ${res5.donnees}
                                         </p>`
                 }
-
-                // /api_uid_nfc
-                const res4 = await api_uid_nfc();
-                if (res4.resultat) {
-                    window.alert(`UID: ${res4.donnees}`)
-                } else {
-                    window.alert(`Echec: ${res4.donnees}`)
-                }
-            })();
+            })();*/
         </script>
     </div>
   </body>
