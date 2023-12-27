@@ -99,6 +99,9 @@ navs.forEach((nav) => {
 
 renderCalendar();});
 
+
+
+
 function est_un_email(email)
 {
     const regex_email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
