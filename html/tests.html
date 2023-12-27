@@ -95,14 +95,10 @@
                 clearInterval(intervalle);
                 const requete_livre = await api_livres();
                 if (requete_livre.code > 0) {
-                    if (requete_livre.val.uid_nfc.indexOf(res.val) !== -1) {
-                        const res_retrait = await api_ajout(
-                        tag_titre.value,
-                        tag_genre.value,
-                        tag_rayon.value,
-                        tag_parution.value,
-                        res.val,
-                        tag_couverture.files[0]);window.alert("Carte de livre inconnue");
+                    const index = requete_livre.val.uid_nfc.indexOf(res.val);
+                    if (index !== -1) {
+                        const res_retrait = await api_retrait(requete_livre.val.id[index]);
+                        window.alert(G_CODE_ERREURS[res_retrait.code])
                     } else {
                         window.alert("Carte de livre inconnue");
                     }
