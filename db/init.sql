@@ -14,7 +14,7 @@ CREATE TABLE LIVRE (
     rayon TEXT NOT NULL,
     date_parution DATE NOT NULL,
     uid_nfc TEXT NOT NULL UNIQUE,
-    chemin_image TEXT NOT NULL,
+    chemin_image TEXT NOT NULL
 );
 
 CREATE TABLE EMPRUNT (
