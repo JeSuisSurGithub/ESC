@@ -4,10 +4,8 @@
 
 ## A faire (classé par priorité)
 
-- [ ] Résolution de conflit des trois fichiers accueil, index et recherche
 - [ ] Accueil, statistiques
-- [ ] Ajout livre par admin (Formulaire)
-- [ ] Retrait livre par admin (Bouton)
+- [ ] Résolution de conflit des trois fichiers accueil, index et recherche
 
 ## Fini
 - [X] Inscription (Page, en commun avec connexion)
@@ -16,3 +14,5 @@
 - [X] Retour (Page/Bouton, en commun avec emprunt)
 - [X] Deconnexion (Bouton)
 - [X] Desinscription (Formulaire)
+- [X] Ajout livre par admin (Formulaire)
+- [X] Retrait livre par admin (Bouton)
