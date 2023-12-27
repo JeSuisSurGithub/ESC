@@ -1,37 +1,97 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
-    <link rel="stylesheet" href="/css/main.css">
-  </head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Megatest</title>
+    </head>
     <body>
-        <div id="sortie">
-
-        </div>
+        <button onclick="deconnexion()">Déconnexion</button>
+        <button onclick="emprunter()">Emprunter</button>
+        <button onclick="retour()">Retour</button>
         <script src="/js/index.js"></script>
         <script>
-            (async () => {
+            async function deconnexion() {
+                await api_deconnexion();
+                window.location.replace(window.location.origin);
+            }
+
+            async function verifier_action() {
+                let code = parametre_get("code");
+                if (code > 0) {
+                    const info_conn = await api_statut();
+                    if (info_conn.code > 0) {
+                        const requete_livre = await api_livres();
+                        if (requete_livre.code > 0) {
+                            let index = requete_livre.val.guid_nfc.indexOf(parametre_get("uid"))
+
+                            if (parametre_get("action") == "emprunt") {
+                                if (index !== -1) {
+                                    let resultat = await api_emprunt(requete_livre.val.id[index]);
+                                    window.alert(G_CODE_ERREURS[resultat.code]);
+                                } else {
+                                    window.alert("Carte de livre inconnue");
+                                }
+                            } else if (parametre_get("action") == "retour") {
+                                if (index !== -1) {
+                                    let resultat = await api_retour(requete_livre.val.id[index]);
+                                    window.alert(G_CODE_ERREURS[resultat.code]);
+                                } else {
+                                    window.alert("Carte de livre inconnue");
+                                }
+                            } else {
+                                window.alert("Action impossible")
+                            }
+                        }
+                        else {
+                            window.alert(G_CODE_ERREURS[requete_livre.code]);
+                        }
+                    } else {
+                        window.alert(G_CODE_ERREURS[info_conn.code]);
+                    }
+                } else if (code !== null) {
+                    window.alert(G_CODE_ERREURS[code]);
+                }
+            }
+
+            async function emprunter() {
+                const redirection = construire_requete_get(`${window.location.origin}/html/nfc.html`, {
+                    provenance: `${encodeURIComponent(window.location.href.split("?")[0])}`,
+                    action: "emprunt",
+                });
+                window.location.replace(redirection);
+            }
+
+            async function retour() {
+                const redirection = construire_requete_get(`${window.location.origin}/html/nfc.html`, {
+                    provenance: `${encodeURIComponent(window.location.href.split("?")[0])}`,
+                    action: "retour",
+                });
+                window.location.replace(redirection);
+            }
+            verifier_action();
+
+/*            (async () => {
                 const sortie = document.getElementById("sortie")
+
                 // /api_statut
                 const res1 = await api_statut();
+                sortie.innerHTML += "<h2>/api_statut</h2>"
                 if (res1.resultat) {
                     sortie.innerHTML += `<p>
                                             Id: ${res1.donnees.id}
                                             Email: ${res1.donnees.email}
-                                            Nom: ${res1.donnees.nom}
-                                            Prénom: ${res1.donnees.prenom}
+                                            Pseudo: ${res1.donnees.pseudo}
                                             Date de Naissance: ${res1.donnees.date_naissance}
                                             Grade: ${res1.donnees.grade}
                                         </p>`
                 } else {
                     sortie.innerHTML += `<p>
-                                            Statut de connexion indisponible
+                                            ${res1.donnees}
                                         </p>`
                 }
 
                 // /api_livres
+                sortie.innerHTML += "<h2>/api_livres</h2>"
                 const res2 = await api_livres();
                 if (res2.resultat) {
                     for (let i = 0; i < res2.donnees.id.length; i++) {
@@ -39,6 +99,7 @@
                                             Id: ${res2.donnees.id[i]}
                                             Titre: ${res2.donnees.titre[i]}
                                             Genre: ${res2.donnees.genre[i]}
+                                            Rayon: ${res2.donnees.rayon[i]}
                                             Date de Parution: ${res2.donnees.date_parution[i]}
                                             GUID NFC: ${res2.donnees.guid_nfc[i]}
                                         </p>`
@@ -46,10 +107,12 @@
                     console.log(recherche("rom 50", res2.donnees.titre, res2.donnees.genre, res2.donnees.date_parution))
                 } else {
                     sortie.innerHTML += `<p>
-                                            Livres indisponibles
+                                            ${res2.donnees}
                                         </p>`
                 }
 
+                // /api_hist_livre
+                sortie.innerHTML += "<h2>/api_hist_livre id_l=1</h2>"
                 const res3 = await api_hist_livre(1)
                 if (res3.resultat) {
                     for (let i = 0; i < res3.donnees.id_livre.length; i++) {
@@ -57,6 +120,7 @@
                                             Id: ${res3.donnees.id_livre[i]}
                                             Titre: ${res3.donnees.titre[i]}
                                             Genre: ${res3.donnees.genre[i]}
+                                            Rayon: ${res3.donnees.rayon[i]}
                                             Date de Parution: ${res3.donnees.date_parution[i]}
                                             GUID NFC: ${res3.donnees.guid_nfc[i]}
                                             ID Emprunt: ${res3.donnees.id_emprunt[i]}
@@ -68,10 +132,35 @@
                     }
                 } else {
                     sortie.innerHTML += `<p>
-                                            Livres indisponibles
+                                            ${res3.donnees}
                                         </p>`
                 }
-            })();
+
+                // /api_emprunt_livres
+                sortie.innerHTML += "<h2>/api_emprunt_livres</h2>"
+                const res5 = await api_emprunt_livres();
+                if (res5.resultat) {
+                    for (let i = 0; i < res5.donnees.id_livre.length; i++) {
+                        sortie.innerHTML += `<p>
+                                            Id: ${res5.donnees.id_livre[i]}
+                                            Titre: ${res5.donnees.titre[i]}
+                                            Genre: ${res5.donnees.genre[i]}
+                                            Rayon: ${res5.donnees.rayon[i]}
+                                            Date de Parution: ${res5.donnees.date_parution[i]}
+                                            GUID NFC: ${res5.donnees.guid_nfc[i]}
+                                            ID Emprunt: ${res5.donnees.id_emprunt[i]}
+                                            ID Utilisateur: ${res5.donnees.id_utilisateur[i]}
+                                            Date début: ${res5.donnees.date_debut[i]}
+                                            Date fin: ${res5.donnees.date_fin[i]}
+                                            Rendu: ${res5.donnees.rendu[i]}
+                                        </p>`
+                    }
+                } else {
+                    sortie.innerHTML += `<p>
+                                            ${res5.donnees}
+                                        </p>`
+                }
+            })();*/
         </script>
     </div>
   </body>

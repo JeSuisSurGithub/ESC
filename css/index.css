@@ -1,0 +1,112 @@
+.conn {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: white; /* Couleur de fond blanc */
+  overflow: hidden;
+}
+
+
+.black-side {
+  display: flex;
+  width: 65%;
+  height: 110%;
+  background-color: black;
+  position: absolute;
+  padding-right: 10px;
+  margin-left: -10px;
+  margin-top: -90px;
+/* probleme affichage partie noire */
+
+}
+
+.searchbar{
+  position:relative;
+  width:1040px;
+  height:auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchbar{
+  border: 3px;
+
+
+}
+.divloupebar{
+  position: relative;
+
+
+
+}
+
+.search{
+  width: 400px;
+  height: 30px;
+
+}
+
+.divloupe{
+  position: absolute;
+  top : 25%;
+  left:2%
+
+
+}
+
+.formulaire{
+  display:inline-block;
+}
+
+
+.champ{
+  width:450px ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 5px;
+}
+
+
+nav {
+  background-color: black;
+  padding-bottom: 20px;
+  border-bottom: 1px solid black;
+}
+
+
+h1{
+color:white;
+}
+
+
+#container {
+  min-width: 300px;
+  max-width: 800px;
+  height: 400px;
+  margin: 0 auto;
+}
+
+#statistiques{
+/*   float:right; */
+  border: 3px solid black;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
