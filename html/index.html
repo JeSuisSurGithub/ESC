@@ -61,6 +61,31 @@
   <div id="container"></div>
 
     <script>
+      // Données fictives représentant les emprunts par genre
+const data = [
+    { genre: 'Roman', emprunts: 2 },
+    { genre: 'Science-fiction', emprunts: 1 },
+    { genre: 'Thiller', emprunts: 1 },
+    { genre: 'Policier', emprunts: 1 },
+    { genre: 'Fantaisie', emprunts: 1 },
+    { genre: 'Autobiographique', emprunts: 1 },
+
+];
+
+// Calcul du nombre total d'emprunts de l'utilisateur
+const totalEmprunts = data.reduce((total, genre) => total + genre.emprunts, 0);
+
+// Calcul des pourcentages pour chaque genre
+const seriesData = data.map(genre => {
+    const percentage = (genre.emprunts / totalEmprunts) * 100;
+    return {
+        name: genre.genre,
+        y: percentage,
+
+      };
+});
+
+
 Highcharts.chart('container', {
     chart: {
         type: 'bar',
@@ -99,17 +124,15 @@ Highcharts.chart('container', {
     color: '#CCCCCC', // Couleur grise
     data: [100, 100, 100, 100, 100, 100], // Valeurs fixes à 100%
     showInLegend: false , // Ne pas afficher dans la légende si nécessaire
-    stack: 'stack'
 
 
 
     },
     {
-    name: 'Barres vertes',
-    color: '#00FF00', // Couleur verte
-    data: [50, 60, 45, 55, 50,50], // Données pour les barres vertes
-    stack: 'stack'
-
+      colorByPoint: 'true',
+      name: 'Genres',
+      data: [50, 60, 45, 55, 50, 50],
+ 
     },
     ],
     tooltip: {
@@ -118,7 +141,7 @@ Highcharts.chart('container', {
     },
     xAxis: {
         type: 'category',
-        categories: ['roman', 'science-fi', 'thriller', 'policier','fantaisie','autobio'],
+        categories: ['Roman', 'Science-fiction', 'Thriller', 'Policier','Fantaisie','Autobiographique'],
         labels: {
             style: {
                 fontSize: '10px'
