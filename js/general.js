@@ -198,7 +198,7 @@ function api_uid_nfc() {
 
 function recherche(entree, vtitre, vgenre, vdate) {
     const termes = entree.split(" ");
-    var vid = []
+    let vid = []
 
     boucle_ext: for (let i = 0; i < vtitre.length; i++) {
         let titre = vtitre[i];

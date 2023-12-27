@@ -130,24 +130,24 @@ async function deconnexion() {
 }
 
 async function verifier_action() {
-    let code = parametre_get("code");
+    const code = parametre_get("code");
     if (code > 0) {
         const info_conn = await api_statut();
         if (info_conn.code > 0) {
             const requete_livre = await api_livres();
             if (requete_livre.code > 0) {
-                let index = requete_livre.val.uid_nfc.indexOf(parametre_get("uid"))
+                const index = requete_livre.val.uid_nfc.indexOf(parametre_get("uid"))
 
                 if (parametre_get("action") == "emprunt") {
                     if (index !== -1) {
-                        let resultat = await api_emprunt(requete_livre.val.id[index]);
+                        const resultat = await api_emprunt(requete_livre.val.id[index]);
                         window.alert(G_CODE_ERREURS[resultat.code]);
                     } else {
                         window.alert("Carte de livre inconnue");
                     }
                 } else if (parametre_get("action") == "retour") {
                     if (index !== -1) {
-                        let resultat = await api_retour(requete_livre.val.id[index]);
+                        const resultat = await api_retour(requete_livre.val.id[index]);
                         window.alert(G_CODE_ERREURS[resultat.code]);
                     } else {
                         window.alert("Carte de livre inconnue");

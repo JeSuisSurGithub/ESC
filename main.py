@@ -120,9 +120,9 @@ async def api_ajout(info_ajout: JSONAjoutLivre, image: UploadFile):
             date_parution = info_ajout.date_parution
             uid_nfc = info_ajout.uid_nfc
             chemin_image = image.filename
+            code, val = await requetes.rqt_ajout_livre(titre, genre, rayon, date_parution, uid_nfc, chemin_image)
             with open(chemin_image, "wb") as image_locale:
                 image_locale.write(image.file.read())
-            code, val = await requetes.rqt_ajout_livre(titre, genre, rayon, date_parution, uid_nfc, chemin_image)
             return {"code": code, "val": val}
         return {"code": erreurs.ER_API_DROIT_ADMIN}
     except:

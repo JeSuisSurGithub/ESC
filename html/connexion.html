@@ -66,9 +66,9 @@
                     return;
                 }
 
-                let res = await api_inscription(tag_email.value, tag_motdepasse.value, tag_pseudo.value, tag_naissance.value);
+                const res = await api_inscription(tag_email.value, tag_motdepasse.value, tag_pseudo.value, tag_naissance.value);
                 if (res.code > 0) {
-                    let res_conn = await api_connexion(tag_email.value, tag_motdepasse.value);
+                    const res_conn = await api_connexion(tag_email.value, tag_motdepasse.value);
                     if (res_conn > 0) {
                         window.location.replace(window.location.origin);
                     } else {
@@ -95,7 +95,7 @@
                     return;
                 }
 
-                let res = await api_connexion(tag_email.value, tag_motdepasse.value);
+                const res = await api_connexion(tag_email.value, tag_motdepasse.value);
                 if (res.code > 0) {
                     window.location.replace(window.location.origin);
                 } else {

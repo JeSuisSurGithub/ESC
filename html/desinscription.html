@@ -31,7 +31,7 @@
                 return;
             }
 
-            let res = await api_desinscription(tag_email.value, tag_motdepasse.value);
+            const res = await api_desinscription(tag_email.value, tag_motdepasse.value);
             if (res.code > 0) {
                 window.location.replace(window.location.origin);
             } else {

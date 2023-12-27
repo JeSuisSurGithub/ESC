@@ -8,8 +8,6 @@
         <input type="text" id="genre" placeholder="Genre" name="genre">
         <input type="text" id="rayon" placeholder="Rayon" name="rayon">
         <input type="date" id="date_parution" placeholder="Date de Parution" name="date_parution">
-        <input type="text" id="uid_nfc" placeholder="UID NFC" name="uid_nfc">
-        <input type="button" onclick="obtenir_uid()" value="Obtenir UID NFC">
         <input type="file" id="image_couverture" placeholder="Image de Couverture" name="image_couverture">
         <input type="button" onclick="ajout_livre()" value="Ajout">
         <input type="button" onclick="retrait_livre()" value="Retrait">
@@ -21,22 +19,86 @@
             const tag_genre         = document.getElementById("genre");
             const tag_rayon         = document.getElementById("rayon");
             const tag_parution      = document.getElementById("date_parution");
-            const tag_uid_nfc       = document.getElementById("uid_nfc");
             const tag_couverture    = document.getElementById("image_couverture");
 
-            
+            let info = "";
+            if (tag_titre.value.length < 1) {
+                info += "Vous devez spécifier le titre\n";
+            }
+            if (tag_genre.value.length < 1) {
+                info += "Vous devez spécifier le genre\n";
+            }
+            if (tag_rayon.value.length < 1) {
+                info += "Vous devez spécifier le rayon\n";
+            }
+            if (tag_parution.value == "" || aujourdhui_yyyy_mm_dd() <= tag_parution.value) {
+                info += "Vous devez spécifier une date valide\n";
+            }
+            if (tag_couverture.files.length < 1) {
+                info += "Vous devez fournir une image de couverture\n";
+            }
+            if (info != "") {
+                window.alert(info);
+                return;
+            }
 
-            var res = await api_ajout(
-                tag_titre.value,
-                tag_genre.value,
-                tag_rayon.value,
-                tag_parution.value,
-                tag_uid_nfc.value,
-                tag_couverture.value)
+            let temps_limite = 10;
+            let intervalle = setInterval(() => {
+                window.alert(`Veuillez scanner une carte LIBRE à associer au livre (il vous reste ${--temps_limite}s)`)
+                if (temps_limite == 0) {
+                    clearInterval(intervalle);
+                    window.alert("Temps écoulé, veuillez réinitier la procédure");
+                }
+            }, 1000);
+
+            const res = await api_uid_nfc();
+            if (res.code > 0) {
+                clearInterval(intervalle);
+                const res_ajout = await api_ajout(
+                    tag_titre.value,
+                    tag_genre.value,
+                    tag_rayon.value,
+                    tag_parution.value,
+                    res.val,
+                    tag_couverture.files[0]);
+                window.alert(G_CODE_ERREURS[res_ajout.code])
+            } else {
+                window.alert(G_CODE_ERREURS[res.code])
+            }
         }
 
-        function retrait_livre() {
+        async function retrait_livre() {
+            let temps_limite = 10;
+            let intervalle = setInterval(() => {
+                window.alert(`Veuillez scanner la carte du livre à retirer de la circulation (il vous reste ${--temps_limite}s)`)
+                if (temps_limite == 0) {
+                    clearInterval(intervalle);
+                    window.alert("Temps écoulé, veuillez réinitier la procédure");
+                }
+            }, 1000);
 
+            const res = await api_uid_nfc();
+            if (res.code > 0) {
+                clearInterval(intervalle);
+                const requete_livre = await api_livres();
+                if (requete_livre.code > 0) {
+                    if (requete_livre.val.uid_nfc.indexOf(res.val) !== -1) {
+                        const res_retrait = await api_ajout(
+                        tag_titre.value,
+                        tag_genre.value,
+                        tag_rayon.value,
+                        tag_parution.value,
+                        res.val,
+                        tag_couverture.files[0]);window.alert("Carte de livre inconnue");
+                    } else {
+                        window.alert("Carte de livre inconnue");
+                    }
+                } else {
+                    window.alert(G_CODE_ERREURS[requete_livre.code])
+                }
+            } else {
+                window.alert(G_CODE_ERREURS[res.code])
+            }
         }
     </script>
 </html>
