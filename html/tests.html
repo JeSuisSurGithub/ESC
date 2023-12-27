@@ -57,14 +57,22 @@
             const res = await api_uid_nfc();
             if (res.code > 0) {
                 clearInterval(intervalle);
-                const res_ajout = await api_ajout(
-                    tag_titre.value,
-                    tag_genre.value,
-                    tag_rayon.value,
-                    tag_parution.value,
-                    res.val,
-                    tag_couverture.files[0]);
-                window.alert(G_CODE_ERREURS[res_ajout.code])
+                const image_couverture = tag_couverture.files[0];
+
+                const lecteur = new FileReader();
+                lecteur.onloadend = async function (event) {
+                    const image_b64 = event.target.result.split(',')[1];
+                    const res_ajout = await api_ajout(
+                        tag_titre.value,
+                        tag_genre.value,
+                        tag_rayon.value,
+                        tag_parution.value,
+                        res.val,
+                        image_couverture.name,
+                        image_b64
+                    );
+                };
+                lecteur.readAsDataURL(image_couverture);
             } else {
                 window.alert(G_CODE_ERREURS[res.code])
             }

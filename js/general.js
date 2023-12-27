@@ -154,18 +154,16 @@ function api_desinscription(email, motdepasse) {
     });
 }
 
-function api_ajout(titre, genre, rayon, date_parution, uid_nfc, image) {
-    const donnees_formulaire = new FormData();
-    donnees_formulaire.append('info_ajout', JSON.stringify({ titre, genre, rayon, date_parution, uid_nfc }));
-    donnees_formulaire.append('image', image);
-
-    return fetch("/api_ajout", {
-        method: 'POST',
-        body: donnees_formulaire,
-    })
-    .then(response => response.json())
-    .then(json_data => { return json_data; })
-    .catch(error => { console.error('Error:', error); });
+function api_ajout(titre, genre, rayon, date_parution, uid_nfc, chemin_image, image_b64) {
+    return requete_post("/api_ajout", {
+        titre: titre,
+        genre: genre,
+        rayon: rayon,
+        date_parution: date_parution,
+        uid_nfc: uid_nfc,
+        chemin_image: chemin_image,
+        image_b64: image_b64
+    });
 }
 
 function api_livres() {

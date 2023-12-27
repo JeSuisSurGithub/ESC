@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 import requetes
 import nfc
 import erreurs
+import base64
 
 G_INFO_CONNEXION = None
 G_CAPTEUR_EN_UTILISATION = False
@@ -32,6 +33,8 @@ class JSONAjoutLivre(BaseModel):
     rayon: str
     date_parution: str
     uid_nfc: str
+    chemin_image: str
+    image_b64: str
 
 class JSONIDLivre(BaseModel):
     id_l: str
@@ -110,7 +113,7 @@ async def api_desinscription(info_conn: JSONConnexion):
         return {"code": erreurs.ER_API_DROIT_USAGER}
 
 @app.post("/api_ajout")
-async def api_ajout(info_ajout: JSONAjoutLivre, image: UploadFile = File(...)):
+async def api_ajout(info_ajout: JSONAjoutLivre):
     global G_INFO_CONNEXION
     try:
         if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):
@@ -119,10 +122,15 @@ async def api_ajout(info_ajout: JSONAjoutLivre, image: UploadFile = File(...)):
             rayon = info_ajout.rayon
             date_parution = info_ajout.date_parution
             uid_nfc = info_ajout.uid_nfc
-            chemin_image = image.filename
+            chemin_image = info_ajout.chemin_image
+            image_b64 = info_ajout.image_b64
+
+            image_decodee = base64.b64decode(image_b64)
+
             code, val = await requetes.rqt_ajout_livre(titre, genre, rayon, date_parution, uid_nfc, chemin_image)
-            with open(chemin_image, "wb") as image_locale:
-                image_locale.write(image.file.read())
+            with open(f"img/{chemin_image}", "wb") as f:
+                f.write(image_decodee)
+
             return {"code": code, "val": val}
         return {"code": erreurs.ER_API_DROIT_ADMIN}
     except:
