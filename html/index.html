@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/index.css">
     <script src="../js/index.js"></script>
     <script src="../js/Interaction_index.js"></script>
   </head>
@@ -32,12 +33,10 @@
 
     <div class="left-info">
       <h2 id="titre-gauche">Vos Emprunts : </h2>
-        <div id="sortie">
-
-        </div>
+        <div id="sortie"></div>
         <input class="search" id="header-search-input" type="text" name="q" autocomplete="off" spellcheck="false" placeholder="Rechercher" style="padding-left:30px" value="">
-      </div>
-  </div>
+    </div>
+
   </nav>
     <div class="div_principal">
       <ul>
@@ -52,8 +51,6 @@
   <script src="https://code.highcharts.com/highcharts-more.js"></script>
 
   <div id="statistiques">
-
-
     <div class="body">
       <div class="skill">
         <div class="skill-name" style="font-size: 12px ;">Roman</div>
@@ -98,12 +95,13 @@
         <div class="skill-percent-number"></div>
       </div>
     </div>
-  </div>
 
 
 
-    </div>
-  
+
+
+
+
     <script>
       // Données fictives représentant les emprunts par genre
 const data = [
@@ -127,6 +125,13 @@ function calculerLargeurPourcentage(empruntsGenre) {
 
 
 </script>
+
+</div>
+
+
+  
+
+
 </div>
 </body>
 </html>

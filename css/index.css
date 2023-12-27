@@ -1,3 +1,13 @@
+.div_principal{
+
+  background-color: white;
+}
+
+
+
+
+
+
 .conn {
   position: relative;
   width: 100%;
@@ -111,6 +121,7 @@ color:white;
 
 .body {
   padding: 20px;
+  background-color: white;
 }
 
 .skill {
