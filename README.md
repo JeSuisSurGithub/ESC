@@ -4,6 +4,7 @@
 
 ## A faire (classé par priorité)
 
+- [ ] Résolution de conflit des trois fichiers accueil, index et recherche
 - [ ] Accueil, statistiques
 - [ ] Ajout livre par admin (Formulaire)
 - [ ] Retrait livre par admin (Bouton)
