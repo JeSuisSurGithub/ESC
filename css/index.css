@@ -99,6 +99,45 @@ color:white;
 
 
 
+.card {
+  width: 300px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+
+
+.body {
+  padding: 20px;
+}
+
+.skill {
+
+  margin-bottom: 20px;
+}
+
+.skill-name {
+  width: 120px;
+  text-align: right;
+  margin-left: 50px;
+}
+
+.skill-level {
+  width: 160px;
+  height: 6px;
+  background-color: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-left: 20px;
+}
+
+.skill-percent {
+  height: 100%;
+}
+
+
 
 
 
