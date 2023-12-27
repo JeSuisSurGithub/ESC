@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/index.css">
     <script src="../js/index.js"></script>
     <script src="../js/Interaction_index.js"></script>
   </head>
@@ -32,37 +33,176 @@
 
     <div class="left-info">
       <h2 id="titre-gauche">Vos Emprunts : </h2>
-        <div id="sortie">
+      <div class="card">
+        <img src="../img/petitprince.jpg" >
+        <div class="texte">
+          <p>
+            Titre :  
+            <br> Auteur:  
+            <br> Genre: 
+            <br> Date d'emprunt: 
+            <br> Date de retour: 
+            <br> 
+            <br> 
+            
 
+          </p>
+        </div>
+        <div id="sortie"></div>
+        <input class="search" id="header-search-input" type="text" name="q" autocomplete="off" spellcheck="false" placeholder="Rechercher" style="padding-left:30px" value="">
+    </div>
+
+
+<!-- 
+    <div class="left-info">
+      <h2 id="titre-gauche">Vos Emprunts : </h2>
+      <div class="card">
+        <img src="../img/petitprince.jpg" >
+        <div class="texte">
+          <p>
+            Titre :  
+            <br> Auteur:  
+            <br> Genre: 
+            <br> Date d'emprunt: 
+            <br> Date de retour: 
+            <br> 
+            <br> 
+            
+
+          </p>
         </div>
       </div>
+ -->
 
-      <div class="right-info">
-        <div class="calendar">
-          <table>
-            <h3></h3>
-            <nav>
-              <button id="prev"></button>
-              <button id="next"></button>
-            </nav>
-          </table>
-          <section>
-            <ul class="days">
-              <li>Dim</li>
-              <li>Lun</li>
-              <li>Mar</li>
-              <li>Mer</li>
-              <li>Jeu</li>
-              <li>Ven</li>
-              <li>Sam</li>
-            </ul>
-            <ul class="dates"></ul>
-          </section>
+
+
+
+
+
+
+    <div class="div_principal">
+      <ul>
+        <li><a href="/html/connexion.html">Connexion</a></li>
+        <li><a href="/html/megatest.html">megatest</a></li>
+        <li><a href="/html/nfc.html">NFC</a></li>
+      </ul>
+
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/data.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/highcharts-more.js"></script>
+
+  <div id="statistiques">
+    
+<!-- calendrier -->
+<!--     <div class="calendar">
+      <table>
+        <h3></h3>
+        <nav>
+          <button id="prev"></button>
+          <button id="next"></button>
+        </nav>
+      </table>
+      <section>
+        <ul class="days">
+          <li>Dim</li>
+          <li>Lun</li>
+          <li>Mar</li>
+          <li>Mer</li>
+          <li>Jeu</li>
+          <li>Ven</li>
+          <li>Sam</li>
+        </ul>
+        <ul class="dates"></ul>
+      </section>
+    </div>   -->
+
+
+<!-- graphe -->
+    <div class="body">
+      <div class="skill">
+        <div class="skill-name" style="font-size: 10px ;font-weight: bold;">Roman</div>
+        <div class="skill-level">
+          <div class="skill-percent" style="width: 90%; background-color: blue;" ></div>
         </div>
+        <div class="skill-percent-number"></div>
       </div>
+      <div class="skill">
+        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Science-fiction</div>
+        <div class="skill-level">
+          <div class="skill-percent" style="width: 80%; background-color: yellow;"></div>
+        </div>
+        <div class="skill-percent-number"></div>
+      </div>
+      <div class="skill">
+        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Thiller</div>
+        <div class="skill-level">
+          <div class="skill-percent" style="width: 75% ; background-color: green;"></div>
+        </div>
+        <div class="skill-percent-number"></div>
+      </div>
+      <div class="skill">
+        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Policier</div>
+        <div class="skill-level">
+          <div class="skill-percent" style="width: 90%; background-color: purple;"></div>
+        </div>
+        <div class="skill-percent-number"></div>
+      </div>
+      <div class="skill">
+        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Fantaisie</div>
+        <div class="skill-level">
+          <div class="skill-percent" style="width: 90%;background-color: red;"></div>
+        </div>
+        <div class="skill-percent-number"></div>
+      </div>
+      <div class="skill">
+        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Autobiographique</div>
+        <div class="skill-level">
+          <div class="skill-percent" style="width: 90%; background-color: cyan;"></div>
+        </div>
+        <div class="skill-percent-number"></div>
+      </div>
+    </div>
 
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script> 
 
-  </body>
+
+
+
+
+
+    <script>
+      // Données fictives représentant les emprunts par genre
+const data = [
+    { genre: 'Roman', emprunts: 2 },
+    { genre: 'Science-fiction', emprunts: 1 },
+    { genre: 'Thiller', emprunts: 5 },
+    { genre: 'Policier', emprunts: 1 },
+    { genre: 'Fantaisie', emprunts: 1 },
+    { genre: 'Autobiographique', emprunts: 1 },
+
+];
+const totalEmprunts = data.reduce((total, item) => total + item.emprunts, 0);
+
+function calculerLargeurPourcentage(empruntsGenre) {
+    const pourcentage = (empruntsGenre / totalEmprunts) * 100;
+    return pourcentage
+}
+
+data.forEach(item => {
+    const widthPourcentage = calculerLargeurPourcentage(item);
+    console.log(`${item.genre}: ${widthPourcentage}`);
+});
+
+
+
+</script>
+
+</div>
+
+
+  
+
+
+</div>
+</body>
 </html>
