@@ -1,7 +1,16 @@
+# IMPORTE
+# timeout_decorator pour le timeout de 10 secondes
+#
+# PLAN DES DEFINITIONS
+#
+# FONCTIONS:
+# Lecture de l'UID du tag nfc
+
 # Décommenter sur RPi
 # import RPi.GPIO as GPIO
 # import MFRC522
 # import signal
+
 from timeout_decorator import TimeoutError
 import erreurs
 

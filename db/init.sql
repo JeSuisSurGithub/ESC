@@ -13,7 +13,8 @@ CREATE TABLE LIVRE (
     genre INTEGER NOT NULL,
     rayon TEXT NOT NULL,
     date_parution DATE NOT NULL,
-    guid_nfc TEXT NOT NULL
+    uid_nfc TEXT NOT NULL,
+    chemin_image TEXT NOT NULL,
 );
 
 CREATE TABLE EMPRUNT (

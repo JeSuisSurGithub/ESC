@@ -1,7 +1,6 @@
 # IMPORTE
-# databases pour des opérations sqlite asynchrones
+# databases pour des opérations sqlite thread-safe
 # bcrypt pour le hachage des mot de passes
-# typing pour le retour
 #
 # PLAN DES DEFINITIONS
 #
@@ -21,12 +20,12 @@
 # Suppression livre
 #
 # Emprunter
-# Lister emprunt
+# Lister emprunt par compte
+# Lister emprunt par livre
 # Rendre
 
 import databases
 import bcrypt
-import typing
 
 import erreurs
 
@@ -38,7 +37,7 @@ async def rqt_connexion():
 async def rqt_deconnexion():
     await G_DB.disconnect()
 
-async def rqt_ajouter_compte(email, mdp, pseudo, date_naissance) -> typing.Tuple[bool, str]:
+async def rqt_ajouter_compte(email, mdp, pseudo, date_naissance):
     try:
         hash_mdp = bcrypt.hashpw(mdp.encode("utf-8"), bcrypt.gensalt())
         requete = '''INSERT INTO UTILISATEUR (email, mdp, pseudo, date_naissance, grade)
@@ -54,7 +53,7 @@ async def rqt_ajouter_compte(email, mdp, pseudo, date_naissance) -> typing.Tuple
         print(f"Error: {e}")
         return (erreurs.ER_RQT_COMPTE_CREA, None)
 
-async def rqt_connexion_compte(email, mdp) -> typing.Tuple[bool, dict]:
+async def rqt_connexion_compte(email, mdp):
     try:
         requete = "SELECT id, email, mdp, pseudo, date_naissance, grade FROM UTILISATEUR WHERE email=:email"
         resultats = await G_DB.fetch_all(requete, {"email": email})
@@ -65,19 +64,19 @@ async def rqt_connexion_compte(email, mdp) -> typing.Tuple[bool, dict]:
         if not (bcrypt.checkpw(mdp.encode("utf-8"), hash_mdp_db)):
             raise ValueError("Mot de passe incorrect")
 
-        resultat_dict = {
+        json = {
             "id": resultats[0]["id"],
             "email": resultats[0]["email"],
             "pseudo": resultats[0]["pseudo"],
             "date_naissance": resultats[0]["date_naissance"],
             "grade": resultats[0]["grade"]}
 
-        return (erreurs.OK_RQT_COMPTE_CONN, resultat_dict)
+        return (erreurs.OK_RQT_COMPTE_CONN, json)
     except Exception as e:
         print(f"Error: {e}")
         return (erreurs.ER_RQT_COMPTE_CONN, None)
 
-async def rqt_supprimer_compte(id_u) -> typing.Tuple[bool, str]:
+async def rqt_supprimer_compte(id_u):
     try:
         requete = "DELETE FROM UTILISATEUR WHERE id=:id"
         await G_DB.execute(requete, {"id": id_u})
@@ -86,33 +85,49 @@ async def rqt_supprimer_compte(id_u) -> typing.Tuple[bool, str]:
         print(f"Error: {e}")
         return (erreurs.ER_RQT_COMPTE_SUPP, None)
 
-async def rqt_ajout_livre(titre, genre, rayon, date_parution, guid_nfc) -> typing.Tuple[bool, str]:
+async def rqt_ajout_livre(titre, genre, rayon, date_parution, uid_nfc, chemin_image):
     try:
-        requete = "INSERT INTO LIVRE (titre, genre, rayon, date_parution, guid_nfc) VALUES (:titre, :genre, :date_parution, :guid_nfc)"
-        await G_DB.execute(requete, {"titre": titre, "genre": genre, "rayon": rayon, "date_parution": date_parution, "guid_nfc": guid_nfc})
+        requete = '''INSERT INTO LIVRE (titre, genre, rayon, date_parution, uid_nfc, chemin_image)
+            VALUES (:titre, :genre, :date_parution, :uid_nfc, :chemin_image)'''
+        await G_DB.execute(requete, {
+            "titre": titre,
+            "genre": genre,
+            "rayon": rayon,
+            "date_parution": date_parution,
+            "uid_nfc": uid_nfc,
+            "chemin_image": chemin_image})
         return (erreurs.OK_RQT_LIVRE_CREA, None)
     except Exception as e:
         print(f"Error: {e}")
         return (erreurs.ER_RQT_LIVRE_CREA, None)
 
-async def rqt_obtenir_livre() -> typing.Tuple[bool, dict]:
+async def rqt_obtenir_livre():
     try:
-        requete = "SELECT id, titre, genre, rayon, date_parution, guid_nfc FROM LIVRE"
+        requete = "SELECT id, titre, genre, rayon, date_parution, uid_nfc, chemin_image FROM LIVRE"
         resultats = await G_DB.fetch_all(requete)
-        resultat_dict = {"id": [], "titre": [], "genre": [], "rayon": [], "date_parution": [], "guid_nfc": []}
+        json = {
+            "id": [],
+            "titre": [],
+            "genre": [],
+            "rayon": [],
+            "date_parution": [],
+            "uid_nfc": [],
+            "chemin_image": []}
+
         for ligne in resultats:
-            resultat_dict["id"].append(ligne["id"])
-            resultat_dict["titre"].append(ligne["titre"])
-            resultat_dict["genre"].append(ligne["genre"])
-            resultat_dict["rayon"].append(ligne["rayon"])
-            resultat_dict["date_parution"].append(ligne["date_parution"])
-            resultat_dict["guid_nfc"].append(ligne["guid_nfc"])
-        return (erreurs.OK_RQT_LIVRE_LIST, resultat_dict)
+            json["id"].append(ligne["id"])
+            json["titre"].append(ligne["titre"])
+            json["genre"].append(ligne["genre"])
+            json["rayon"].append(ligne["rayon"])
+            json["date_parution"].append(ligne["date_parution"])
+            json["uid_nfc"].append(ligne["uid_nfc"])
+            json["chemin_image"].append(ligne["chemin_image"])
+        return (erreurs.OK_RQT_LIVRE_LIST, json)
     except Exception as e:
         print(f"Error: {e}")
         return (erreurs.ER_RQT_LIVRE_LIST, None)
 
-async def rqt_retirer_livre(id_l) -> typing.Tuple[bool, str]:
+async def rqt_retirer_livre(id_l):
     try:
         requete = "DELETE FROM LIVRE WHERE id=:id"
         await G_DB.execute(requete, {"id": id_l})
@@ -121,66 +136,97 @@ async def rqt_retirer_livre(id_l) -> typing.Tuple[bool, str]:
         print(f"Error: {e}")
         return (erreurs.ER_RQT_LIVRE_SUPP, None)
 
-async def rqt_emprunter(id_u, id_l, date_debut, date_fin) -> typing.Tuple[bool, str]:
+async def rqt_emprunter(id_u, id_l, date_debut, date_fin):
     try:
-        requete = "INSERT INTO EMPRUNT (id_u, id_l, date_debut, date_fin, rendu) VALUES (:id_u, :id_l, :date_debut, :date_fin, :rendu)"
-        await G_DB.execute(requete,
-            {"id_u": id_u, "id_l": id_l,
-             "date_debut": date_debut, "date_fin": date_fin,
-             "rendu": False})
+        requete = '''INSERT INTO EMPRUNT (id_u, id_l, date_debut, date_fin, rendu)
+            VALUES (:id_u, :id_l, :date_debut, :date_fin, :rendu)'''
+        await G_DB.execute(requete, {
+            "id_u": id_u,
+            "id_l": id_l,
+            "date_debut": date_debut,
+            "date_fin": date_fin,
+            "rendu": False})
         return (erreurs.OK_RQT_EMPRUNT_CREA, None)
     except Exception as e:
         print(f"Error: {e}")
         return (erreurs.ER_RQT_EMPRUNT_CREA, None)
 
-async def rqt_obtenir_emprunts_u(id_u) -> typing.Tuple[bool, dict]:
+async def rqt_obtenir_emprunts_u(id_u):
     try:
-        requete = '''
-SELECT LIVRE.id as id_l, titre, genre, rayon, date_parution, guid_nfc, EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
-    FROM LIVRE JOIN EMPRUNT
-    ON LIVRE.id==EMPRUNT.id_l WHERE id_u=:id_u'''
+        requete = ''' SELECT
+            LIVRE.id as id_l, titre, genre, rayon, date_parution, uid_nfc, chemin_image,
+            EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
+            FROM LIVRE JOIN EMPRUNT
+                ON LIVRE.id==EMPRUNT.id_l WHERE id_u=:id_u'''
         resultats = await G_DB.fetch_all(requete, {"id_u": id_u})
-        resultat_dict = {"id_l": [], "titre": [], "genre": [], "rayon": [], "date_parution": [],
-            "guid_nfc": [], "id_e": [], "id_u": [], "date_debut": [], "date_fin": [], "rendu": []}
+        json = {
+            "id_l": [],
+            "titre": [],
+            "genre": [],
+            "rayon": [],
+            "date_parution": [],
+            "uid_nfc": [],
+            "chemin_image": [],
+            "id_e": [],
+            "id_u": [],
+            "date_debut": [],
+            "date_fin": [],
+            "rendu": []}
+
         for ligne in resultats:
-            resultat_dict["id_l"].append(ligne["id_l"])
-            resultat_dict["titre"].append(ligne["titre"])
-            resultat_dict["genre"].append(ligne["genre"])
-            resultat_dict["rayon"].append(ligne["rayon"])
-            resultat_dict["date_parution"].append(ligne["date_parution"])
-            resultat_dict["guid_nfc"].append(ligne["guid_nfc"])
-            resultat_dict["id_e"].append(ligne["id_e"])
-            resultat_dict["id_u"].append(ligne["id_u"])
-            resultat_dict["date_debut"].append(ligne["date_debut"])
-            resultat_dict["date_fin"].append(ligne["date_fin"])
-            resultat_dict["rendu"].append(ligne["rendu"])
-        return (erreurs.OK_RQT_EMPRUNT_LIST_COMPTE, resultat_dict)
+            json["id_l"].append(ligne["id_l"])
+            json["titre"].append(ligne["titre"])
+            json["genre"].append(ligne["genre"])
+            json["rayon"].append(ligne["rayon"])
+            json["date_parution"].append(ligne["date_parution"])
+            json["uid_nfc"].append(ligne["uid_nfc"])
+            json["chemin_image"].append(ligne["chemin_image"])
+            json["id_e"].append(ligne["id_e"])
+            json["id_u"].append(ligne["id_u"])
+            json["date_debut"].append(ligne["date_debut"])
+            json["date_fin"].append(ligne["date_fin"])
+            json["rendu"].append(ligne["rendu"])
+        return (erreurs.OK_RQT_EMPRUNT_LIST_COMPTE, json)
     except Exception as e:
         print(f"Error: {e}")
         return(erreurs.ER_RQT_EMPRUNT_LIST_COMPTE, None)
 
-async def rqt_obtenir_emprunts_l(id_l) -> typing.Tuple[bool, dict]:
+async def rqt_obtenir_emprunts_l(id_l):
     try:
-        requete = '''
-SELECT LIVRE.id as id_l, titre, genre, rayon, date_parution, guid_nfc, EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
-    FROM LIVRE JOIN EMPRUNT
-    ON LIVRE.id==EMPRUNT.id_l WHERE id_l=:id_l'''
+        requete = '''SELECT
+            LIVRE.id as id_l, titre, genre, rayon, date_parution, uid_nfc, chemin_image,
+            EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
+            FROM LIVRE JOIN EMPRUNT
+                ON LIVRE.id==EMPRUNT.id_l WHERE id_l=:id_l'''
         resultats = await G_DB.fetch_all(requete, {"id_l": id_l})
-        resultat_dict = {"id_l": [], "titre": [], "genre": [], "rayon": [], "date_parution": [],
-        "guid_nfc": [], "id_e": [], "id_u": [], "date_debut": [], "date_fin": [], "rendu": []}
+        json = {
+            "id_l": [],
+            "titre": [],
+            "genre": [],
+            "rayon": [],
+            "date_parution": [],
+            "uid_nfc": [],
+            "chemin_image": [],
+            "id_e": [],
+            "id_u": [],
+            "date_debut": [],
+            "date_fin": [],
+            "rendu": []}
+
         for ligne in resultats:
-            resultat_dict["id_l"].append(ligne["id_l"])
-            resultat_dict["titre"].append(ligne["titre"])
-            resultat_dict["genre"].append(ligne["genre"])
-            resultat_dict["rayon"].append(ligne["rayon"])
-            resultat_dict["date_parution"].append(ligne["date_parution"])
-            resultat_dict["guid_nfc"].append(ligne["guid_nfc"])
-            resultat_dict["id_e"].append(ligne["id_e"])
-            resultat_dict["id_u"].append(ligne["id_u"])
-            resultat_dict["date_debut"].append(ligne["date_debut"])
-            resultat_dict["date_fin"].append(ligne["date_fin"])
-            resultat_dict["rendu"].append(ligne["rendu"])
-        return (erreurs.OK_RQT_EMPRUNT_LIST_LIVRE, resultat_dict)
+            json["id_l"].append(ligne["id_l"])
+            json["titre"].append(ligne["titre"])
+            json["genre"].append(ligne["genre"])
+            json["rayon"].append(ligne["rayon"])
+            json["date_parution"].append(ligne["date_parution"])
+            json["uid_nfc"].append(ligne["uid_nfc"])
+            json["chemin_image"].append(ligne["chemin_image"])
+            json["id_e"].append(ligne["id_e"])
+            json["id_u"].append(ligne["id_u"])
+            json["date_debut"].append(ligne["date_debut"])
+            json["date_fin"].append(ligne["date_fin"])
+            json["rendu"].append(ligne["rendu"])
+        return (erreurs.OK_RQT_EMPRUNT_LIST_LIVRE, json)
     except Exception as e:
         print(f"Error: {e}")
         return (erreurs.ER_RQT_EMPRUNT_LIST_LIVRE, None)

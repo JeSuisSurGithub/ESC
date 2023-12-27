@@ -4,9 +4,7 @@
 
 ## A faire (classé par priorité)
 
-- [ ] Accueil avec listage livres disponibles, emprunts actifs et historique (Page)
-- [ ] Info livre avec historique des emprunts (Page)
-- [ ] Info Compte (Page)
+- [ ] Accueil, statistiques
 - [ ] Ajout livre par admin (Formulaire)
 - [ ] Retrait livre par admin (Bouton)
 

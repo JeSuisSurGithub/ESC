@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf8 -*-
 # Version modifiee de la librairie https://github.com/mxgxw/MFRC522-python
 

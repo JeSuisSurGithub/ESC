@@ -1,4 +1,5 @@
-# Codes erreurs
+# Défini les codes erreurs et leur messages associés
+
 ER_INCONNU                  =   0
 OK_RQT_COMPTE_CREA          =   1
 ER_RQT_COMPTE_CREA          =  -1

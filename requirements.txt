@@ -1,9 +1,8 @@
 databases
-fastapi
-pydantic
-bcrypt
-starlette
-uvicorn
 aiosqlite
 sqlalchemy
+bcrypt
 timeout_decorator
+uvicorn
+fastapi
+pydantic

@@ -1,14 +1,14 @@
 #!/bin/python3
 
-import uvicorn
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-from contextlib import asynccontextmanager
-from starlette.responses import FileResponse
-from pydantic import BaseModel
-from datetime import datetime, timedelta
 from timeout_decorator import timeout
+import uvicorn
+from fastapi import FastAPI, File, UploadFile
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse
+from contextlib import asynccontextmanager
+from pydantic import BaseModel
 
+from datetime import datetime, timedelta
 import requetes
 import nfc
 import erreurs
@@ -31,7 +31,7 @@ class JSONAjoutLivre(BaseModel):
     genre: str
     rayon: str
     date_parution: str
-    guid_nfc: str
+    uid_nfc: str
 
 class JSONIDLivre(BaseModel):
     id_l: str
@@ -51,7 +51,7 @@ app.mount("/img", StaticFiles(directory="img"), name="img")
 
 @app.get("/")
 def racine() -> str:
-    return FileResponse('html/index.html')
+    return RedirectResponse(url="html/accueil.html", status_code=status.HTTP_302_FOUND)
 
 @app.get("/api_statut")
 async def api_statut():
@@ -110,18 +110,23 @@ async def api_desinscription(info_conn: JSONConnexion):
         return {"code": erreurs.ER_API_DROIT_USAGER}
 
 @app.post("/api_ajout")
-async def api_ajout(info_ajout: JSONAjoutLivre):
+async def api_ajout(info_ajout: JSONAjoutLivre, image: UploadFile):
     global G_INFO_CONNEXION
-
-    if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):
-        titre = info_ajout.titre
-        genre = info_ajout.genre
-        rayon = info_ajout.rayon
-        date_parution = info_ajout.date_parution
-        guid_nfc = info_ajout.guid_nfc
-        code, val = await requetes.rqt_ajout_livre(titre, genre, rayon, date_parution, guid_nfc)
-        return {"code": code, "val": val}
-    return {"code": erreurs.ER_API_DROIT_ADMIN}
+    try:
+        if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):
+            titre = info_ajout.titre
+            genre = info_ajout.genre
+            rayon = info_ajout.rayon
+            date_parution = info_ajout.date_parution
+            uid_nfc = info_ajout.uid_nfc
+            chemin_image = image.filename
+            with open(chemin_image, "wb") as image_locale:
+                image_locale.write(image.file.read())
+            code, val = await requetes.rqt_ajout_livre(titre, genre, rayon, date_parution, uid_nfc, chemin_image)
+            return {"code": code, "val": val}
+        return {"code": erreurs.ER_API_DROIT_ADMIN}
+    except:
+        return {"code": erreurs.ER_RQT_LIVRE_CREA}
 
 @app.get("/api_livres")
 async def api_livres():
