@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Désinscription</title>
+        <link rel="stylesheet" href="/css/desinscription.css">
+    </head>
+    <body>
+        <form class="form">
+            <div class="title">Désinscription<br><span>Veuillez confirmer vos identifiants</span></div>
+            <input type="email" id="email" placeholder="Email" name="email" class="input">
+            <input type="password" id="motdepasse" placeholder="Mot de passe" name="password"class="input">
+            <input type="button" class="button-confirm" onclick="desinscription()" value="Se désinscrire">
+        </form>
+    </body>
+    <script src="/js/index.js"></script>
+    <script>
+        async function desinscription() {
+            const tag_email = document.getElementById("email");
+            const tag_motdepasse = document.getElementById("motdepasse");
+
+            let info = "";
+            if (!est_un_email(tag_email.value)) {
+                info += "L'email n'est pas valide";
+            }
+            if (tag_motdepasse.value.length < 4) {
+                info += "Le mot de passe doit faire au moins de 4 caractères";
+            }
+            if (info != "") return;
+
+            let res = await api_desinscription(tag_email.value, tag_motdepasse.value);
+            if (res.code > 0) {
+                window.location.replace(window.location.origin);
+            } else {
+                window.alert(G_CODE_ERREURS[res.code]);
+            }
+        }
+    </script>
+</html>
