@@ -110,7 +110,7 @@ async def api_desinscription(info_conn: JSONConnexion):
         return {"code": erreurs.ER_API_DROIT_USAGER}
 
 @app.post("/api_ajout")
-async def api_ajout(info_ajout: JSONAjoutLivre, image: UploadFile):
+async def api_ajout(info_ajout: JSONAjoutLivre, image: UploadFile = File(...)):
     global G_INFO_CONNEXION
     try:
         if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):

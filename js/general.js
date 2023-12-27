@@ -156,8 +156,8 @@ function api_desinscription(email, motdepasse) {
 
 function api_ajout(titre, genre, rayon, date_parution, uid_nfc, image) {
     const donnees_formulaire = new FormData();
-    donnees_formulaire.append('image', image);
     donnees_formulaire.append('info_ajout', JSON.stringify({ titre, genre, rayon, date_parution, uid_nfc }));
+    donnees_formulaire.append('image', image);
 
     return fetch("/api_ajout", {
         method: 'POST',
