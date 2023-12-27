@@ -1,107 +1,79 @@
-document.addEventListener("DOMContentLoaded", function() {
-    let searchBtn = document.querySelector('.searchBtn');
-    let closeBtn = document.querySelector('.closeBtn');
-    let searchBox = document.querySelector('.searchBox');
-    let inputField = document.getElementById('valeurs');
+// -------------------- CODE ERREURS -------------------- //
+const ER_INCONNU = 0;
+const OK_RQT_COMPTE_CREA = 1;
+const ER_RQT_COMPTE_CREA = -1;
+const OK_RQT_COMPTE_CONN = 2;
+const ER_RQT_COMPTE_CONN = -2;
+const OK_RQT_COMPTE_SUPP = 3;
+const ER_RQT_COMPTE_SUPP = -3;
+const OK_RQT_LIVRE_CREA = 4;
+const ER_RQT_LIVRE_CREA = -4;
+const OK_RQT_LIVRE_LIST = 5;
+const ER_RQT_LIVRE_LIST = -5;
+const OK_RQT_LIVRE_SUPP = 6;
+const ER_RQT_LIVRE_SUPP = -6;
+const OK_RQT_EMPRUNT_CREA = 7;
+const ER_RQT_EMPRUNT_CREA = -7;
+const OK_RQT_EMPRUNT_LIST_COMPTE = 8;
+const ER_RQT_EMPRUNT_LIST_COMPTE = -8;
+const OK_RQT_EMPRUNT_LIST_LIVRE = 9;
+const ER_RQT_EMPRUNT_LIST_LIVRE = -9;
+const OK_RQT_EMPRUNT_MOD_RETOUR = 10;
+const ER_RQT_EMPRUNT_MOD_RETOUR = -10;
 
-    searchBtn.onclick = function() {
-        searchBox.classList.add('active');
-        closeBtn.classList.add('active');
-        searchBtn.classList.add('active');
+const OK_API_INFO_CONN = 11;
+const ER_API_INFO_CONN = -11;
+const OK_API_DECONNECT = 12;
+const ER_API_DROIT_ADMIN = -13;
+const ER_API_DROIT_USAGER = -14;
+const ER_API_EMPRUNT_ACTIF = -15;
+const ER_API_EMPRUNT_INACTIF = -16;
+const ER_API_EMPRUNT_DROIT_COMPTE = -17;
+const ER_API_CAPTEUR_OCCUPE = -18;
 
-        if (searchBtn.classList.contains('active') && inputField.value.trim() !== '') {
-            console.log("cliquer deux fois");
-        }
-    }
+const OK_NFC_CAPTEUR_UID = 19;
+const ER_NFC_CAPTEUR_DESACTIVE = -20;
+const ER_NFC_CAPTEUR_AUTORISATION = -21;
+const ER_NFC_CAPTEUR_TIMEOUT = -22;
 
-    closeBtn.onclick = function() {
-        searchBox.classList.remove('active');
-        closeBtn.classList.remove('active');
-        searchBtn.classList.remove('active');
-    }
-});
+const G_CODE_ERREURS = {
+    [ER_INCONNU]: "Erreur inconnue",
+    [OK_RQT_COMPTE_CREA]: "Création du compte réussie",
+    [ER_RQT_COMPTE_CREA]: "Création du compte échouée",
+    [OK_RQT_COMPTE_CONN]: "Connexion au compte réussie",
+    [ER_RQT_COMPTE_CONN]: "Connexion au compte échouée",
+    [OK_RQT_COMPTE_SUPP]: "Suppression du compte réussie",
+    [ER_RQT_COMPTE_SUPP]: "Suppression du compte échouée",
+    [OK_RQT_LIVRE_CREA]: "Ajout du livre réussi",
+    [ER_RQT_LIVRE_CREA]: "Ajout du livre échoué",
+    [OK_RQT_LIVRE_LIST]: "Listage des livres réussi",
+    [ER_RQT_LIVRE_LIST]: "Listage des livres échoué",
+    [OK_RQT_LIVRE_SUPP]: "Retrait du livre réussi",
+    [ER_RQT_LIVRE_SUPP]: "Retrait du livre échoué",
+    [OK_RQT_EMPRUNT_CREA]: "Emprunt réussi",
+    [ER_RQT_EMPRUNT_CREA]: "Emprunt échoué",
+    [OK_RQT_EMPRUNT_LIST_COMPTE]: "Listage des emprunts par compte réussi",
+    [ER_RQT_EMPRUNT_LIST_COMPTE]: "Listage des emprunts par compte échoué",
+    [OK_RQT_EMPRUNT_LIST_LIVRE]: "Listage des emprunts par livres réussi",
+    [ER_RQT_EMPRUNT_LIST_LIVRE]: "Listage des emprunts par livres échoué",
+    [OK_RQT_EMPRUNT_MOD_RETOUR]: "Retour réussi",
+    [ER_RQT_EMPRUNT_MOD_RETOUR]: "Retour échoué",
+    [OK_API_INFO_CONN]: "Obtention du statut de connexion réussi",
+    [ER_API_INFO_CONN]: "Obtention du statut de connexion échoué",
+    [OK_API_DECONNECT]: "Déconnexion réussie",
+    [ER_API_DROIT_ADMIN]: "Vous n'êtes pas un administrateur",
+    [ER_API_DROIT_USAGER]: "Vous n'êtes pas un usager",
+    [ER_API_EMPRUNT_ACTIF]: "Livre déjà emprunté",
+    [ER_API_EMPRUNT_INACTIF]: "Livre pas emprunté",
+    [ER_API_EMPRUNT_DROIT_COMPTE]: "Le livre doit être rendu depuis le compte d'emprunt",
+    [ER_API_CAPTEUR_OCCUPE]: "Capteur occupé",
+    [OK_NFC_CAPTEUR_UID]: "Obtention de l'UID réussi",
+    [ER_NFC_CAPTEUR_DESACTIVE]: "Capteur désactivé",
+    [ER_NFC_CAPTEUR_AUTORISATION]: "Carte verrouillée",
+    [ER_NFC_CAPTEUR_TIMEOUT]: "Timeout écoulé"
+};
 
-document.addEventListener("DOMContentLoaded", function() {
-const header = document.querySelector(".calendar h3");
-const dates = document.querySelector(".dates");
-const navs = document.querySelectorAll("#prev, #next");
-
-const months = [
-  "Janvier",
-  "Fevrier",
-  "Mars",
-  "Avril",
-  "Mai",
-  "Juin",
-  "Juillet",
-  "Août",
-  "Septembre",
-  "Octobre",
-  "Novembre",
-  "Decembre",
-];
-
-let date = new Date();
-let month = date.getMonth();
-let year = date.getFullYear();
-
-function renderCalendar() {
-  const start = new Date(year, month, 1).getDay();
-  const endDate = new Date(year, month + 1, 0).getDate();
-  const end = new Date(year, month, endDate).getDay();
-  const endDatePrev = new Date(year, month, 0).getDate();
-
-  let datesHtml = "";
-
-  for (let i = start; i > 0; i--) {
-    datesHtml += `<li class="inactive">${endDatePrev - i + 1}</li>`;
-  }
-
-  for (let i = 1; i <= endDate; i++) {
-    let className =
-      i === date.getDate() &&
-      month === new Date().getMonth() &&
-      year === new Date().getFullYear()
-        ? ' class="today"'
-        : "";
-    datesHtml += `<li${className}>${i}</li>`;
-  }
-
-  for (let i = end; i < 6; i++) {
-    datesHtml += `<li class="inactive">${i - end + 1}</li>`;
-  }
-
-  dates.innerHTML = datesHtml;
-  header.textContent = `${months[month]} ${year}`;
-}
-
-navs.forEach((nav) => {
-  nav.addEventListener("click", (e) => {
-    const btnId = e.target.id;
-
-    if (btnId === "prev" && month === 0) {
-      year--;
-      month = 11;
-    } else if (btnId === "next" && month === 11) {
-      year++;
-      month = 0;
-    } else {
-      month = btnId === "next" ? month + 1 : month - 1;
-    }
-
-    date = new Date(year, month, new Date().getDate());
-    year = date.getFullYear();
-    month = date.getMonth();
-
-    renderCalendar();
-  });
-});
-
-renderCalendar();});
-
-
-
-
+// -------------------- FONCTIONS -------------------- //
 function est_un_email(email)
 {
     const regex_email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -252,4 +224,3 @@ function recherche(entree, vtitre, vgenre, vdate) {
     }
     return vid;
 }
-
