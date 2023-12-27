@@ -121,42 +121,42 @@
 <!-- graphe -->
     <div class="body">
       <div class="skill">
-        <div class="skill-name" style="font-size: 12px ;">Roman</div>
+        <div class="skill-name" style="font-size: 10px ;font-weight: bold;">Roman</div>
         <div class="skill-level">
           <div class="skill-percent" style="width: 90%; background-color: blue;" ></div>
         </div>
         <div class="skill-percent-number"></div>
       </div>
       <div class="skill">
-        <div class="skill-name" style="font-size: 12px">Science-fiction</div>
+        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Science-fiction</div>
         <div class="skill-level">
           <div class="skill-percent" style="width: 80%; background-color: yellow;"></div>
         </div>
         <div class="skill-percent-number"></div>
       </div>
       <div class="skill">
-        <div class="skill-name" style="font-size: 12px">Thiller</div>
+        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Thiller</div>
         <div class="skill-level">
           <div class="skill-percent" style="width: 75% ; background-color: green;"></div>
         </div>
         <div class="skill-percent-number"></div>
       </div>
       <div class="skill">
-        <div class="skill-name" style="font-size: 12px">Policier</div>
+        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Policier</div>
         <div class="skill-level">
           <div class="skill-percent" style="width: 90%; background-color: purple;"></div>
         </div>
         <div class="skill-percent-number"></div>
       </div>
       <div class="skill">
-        <div class="skill-name" style="font-size: 12px">Fantaisie</div>
+        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Fantaisie</div>
         <div class="skill-level">
           <div class="skill-percent" style="width: 90%;background-color: red;"></div>
         </div>
         <div class="skill-percent-number"></div>
       </div>
       <div class="skill">
-        <div class="skill-name" style="font-size: 12px">Autobiographique</div>
+        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Autobiographique</div>
         <div class="skill-level">
           <div class="skill-percent" style="width: 90%; background-color: cyan;"></div>
         </div>
@@ -175,7 +175,7 @@
 const data = [
     { genre: 'Roman', emprunts: 2 },
     { genre: 'Science-fiction', emprunts: 1 },
-    { genre: 'Thiller', emprunts: 1 },
+    { genre: 'Thiller', emprunts: 5 },
     { genre: 'Policier', emprunts: 1 },
     { genre: 'Fantaisie', emprunts: 1 },
     { genre: 'Autobiographique', emprunts: 1 },
@@ -188,7 +188,10 @@ function calculerLargeurPourcentage(empruntsGenre) {
     return pourcentage
 }
 
-
+data.forEach(item => {
+    const widthPourcentage = calculerLargeurPourcentage(item);
+    console.log(`${item.genre}: ${widthPourcentage}`);
+});
 
 
 
