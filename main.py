@@ -97,14 +97,17 @@ async def api_connexion(info_conn: JSONConnexion):
 async def api_desinscription(info_conn: JSONConnexion):
     global G_INFO_CONNEXION
 
-    email = info_conn.email
-    motdepasse = info_conn.motdepasse
-    code, val = await requetes.rqt_connexion_compte(email, motdepasse)
-    if (code > 0):
-        code, val = await requetes.rqt_supprimer_compte(G_INFO_CONNEXION["id"])
+    if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
+        email = info_conn.email
+        motdepasse = info_conn.motdepasse
+        code, val = await requetes.rqt_connexion_compte(email, motdepasse)
         if (code > 0):
-            G_INFO_CONNEXION = None
-    return {"code": code, "val": val}
+            code, val = await requetes.rqt_supprimer_compte(G_INFO_CONNEXION["id"])
+            if (code > 0):
+                G_INFO_CONNEXION = None
+        return {"code": code, "val": val}
+    else:
+        return {"code": erreurs.ER_API_DROIT_USAGER}
 
 @app.post("/api_ajout")
 async def api_ajout(info_ajout: JSONAjoutLivre):

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
-    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="/css/index.css">
   </head>
     <body class="">
     <div id="info_statut"></div>
@@ -34,84 +34,12 @@
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
   <script src="https://code.highcharts.com/highcharts-more.js"></script>
 
+  <div id="statistiques">
 
 
-
-      <div class="body">
-        <div class="skill">
-          <div class="skill-name" style="font-size: 12px ;">Roman</div>
-          <div class="skill-level">
-            <div class="skill-percent" style="width: 90%; background-color: blue;" ></div>
-          </div>
-          <div class="skill-percent-number"></div>
-        </div>
-        <div class="skill">
-          <div class="skill-name" style="font-size: 12px">Science-fiction</div>
-          <div class="skill-level">
-            <div class="skill-percent" style="width: 80%; background-color: yellow;"></div>
-          </div>
-          <div class="skill-percent-number"></div>
-        </div>
-        <div class="skill">
-          <div class="skill-name" style="font-size: 12px">Thiller</div>
-          <div class="skill-level">
-            <div class="skill-percent" style="width: 75% ; background-color: green;"></div>
-          </div>
-          <div class="skill-percent-number"></div>
-        </div>
-        <div class="skill">
-          <div class="skill-name" style="font-size: 12px">Policier</div>
-          <div class="skill-level">
-            <div class="skill-percent" style="width: 90%; background-color: purple;"></div>
-          </div>
-          <div class="skill-percent-number"></div>
-        </div>
-        <div class="skill">
-          <div class="skill-name" style="font-size: 12px">Fantaisie</div>
-          <div class="skill-level">
-            <div class="skill-percent" style="width: 90%;background-color: red;"></div>
-          </div>
-          <div class="skill-percent-number"></div>
-        </div>
-        <div class="skill">
-          <div class="skill-name" style="font-size: 12px">Autobiographique</div>
-          <div class="skill-level">
-            <div class="skill-percent" style="width: 90%; background-color: cyan;"></div>
-          </div>
-          <div class="skill-percent-number"></div>
-        </div>
-      </div>
-    </div>
-<div id="statistiques"></div>
   <div id="container"></div>
 
     <script>
-      // Données fictives représentant les emprunts par genre
-const data = [
-    { genre: 'Roman', emprunts: 2 },
-    { genre: 'Science-fiction', emprunts: 1 },
-    { genre: 'Thiller', emprunts: 1 },
-    { genre: 'Policier', emprunts: 1 },
-    { genre: 'Fantaisie', emprunts: 1 },
-    { genre: 'Autobiographique', emprunts: 1 },
-
-];
-const totalEmprunts = data.reduce((total, item) => total + item.emprunts, 0);
-
-function calculerLargeurPourcentage(empruntsGenre) {
-    const pourcentage = (empruntsGenre / totalEmprunts) * 100;
-    return pourcentage
-}
-
-
-
-function width(data){
-
-
-
-
-}
-/* 
 Highcharts.chart('container', {
     chart: {
         type: 'bar',
@@ -141,24 +69,26 @@ Highcharts.chart('container', {
         }]
     },
     series:[
-    {  csvURL: 'https://demo-live-data.highcharts.com/vs-load.csv',
+    { /* csvURL: 'https://demo-live-data.highcharts.com/vs-load.csv',
     enablePolling: true,
     dataRefreshRate: 1
- 
+ */
 
     name: 'Données grises à 100%',
-    color: '#CCCCCC', 
-    data: [100, 100, 100, 100, 100, 100], 
-    showInLegend: false , 
+    color: '#CCCCCC', // Couleur grise
+    data: [100, 100, 100, 100, 100, 100], // Valeurs fixes à 100%
+    showInLegend: false , // Ne pas afficher dans la légende si nécessaire
+    stack: 'stack'
 
 
 
     },
     {
-      colorByPoint: 'true',
-      name: 'Genres',
-      data: [50, 60, 45, 55, 50, 50],
- 
+    name: 'Barres vertes',
+    color: '#00FF00', // Couleur verte
+    data: [50, 60, 45, 55, 50,50], // Données pour les barres vertes
+    stack: 'stack'
+
     },
     ],
     tooltip: {
@@ -167,7 +97,7 @@ Highcharts.chart('container', {
     },
     xAxis: {
         type: 'category',
-        categories: ['Roman', 'Science-fiction', 'Thriller', 'Policier','Fantaisie','Autobiographique'],
+        categories: ['roman', 'science-fi', 'thriller', 'policier','fantaisie','autobio'],
         labels: {
             style: {
                 fontSize: '10px'
@@ -179,11 +109,23 @@ Highcharts.chart('container', {
         max: 100,
         title: false,
         gridLineWidth: 0,
-
+/*         plotBands: [{
+            from: 0,
+            to: 30,
+            color: '#E8F5E9'
+        }, {
+            from: 30,
+            to: 70,
+            color: '#FFFDE7'
+        }, {
+            from: 70,
+            to: 100,
+            color: '#FFEBEE'
+        }] */
     }
 });
 
- */
+
 
     </script>
     </div>

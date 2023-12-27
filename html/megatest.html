@@ -8,6 +8,7 @@
         <button onclick="deconnexion()">Déconnexion</button>
         <button onclick="emprunter()">Emprunter</button>
         <button onclick="retour()">Retour</button>
+        <p id="sortie"></p>
         <script src="/js/index.js"></script>
         <script>
             async function deconnexion() {
@@ -69,6 +70,7 @@
                 window.location.replace(redirection);
             }
             verifier_action();
+            
 
 /*            (async () => {
                 const sortie = document.getElementById("sortie")

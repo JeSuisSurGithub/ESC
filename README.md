@@ -9,7 +9,6 @@
 - [ ] Info Compte (Page)
 - [ ] Ajout livre par admin (Formulaire)
 - [ ] Retrait livre par admin (Bouton)
-- [ ] Desinscription (Formulaire)
 
 ## Fini
 - [X] Inscription (Page, en commun avec connexion)
@@ -17,3 +16,4 @@
 - [X] Emprunt (Page/Bouton, en commun avec retour)
 - [X] Retour (Page/Bouton, en commun avec emprunt)
 - [X] Deconnexion (Bouton)
+- [X] Desinscription (Formulaire)

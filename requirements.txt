@@ -1,4 +1,3 @@
-MFRC522
 databases
 fastapi
 pydantic
