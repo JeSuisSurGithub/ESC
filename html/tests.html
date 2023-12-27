@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <input type="text" id="titre" placeholder="Titre" name="titre">
+        <input type="text" id="genre" placeholder="Genre" name="genre">
+        <input type="text" id="rayon" placeholder="Rayon" name="rayon">
+        <input type="date" id="date_parution" placeholder="Date de Parution" name="date_parution">
+        <input type="text" id="uid_nfc" placeholder="UID NFC" name="uid_nfc">
+        <input type="button" onclick="obtenir_uid()" value="Obtenir UID NFC">
+        <input type="file" id="image_couverture" placeholder="Image de Couverture" name="image_couverture">
+        <input type="button" onclick="ajout_livre()" value="Ajout">
+        <input type="button" onclick="retrait_livre()" value="Retrait">
+    </body>
+    <script src="/js/general.js"></script>
+    <script>
+        async function ajout_livre() {
+            const tag_titre         = document.getElementById("titre");
+            const tag_genre         = document.getElementById("genre");
+            const tag_rayon         = document.getElementById("rayon");
+            const tag_parution      = document.getElementById("date_parution");
+            const tag_uid_nfc       = document.getElementById("uid_nfc");
+            const tag_couverture    = document.getElementById("image_couverture");
+
+            
+
+            var res = await api_ajout(
+                tag_titre.value,
+                tag_genre.value,
+                tag_rayon.value,
+                tag_parution.value,
+                tag_uid_nfc.value,
+                tag_couverture.value)
+        }
+
+        function retrait_livre() {
+
+        }
+    </script>
+</html>
