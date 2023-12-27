@@ -12,9 +12,9 @@
         <a href="#" class="logo">ESC</a>
         <div class="group">
           <ul class="navigation">
-            <li><a >Emprunter</a></li>
-            <li><a >Rendre</a></li>
-            <li><a >Déconnection</a></li>
+            <li><a onclick="emprunter()" >Emprunter</a></li>
+            <li><a onclick="retour()" >Rendre</a></li>
+            <li><a onclick="deconnexion()">Déconnection</a></li>
           </ul>
           <div class="search">
             <span class="icon">
@@ -32,20 +32,8 @@
 
     <div class="left-info">
       <h2 id="titre-gauche">Vos Emprunts : </h2>
-      <div class="card">
-        <img src="../img/petitprince.jpg" >
-        <div class="texte">
-          <p>
-            Titre :  
-            <br> Auteur:  
-            <br> Genre: 
-            <br> Date d'emprunt: 
-            <br> Date de retour: 
-            <br> 
-            <br> 
-            
+        <div id="sortie">
 
-          </p>
         </div>
       </div>
 
