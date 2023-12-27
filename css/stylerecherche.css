@@ -143,12 +143,14 @@ header .search{
 .left-info{
     padding-top: 100px;
     padding-left: 50px;
+    display: inline-flex;
+    flex-wrap: wrap;
 }
 
 #titre-gauche{
     color: #fff;
     margin-bottom: 20px;
-    margin-left: 150px;
+    text-align: center;
 }
 
 img{
@@ -169,111 +171,9 @@ img{
     transition: border 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: rgb(250, 250, 250) 0.2em solid;
     margin-bottom: 30px;
+    margin-left: 30px
    }
    
 .card:hover {
     border: #ffffff 0.2em solid;
    }
-
-.right-info{
-    position: absolute;
-    display: inline-block;
-    transform: translateX(180%);
-
-
-}
-
-h1 {
-    font-weight: 600;
-    text-align: center;
-    color: #fff;
-    margin-bottom: 2rem;
-  }
-  h3 {
-    font-weight: 600;
-  }
-  .calendar {
-    margin: auto;
-    width: 98%;
-    max-width: 380px;
-    padding: 1rem;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    padding: 2rem;
-    background: white;
-  }
-  .calendar table {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .calendar nav {
-    display: flex;
-    align-items: center;
-  }
-  .calendar ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    text-align: center;
-  }
-  .calendar ul li {
-    width: calc(100% / 7);
-    margin-top: 25px;
-    position: relative;
-    z-index: 2;
-  }
-  #prev,
-  #next {
-    width: 20px;
-    height: 20px;
-    position: relative;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-  }
-  #prev::before,
-  #next::before {
-    content: "";
-    width: 50%;
-    height: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border-style: solid;
-    border-width: 0.25em 0.25em 0 0;
-    border-color: #000000;
-  }
-  #next::before {
-    transform: translate(-50%, -50%) rotate(45deg);
-  }
-  #prev::before {
-    transform: translate(-50%, -50%) rotate(-135deg);
-  }
-  #prev:hover::before,
-  #next:hover::before {
-    border-color: #000;
-  }
-  .days {
-    font-weight: 600;
-  }
-  .dates li.today {
-    color: #fff;
-  }
-  .dates li.today::before {
-    content: "";
-    width: 2rem;
-    height: 2rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #000;
-    border-radius: 50%;
-    z-index: -1;
-  }
-  .dates li.inactive {
-    color: #ccc;
-  }
-
