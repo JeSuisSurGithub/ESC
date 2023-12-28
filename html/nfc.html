@@ -63,7 +63,7 @@
                     code: ER_NFC_CAPTEUR_TIMEOUT,
                     action: action,
                 });
-                window.location.replace(redirection);
+                window.location.href = redirection;
             }
         }, 1000);
 
@@ -76,7 +76,7 @@
                     action: action,
                     uid: requete_uid.val
                 });
-                window.location.replace(redirection);
+                window.location.href = redirection;
             }
         });
     </script>

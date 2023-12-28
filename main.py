@@ -62,7 +62,7 @@ app.mount("/upload", StaticFiles(directory="upload"), name="upload")
 
 @app.get("/")
 def racine() -> str:
-    return RedirectResponse(url="/html/accueil.html")
+    return RedirectResponse(url="/html/connexion.html")
 
 @app.get("/api_statut")
 async def api_statut():

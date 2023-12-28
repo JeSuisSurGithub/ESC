@@ -10,7 +10,6 @@
 5.  Lancer le serveur `./main.py`
 
 ## A faire!
-
 - [ ] Fusion et Finitions
 
 ## Fini
