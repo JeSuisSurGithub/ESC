@@ -93,7 +93,7 @@ function recherche(entree, vtitre, vgenre) {
         let titre = vtitre[i];
 
         for (const terme of termes) {
-            if (titre.includes(terme)) {
+            if (titre.toLowerCase().includes(terme.toLowerCase())) {
                 vid.push(i);
                 continue boucle_ext;
             }
@@ -101,7 +101,7 @@ function recherche(entree, vtitre, vgenre) {
 
         let genre = vgenre[i];
         for (const terme of termes) {
-            if (genre.includes(terme)) {
+            if (genre.toLowerCase().includes(terme.toLowerCase())) {
                 vid.push(i);
                 continue boucle_ext;
             }
@@ -128,16 +128,16 @@ function recherche(entree, vtitre, vgenre) {
                                 </div>
                             </div>`
         }
-        for (let i = 0; i < livres.val.id.length; i++) {
+        for (let i = 0; i < indices.length; i++) {
             sortie.innerHTML += `
                             <div class="card">
-                                <img src="/upload/${livres.val.nom_image[i]}" >
+                                <img src="/upload/${livres.val.nom_image[indices[i]]}" >
                                 <div class="texte">
                                     <p>
-                                        Titre : ${livres.val.titre[i]} <br/>
-                                        Genre: ${livres.val.genre[i]} <br/>
-                                        Rayon: ${livres.val.rayon[i]} <br/>
-                                        Date de Parution: ${livres.val.date_parution[i]} <br/>
+                                        Titre : ${livres.val.titre[indices[i]]} <br/>
+                                        Genre: ${livres.val.genre[indices[i]]} <br/>
+                                        Rayon: ${livres.val.rayon[indices[i]]} <br/>
+                                        Date de Parution: ${livres.val.date_parution[indices[i]]} <br/>
                                         <br/>
                                     </p>
                                 </div>
