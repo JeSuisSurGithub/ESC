@@ -70,7 +70,7 @@
                 const res = await api_inscription(tag_email.value, tag_motdepasse.value, tag_pseudo.value, tag_naissance.value);
                 if (res.code > 0) {
                     const res_conn = await api_connexion(tag_email.value, tag_motdepasse.value);
-                    if (res_conn > 0) {
+                    if (res_conn.code > 0) {
                         window.location.href = `${window.location.origin}/html/accueil.html`;
                     } else {
                         window.alert(G_CODE_ERREURS[res_conn.code]);
