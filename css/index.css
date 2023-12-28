@@ -1,10 +1,17 @@
 .div_principal{
-
-  background-color: white;
+  display: flex;
+  position: static;
+  background-color: black;
+  height: 100vh;
 }
 
 
+body{
+  background-color: black;
 
+
+
+}
 
 
 
@@ -16,19 +23,6 @@
   overflow: hidden;
 }
 
-
-.black-side {
-  display: flex;
-  width: 65%;
-  height: 110%;
-  background-color: black;
-  position: absolute;
-  padding-right: 10px;
-  margin-left: -10px;
-  margin-top: -90px;
-/* probleme affichage partie noire */
-
-}
 
 .searchbar{
   position:relative;
@@ -61,9 +55,11 @@
   position: absolute;
   top : 25%;
   left:2%
-
-
 }
+
+
+
+
 
 .formulaire{
   display:inline-block;
@@ -98,34 +94,25 @@ color:white;
   margin: 0 auto;
 }
 
-#statistiques{
-/*   float:right; */
-  border: 3px solid black;
-  padding: 10px;
-  border-radius: 10px;
-}
-
 
 
 
 
 .card {
-  width: 300px;
+  width: 85%;
+  display: flex;
   background-color: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   overflow: hidden;
+  border: 1px solid white;
+  margin: 30px auto;
+  position: relative;
 }
 
 
-
-.body {
-  padding: 20px;
-  background-color: white;
-}
 
 .skill {
-
   margin-bottom: 20px;
 }
 
@@ -152,11 +139,128 @@ color:white;
 
 
 
+#roma {
+  width: 50%;
+  background-color: blue;
+  border-radius: 10px;
+}
+
+#scfi {
+  width: 80%;
+  background-color: yellow;
+  border-radius: 10px;
+}
+
+#thri {
+  width: 75%;
+  background-color: green;
+  border-radius: 10px;
+}
+
+#poli {
+  width: 90%;
+  background-color: purple;
+  border-radius: 10px;
+}
+
+#fant {
+  width: 90%;
+  background-color: red;
+  border-radius: 10px;
+}
+
+#auto {
+  width: 90%;
+  background-color: cyan;
+  border-radius: 10px;
+}
+
+#titre-gauche{
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+  position: relative;
+  top:2%;
+
+}
+.styled {
+  border: 0;
+  display: flex;
+  position: absolute;
+  top: 35%;
+  right: 5%;
+  line-height: 2.5;
+  padding: 0 20px;
+  font-size: 1rem;
+  text-align: center;
+  border-radius: 10px;
+  background-color: black;
+  box-shadow:
+    inset 2px 2px 3px rgba(255, 255, 255, 0.6),
+    inset -2px -2px 3px rgba(0, 0, 0, 0.6);
+}
+
+.styled:hover {
+  background-color: rgba(40, 40, 40, 1);
+}
+
+.styled:active {
+  box-shadow:
+    inset -2px -2px 3px rgba(255, 255, 255, 0.6),
+    inset 2px 2px 3px rgba(0, 0, 0, 0.6);
+  	transform: translateY(1px); 
+}
+.texte {
+  padding: 10px;
+}
+
+.rendre {
+  position: absolute; 
+/*display: flex;
+  justify-content: center;
+
+  right: 5%; */
+}
+
+
+.left-info{
+  /*   float:left;  */
+  background-color: black;
+  /*   padding: 10px; */
+    flex: 1;
+    border-radius: 15px;
+/*     border: 1px solid white; */
+    margin: 3% 2%;
+    flex-direction: column;
+
+}
 
 
 
 
+#statistiques{
+/*   float:right;  */
+  background-color: white;
+/*   padding: 10px; */
+  flex: 1;
+  border-radius: 15px;
+  border: 1px solid white;
+  margin: 3% 2%;
+}
+
+p{
+  font-weight: bold;
+  font-size: 15px;
+  padding: 0;
+  margin: 0;
+
+}
+
+.titre{
+  font-size: 20px;
 
 
+
+}
 
 

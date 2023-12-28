@@ -16,7 +16,7 @@ body{
 
 }
 header{
-    position: absolute;
+    position: sticky;
     top: 0;
     left: 0;
     width: 100%;
@@ -140,16 +140,13 @@ header .search{
 }
 
 
-.left-info{
-    padding-top: 100px;
-    padding-left: 50px;
+
+.search{
+  width: 400px;
+  height: 30px;
+
 }
 
-#titre-gauche{
-    color: #fff;
-    margin-bottom: 20px;
-    margin-left: 150px;
-}
 
 img{
     max-width: 90px;
@@ -175,13 +172,7 @@ img{
     border: #ffffff 0.2em solid;
    }
 
-.right-info{
-    position: absolute;
-    display: inline-block;
-    transform: translateX(180%);
 
-
-}
 
 h1 {
     font-weight: 600;
@@ -200,7 +191,7 @@ h1 {
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    padding: 2rem;
+    padding: 200px 2rem;
     background: white;
   }
   .calendar table {
@@ -277,3 +268,11 @@ h1 {
     color: #ccc;
   }
 
+
+  .divloupe{
+    position: absolute;
+    top : 25%;
+    left:2%
+  
+  
+  }
