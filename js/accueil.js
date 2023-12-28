@@ -104,7 +104,7 @@ async function verifier_action() {
                             </div>`
         }
         for (let i = 0; i < livres_empruntes.val.id_l.length; i++) {
-            if (livres_empruntes.val.rendu[i] === false) {
+            if (livres_empruntes.val.rendu[i] === 0) {
                 sortie.innerHTML += `
                                 <div class="card">
                                     <img src="/upload/${livres_empruntes.val.nom_image[i]}" >
