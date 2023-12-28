@@ -117,18 +117,20 @@ color:white;
 }
 
 .skill-name {
-  width: 120px;
+  width: 180px;
   text-align: right;
   margin-left: 50px;
+  font-size: 11px;
 }
 
 .skill-level {
-  width: 160px;
-  height: 6px;
+  width: 220px;
+  height: 8px;
   background-color: #eee;
   border-radius: 10px;
   overflow: hidden;
   margin-left: 20px;
+  margin-bottom: 10%;
 }
 
 .skill-percent {
@@ -181,6 +183,7 @@ color:white;
   font-size: 30px;
   position: relative;
   top:2%;
+  color: white;
 
 }
 .styled {
@@ -214,14 +217,6 @@ color:white;
   padding: 10px;
 }
 
-.rendre {
-  position: absolute; 
-/*display: flex;
-  justify-content: center;
-
-  right: 5%; */
-}
-
 
 .left-info{
   /*   float:left;  */
@@ -240,12 +235,13 @@ color:white;
 
 #statistiques{
 /*   float:right;  */
-  background-color: white;
+  background-color: black;
 /*   padding: 10px; */
   flex: 1;
   border-radius: 15px;
-  border: 1px solid white;
+ /*  border: 1px solid white; */
   margin: 3% 2%;
+  position: relative;
 }
 
 p{
@@ -263,4 +259,16 @@ p{
 
 }
 
+.graphe{
+  position: absolute;
+  right:2%;
+  border: 1px solid black;
+  border-radius: 10px;
+  top: 14%;
+  width: auto;
+  padding: 10px;
+  background-color: white;
 
+
+
+}
