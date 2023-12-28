@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../js/index.js"></script>
+    <script src="../js/Interaction_index.js"></script>
   </head>
     <body>
       <header>
@@ -116,92 +119,111 @@
 
 
 <!-- graphe -->
-    <div class="body">
-      <div class="skill">
-        <div class="skill-name" style="font-size: 10px ;font-weight: bold;">Roman</div>
-        <div class="skill-level">
-          <div class="skill-percent" style="width: 90%; background-color: blue;" ></div>
-        </div>
-        <div class="skill-percent-number"></div>
-      </div>
-      <div class="skill">
-        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Science-fiction</div>
-        <div class="skill-level">
-          <div class="skill-percent" style="width: 80%; background-color: yellow;"></div>
-        </div>
-        <div class="skill-percent-number"></div>
-      </div>
-      <div class="skill">
-        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Thiller</div>
-        <div class="skill-level">
-          <div class="skill-percent" style="width: 75% ; background-color: green;"></div>
-        </div>
-        <div class="skill-percent-number"></div>
-      </div>
-      <div class="skill">
-        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Policier</div>
-        <div class="skill-level">
-          <div class="skill-percent" style="width: 90%; background-color: purple;"></div>
-        </div>
-        <div class="skill-percent-number"></div>
-      </div>
-      <div class="skill">
-        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Fantaisie</div>
-        <div class="skill-level">
-          <div class="skill-percent" style="width: 90%;background-color: red;"></div>
-        </div>
-        <div class="skill-percent-number"></div>
-      </div>
-      <div class="skill">
-        <div class="skill-name" style="font-size: 10px;font-weight: bold;">Autobiographique</div>
-        <div class="skill-level">
-          <div class="skill-percent" style="width: 90%; background-color: cyan;"></div>
-        </div>
-        <div class="skill-percent-number"></div>
-      </div>
+<div class="body">
+  <div class="skill">
+    <div class="skill-name" style="font-size: 10px ;font-weight: bold;">Roman</div>
+    <div class="skill-level">
+      <div id="roma" class="skill-percent" ></div>
     </div>
-
-
-
-
-
-
-
-    <script>
-      // Données fictives représentant les emprunts par genre
-const data = [
-    { genre: 'Roman', emprunts: 2 },
-    { genre: 'Science-fiction', emprunts: 1 },
-    { genre: 'Thiller', emprunts: 5 },
-    { genre: 'Policier', emprunts: 1 },
-    { genre: 'Fantaisie', emprunts: 1 },
-    { genre: 'Autobiographique', emprunts: 1 },
-
-];
-const totalEmprunts = data.reduce((total, item) => total + item.emprunts, 0);
-
-function calculerLargeurPourcentage(empruntsGenre) {
-    const pourcentage = (empruntsGenre / totalEmprunts) * 100;
-    return pourcentage
-}
-
-data.forEach(item => {
-    const widthPourcentage = calculerLargeurPourcentage(item);
-    console.log(`${item.genre}: ${widthPourcentage}`);
-});
-
-
-
-</script>
-<script src="/js/general.js"></script>
-<script src="/js/accueil.js"></script>
-
+    <div class="skill-percent-number"></div>
+  </div>
+  <div class="skill">
+    <div class="skill-name" style="font-size: 10px;font-weight: bold;">Science-fiction</div>
+    <div class="skill-level">
+      <div id="scfi" class="skill-percent" ></div>
+    </div>
+    <div class="skill-percent-number"></div>
+  </div>
+  <div class="skill">
+    <div class="skill-name" style="font-size: 10px;font-weight: bold;">Thiller</div>
+    <div class="skill-level">
+      <div id="thri" class="skill-percent" ></div>
+    </div>
+    <div class="skill-percent-number"></div>
+  </div>
+  <div class="skill">
+    <div class="skill-name" style="font-size: 10px;font-weight: bold;">Policier</div>
+    <div class="skill-level">
+      <div id="poli" class="skill-percent"></div>
+    </div>
+    <div class="skill-percent-number"></div>
+  </div>
+  <div class="skill">
+    <div class="skill-name" style="font-size: 10px;font-weight: bold;">Fantaisie</div>
+    <div class="skill-level">
+      <div id="fant" class="skill-percent" ></div>
+    </div>
+    <div class="skill-percent-number"></div>
+  </div>
+  <div class="skill">
+    <div class="skill-name" style="font-size: 10px;font-weight: bold;">Autobiographique</div>
+    <div class="skill-level">
+      <div id="auto" class="skill-percent" ></div>
+    </div>
+    <div class="skill-percent-number"></div>
+  </div>
 </div>
 
 
-  
+    <script>
+const data = [{
+    genre: 'Roman',
+    emprunts: 6
+  },
+  {
+    genre: 'Science-fiction',
+    emprunts: 3
+  },
+  {
+    genre: 'Thriller',
+    emprunts: 5
+  },
+  {
+    genre: 'Policier',
+    emprunts: 1
+  },
+  {
+    genre: 'Fantaisie',
+    emprunts: 1
+  },
+  {
+    genre: 'Autobiographique',
+    emprunts: 56
+  },
+
+];
+
+const totalEmprunts = data.reduce((total, item) => total + item.emprunts, 0);
 
 
+const widthPourcentageArray = data.map(item => calculerLargeurPourcentage(item.emprunts));
+const idGenreMapping = {
+  'roma': 'Roman',
+  'scfi': 'Science-fiction',
+  'thri': 'Thriller',
+  'poli': 'Policier',
+  'fant': 'Fantaisie',
+  'auto': 'Autobiographique',
+}
+
+function calculerLargeurPourcentage(emprunts) {
+  const pourcentage = (emprunts / totalEmprunts) * 100;
+  return pourcentage + '%';
+}
+cle = []
+Object.keys(idGenreMapping).forEach(function(elt) {
+  cle.push(elt);
+});
+
+for (let i = 0; i < cle.length; i++) {
+  objectJavascript = document.getElementById(cle[i])
+	const genreRecherche = idGenreMapping[cle[i]]
+	const empruntsGenreRecherche = data.find(livre => livre.genre === genreRecherche).emprunts
+  objectJavascript.style.width = calculerLargeurPourcentage(empruntsGenreRecherche)
+};
+
+</script>
+</div>
 </div>
 </body>
 </html>
