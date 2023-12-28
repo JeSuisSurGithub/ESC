@@ -60,6 +60,7 @@ async function verifier_action() {
                     if (index !== -1) {
                         const resultat = await api_emprunt(requete_livre.val.id[index]);
                         window.alert(G_CODE_ERREURS[resultat.code]);
+                        window.location.href = window.location.href.split("?")[0];
                     } else {
                         window.alert("Carte de livre inconnue");
                     }
@@ -67,6 +68,7 @@ async function verifier_action() {
                     if (index !== -1) {
                         const resultat = await api_retour(requete_livre.val.id[index]);
                         window.alert(G_CODE_ERREURS[resultat.code]);
+                        window.location.href = window.location.href.split("?")[0];
                     } else {
                         window.alert("Carte de livre inconnue");
                     }
@@ -102,19 +104,21 @@ async function verifier_action() {
                             </div>`
         }
         for (let i = 0; i < livres_empruntes.val.id_l.length; i++) {
-            sortie.innerHTML += `
-                            <div class="card">
-                                <img src="/upload/${livres_empruntes.val.nom_image[i]}" >
-                                <div class="texte">
-                                    <p>
-                                        Titre : ${livres_empruntes.val.titre[i]} <br/>
-                                        Genre: ${livres_empruntes.val.genre[i]} <br/>
-                                        Date d'emprunt: ${livres_empruntes.val.date_debut[i]} <br/>
-                                        Date de retour: ${livres_empruntes.val.date_fin[i]} <br/>
-                                        <br/>
-                                    </p>
-                                </div>
-                            </div>`
+            if (livres_empruntes.val.rendu[i] === true) {
+                sortie.innerHTML += `
+                                <div class="card">
+                                    <img src="/upload/${livres_empruntes.val.nom_image[i]}" >
+                                    <div class="texte">
+                                        <p>
+                                            Titre : ${livres_empruntes.val.titre[i]} <br/>
+                                            Genre: ${livres_empruntes.val.genre[i]} <br/>
+                                            Date d'emprunt: ${livres_empruntes.val.date_debut[i]} <br/>
+                                            Date de retour: ${livres_empruntes.val.date_fin[i]} <br/>
+                                            <br/>
+                                        </p>
+                                    </div>
+                                </div>`
+            }
         }
     } else {
         window.alert(G_CODE_ERREURS[livres_empruntes.code]);
