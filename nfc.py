@@ -1,4 +1,5 @@
 # IMPORTE
+# GPIO, signal et MFRC522 pour la lecture du capteur NFC
 # timeout_decorator pour le timeout de 10 secondes
 #
 # PLAN DES DEFINITIONS
@@ -8,10 +9,11 @@
 
 # Décommenter sur RPi
 # import RPi.GPIO as GPIO
-# import MFRC522
 # import signal
+# import MFRC522
 
 from timeout_decorator import TimeoutError
+
 import erreurs
 
 def lire_uid_nfc() -> str:
@@ -30,20 +32,20 @@ def lire_uid_nfc() -> str:
 
         while continue_reading:
 
-            # Detecter les tags
+            # Détecter les tags
             (status, TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
 
             # Une carte est detectee
             if status == MIFAREReader.MI_OK:
 
-                # Recuperation UID
+                # Récuperation UID
                 (status, uid) = MIFAREReader.MFRC522_Anticoll()
 
                 if status == MIFAREReader.MI_OK:
                     uid_hexa = "".join([format(int(part), '02X') for part in uid])
                     return (erreurs.OK_NFC_CAPTEUR_UID, uid_hexa)
 
-                    # Clee d'authentification par defaut
+                    # Clée d'authentification par defaut
                     key = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
 
                     # Selection du tag

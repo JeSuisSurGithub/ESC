@@ -1,8 +1,8 @@
-databases
 aiosqlite
-sqlalchemy
 bcrypt
-timeout_decorator
-uvicorn
+databases
 fastapi
 pydantic
+sqlalchemy
+timeout_decorator
+uvicorn

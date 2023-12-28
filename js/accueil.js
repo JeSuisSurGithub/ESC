@@ -101,12 +101,12 @@ render_calendar();});
 
 (async () => {
     const sortie = document.getElementById("liste_livres")
-    const livres_empruntes = await api_emprunt_livres();
+    const livres_empruntes = await api_statut_emprunt();
     if (livres_empruntes.code > 0) {
         for (let i = 0; i < livres_empruntes.val.id_l.length; i++) {
             sortie.innerHTML += `
                             <div class="card">
-                                <img src="/img/${livres_empruntes.val.chemin_image[i]}" >
+                                <img src="/img/${livres_empruntes.val.nom_image[i]}" >
                                 <div class="texte">
                                     <p>
                                         Titre : ${livres_empruntes.val.titre[i]} <br/>
