@@ -1,2 +1,6 @@
-**/__pycache__/
-/db/esc.db
+# Cache
+/__pycache__
+
+# Stockage propre à chaque instance
+/db/esc.sqlite
+/upload/**

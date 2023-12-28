@@ -1,6 +1,6 @@
 # IMPORTE
-# databases pour des opérations sqlite thread-safe
 # bcrypt pour le hachage des mot de passes
+# databases pour des opérations sqlite thread-safe
 #
 # PLAN DES DEFINITIONS
 #
@@ -24,12 +24,12 @@
 # Lister emprunt par livre
 # Rendre
 
-import databases
 import bcrypt
+import databases
 
 import erreurs
 
-G_DB = databases.Database("sqlite:///./db/esc.db")
+G_DB = databases.Database("sqlite:///./db/esc.sqlite")
 
 async def rqt_connexion():
     await G_DB.connect()
@@ -85,17 +85,17 @@ async def rqt_supprimer_compte(id_u):
         print(f"Error: {e}")
         return (erreurs.ER_RQT_COMPTE_SUPP, None)
 
-async def rqt_ajout_livre(titre, genre, rayon, date_parution, uid_nfc, chemin_image):
+async def rqt_ajout_livre(titre, genre, rayon, date_parution, uid_nfc, nom_image):
     try:
-        requete = '''INSERT INTO LIVRE (titre, genre, rayon, date_parution, uid_nfc, chemin_image)
-            VALUES (:titre, :genre, :rayon, :date_parution, :uid_nfc, :chemin_image)'''
+        requete = '''INSERT INTO LIVRE (titre, genre, rayon, date_parution, uid_nfc, nom_image)
+            VALUES (:titre, :genre, :rayon, :date_parution, :uid_nfc, :nom_image)'''
         await G_DB.execute(requete, {
             "titre": titre,
             "genre": genre,
             "rayon": rayon,
             "date_parution": date_parution,
             "uid_nfc": uid_nfc,
-            "chemin_image": chemin_image})
+            "nom_image": nom_image})
         return (erreurs.OK_RQT_LIVRE_CREA, None)
     except Exception as e:
         print(f"Error: {e}")
@@ -103,7 +103,7 @@ async def rqt_ajout_livre(titre, genre, rayon, date_parution, uid_nfc, chemin_im
 
 async def rqt_obtenir_livre():
     try:
-        requete = "SELECT id, titre, genre, rayon, date_parution, uid_nfc, chemin_image FROM LIVRE"
+        requete = "SELECT id, titre, genre, rayon, date_parution, uid_nfc, nom_image FROM LIVRE"
         resultats = await G_DB.fetch_all(requete)
         json = {
             "id": [],
@@ -112,7 +112,7 @@ async def rqt_obtenir_livre():
             "rayon": [],
             "date_parution": [],
             "uid_nfc": [],
-            "chemin_image": []}
+            "nom_image": []}
 
         for ligne in resultats:
             json["id"].append(ligne["id"])
@@ -121,7 +121,7 @@ async def rqt_obtenir_livre():
             json["rayon"].append(ligne["rayon"])
             json["date_parution"].append(ligne["date_parution"])
             json["uid_nfc"].append(ligne["uid_nfc"])
-            json["chemin_image"].append(ligne["chemin_image"])
+            json["nom_image"].append(ligne["nom_image"])
         return (erreurs.OK_RQT_LIVRE_LIST, json)
     except Exception as e:
         print(f"Error: {e}")
@@ -154,7 +154,7 @@ async def rqt_emprunter(id_u, id_l, date_debut, date_fin):
 async def rqt_obtenir_emprunts_u(id_u):
     try:
         requete = ''' SELECT
-            LIVRE.id as id_l, titre, genre, rayon, date_parution, uid_nfc, chemin_image,
+            LIVRE.id as id_l, titre, genre, rayon, date_parution, uid_nfc, nom_image,
             EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
             FROM LIVRE JOIN EMPRUNT
                 ON LIVRE.id==EMPRUNT.id_l WHERE id_u=:id_u'''
@@ -166,7 +166,7 @@ async def rqt_obtenir_emprunts_u(id_u):
             "rayon": [],
             "date_parution": [],
             "uid_nfc": [],
-            "chemin_image": [],
+            "nom_image": [],
             "id_e": [],
             "id_u": [],
             "date_debut": [],
@@ -180,7 +180,7 @@ async def rqt_obtenir_emprunts_u(id_u):
             json["rayon"].append(ligne["rayon"])
             json["date_parution"].append(ligne["date_parution"])
             json["uid_nfc"].append(ligne["uid_nfc"])
-            json["chemin_image"].append(ligne["chemin_image"])
+            json["nom_image"].append(ligne["nom_image"])
             json["id_e"].append(ligne["id_e"])
             json["id_u"].append(ligne["id_u"])
             json["date_debut"].append(ligne["date_debut"])
@@ -194,7 +194,7 @@ async def rqt_obtenir_emprunts_u(id_u):
 async def rqt_obtenir_emprunts_l(id_l):
     try:
         requete = '''SELECT
-            LIVRE.id as id_l, titre, genre, rayon, date_parution, uid_nfc, chemin_image,
+            LIVRE.id as id_l, titre, genre, rayon, date_parution, uid_nfc, nom_image,
             EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
             FROM LIVRE JOIN EMPRUNT
                 ON LIVRE.id==EMPRUNT.id_l WHERE id_l=:id_l'''
@@ -206,7 +206,7 @@ async def rqt_obtenir_emprunts_l(id_l):
             "rayon": [],
             "date_parution": [],
             "uid_nfc": [],
-            "chemin_image": [],
+            "nom_image": [],
             "id_e": [],
             "id_u": [],
             "date_debut": [],
@@ -220,7 +220,7 @@ async def rqt_obtenir_emprunts_l(id_l):
             json["rayon"].append(ligne["rayon"])
             json["date_parution"].append(ligne["date_parution"])
             json["uid_nfc"].append(ligne["uid_nfc"])
-            json["chemin_image"].append(ligne["chemin_image"])
+            json["nom_image"].append(ligne["nom_image"])
             json["id_e"].append(ligne["id_e"])
             json["id_u"].append(ligne["id_u"])
             json["date_debut"].append(ligne["date_debut"])

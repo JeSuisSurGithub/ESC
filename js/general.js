@@ -154,14 +154,14 @@ function api_desinscription(email, motdepasse) {
     });
 }
 
-function api_ajout(titre, genre, rayon, date_parution, uid_nfc, chemin_image, image_b64) {
+function api_ajout(titre, genre, rayon, date_parution, uid_nfc, nom_image, image_b64) {
     return requete_post("/api_ajout", {
         titre: titre,
         genre: genre,
         rayon: rayon,
         date_parution: date_parution,
         uid_nfc: uid_nfc,
-        chemin_image: chemin_image,
+        nom_image: nom_image,
         image_b64: image_b64
     });
 }
@@ -178,8 +178,8 @@ function api_emprunt(id_l) {
     return requete_post("/api_emprunt", {"id_l": id_l});
 }
 
-function api_emprunt_livres() {
-    return requete_get("/api_emprunt_livres", {});
+function api_statut_emprunt() {
+    return requete_get("/api_statut_emprunt", {});
 }
 
 function api_hist_livre(id_l) {
@@ -192,37 +192,4 @@ function api_retour(id_l) {
 
 function api_uid_nfc() {
     return requete_get("/api_uid_nfc", {})
-}
-
-function recherche(entree, vtitre, vgenre, vdate) {
-    const termes = entree.split(" ");
-    let vid = []
-
-    boucle_ext: for (let i = 0; i < vtitre.length; i++) {
-        let titre = vtitre[i];
-
-        for (const terme of termes) {
-            if (titre.includes(terme)) {
-                vid.push(i);
-                continue boucle_ext;
-            }
-        };
-
-        let genre = vgenre[i];
-        for (const terme of termes) {
-            if (genre.includes(terme)) {
-                vid.push(i);
-                continue boucle_ext;
-            }
-        };
-
-        let date = vdate[i];
-        for (const terme of termes) {
-            if (date.includes(terme)) {
-                vid.push(i);
-                continue boucle_ext;
-            }
-        };
-    }
-    return vid;
 }

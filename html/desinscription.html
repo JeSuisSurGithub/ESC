@@ -33,7 +33,7 @@
 
             const res = await api_desinscription(tag_email.value, tag_motdepasse.value);
             if (res.code > 0) {
-                window.location.replace(window.location.origin);
+                window.location.href = window.location.origin;
             } else {
                 window.alert(G_CODE_ERREURS[res.code]);
             }

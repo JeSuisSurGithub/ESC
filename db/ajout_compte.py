@@ -1,11 +1,12 @@
 #!/bin/python3
 
-import databases
-import bcrypt
 import asyncio
+import bcrypt
+import databases
+
 import sys
 
-G_DB = databases.Database("sqlite:///./esc.db")
+G_DB = databases.Database("sqlite:///./esc.sqlite")
 
 async def connexion_bd():
     await G_DB.connect()

@@ -142,6 +142,8 @@ header .search {
 .left-info {
     padding-top: 100px;
     padding-left: 50px;
+    width: 50vw;
+    float: left;
 }
 
 #titre-gauche {
@@ -175,10 +177,9 @@ img {
 }
 
 .right-info {
-    position: absolute;
-    display: inline-block;
-    transform: translateX(180%);
-    margin-top: -180px;
+    width: 50vw;
+    float: right;
+    margin-top: 120px;
 }
 
 h1 {
