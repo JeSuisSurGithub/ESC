@@ -60,6 +60,7 @@ async function verifier_action() {
                     if (index !== -1) {
                         const resultat = await api_emprunt(requete_livre.val.id[index]);
                         window.alert(G_CODE_ERREURS[resultat.code]);
+                        window.location.href = window.location.href.split("?")[0];
                     } else {
                         window.alert("Carte de livre inconnue");
                     }
@@ -67,6 +68,7 @@ async function verifier_action() {
                     if (index !== -1) {
                         const resultat = await api_retour(requete_livre.val.id[index]);
                         window.alert(G_CODE_ERREURS[resultat.code]);
+                        window.location.href = window.location.href.split("?")[0];
                     } else {
                         window.alert("Carte de livre inconnue");
                     }

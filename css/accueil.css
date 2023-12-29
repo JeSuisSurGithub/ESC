@@ -145,6 +145,7 @@ header .search {
     margin-top: 40px;
     margin-left: 2vw;
     margin-bottom: 120px;
+    flex-direction: column;
 }
 
 #titre-gauche {
