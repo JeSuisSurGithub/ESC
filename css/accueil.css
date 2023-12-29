@@ -315,6 +315,7 @@ h3 {
     margin-bottom: 10%; /* Utilisation d'une marge relative */
     float: right;
     margin-right: 7%;
+    width: 100%;
 }
 
 .genre-name {
