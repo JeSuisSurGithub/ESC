@@ -207,7 +207,6 @@ h3 {
     /* padding: 2rem; */
     background: white;
 
-    position: relative;
     max-width: 55%;
     padding: auto;
     border: 1px solid black;
@@ -302,8 +301,7 @@ h3 {
 
 .graphe {
     display: flex;
-    position: relative;
-    top:2em;
+    top: 2em;
     flex-direction: column;
     border: 1px solid black;
     border-radius: 10px;
