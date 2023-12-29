@@ -140,9 +140,10 @@ header .search {
 }
 
 .left-info {
-    width: 50vw;
+    width: 48vw;
     float: left;
     margin-top: 40px;
+    margin-left: 2vw;
     margin-bottom: 120px;
 }
 
@@ -177,10 +178,10 @@ img {
 }
 
 .right-info {
-    width: 45vw;
+    width: 48vw;
     float: right;
     margin-top: 40px;
-    margin-right: 5vw;
+    margin-right: 2vw;
     margin-bottom: 120px;
 }
 
@@ -340,4 +341,8 @@ h3 {
 .genre-percent {
     height: 100%;
     border-radius: 10px;
+}
+
+#stats {
+    padding: 2px;
 }
