@@ -184,18 +184,22 @@ h1 {
     font-weight: 600;
   }
   .calendar {
+    position: relative;
+
     margin: auto;
     width: 98%;
-    max-width: 380px;
+    max-width: 55%;
     padding: 1rem;
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     padding: auto;
     background: white;
-    position: absolute;
     border: 1px solid black;
-    top: 14%;
+    top: 2em;
+    left:0;
+    float: left;
+    margin-right: 1em;
   }
   .calendar table {
     display: flex;
