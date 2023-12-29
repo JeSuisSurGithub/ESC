@@ -15,7 +15,7 @@ body {
 }
 
 header {
-    position: absolute;
+    position: sticky;
     top: 0;
     left: 0;
     width: 100%;
@@ -140,10 +140,10 @@ header .search {
 }
 
 .left-info {
-    padding-top: 100px;
-    padding-left: 50px;
     width: 50vw;
     float: left;
+    margin-top: 40px;
+    margin-bottom: 120px;
 }
 
 #titre-gauche {
@@ -177,9 +177,11 @@ img {
 }
 
 .right-info {
-    width: 50vw;
+    width: 45vw;
     float: right;
-    margin-top: 120px;
+    margin-top: 40px;
+    margin-right: 5vw;
+    margin-bottom: 120px;
 }
 
 h1 {
@@ -196,13 +198,22 @@ h3 {
 .calendar {
     margin: auto;
     width: 98%;
-    max-width: 380px;
+    /* max-width: 380px; */
     padding: 1rem;
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    padding: 2rem;
+    /* padding: 2rem; */
     background: white;
+
+    position: relative;
+    max-width: 55%;
+    padding: auto;
+    border: 1px solid black;
+    top: 2em;
+    left:0;
+    float: left;
+    margin-right: 1em;
 }
 
 .calendar table {
@@ -286,4 +297,47 @@ h3 {
 
 .dates li.inactive {
     color: #ccc;
+}
+
+.graphe {
+    display: flex;
+    position: relative;
+    top:2em;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+    justify-content: flex-end;
+}
+
+.genre {
+    margin-bottom: 10%; /* Utilisation d'une marge relative */
+    float: right;
+    margin-right: 7%;
+}
+
+.genre-name {
+    max-width: 80%; /* Utilisation de max-width pour la flexibilité */
+    text-align: right;
+    margin-left: 2%; /* Utilisation de marges relatives */
+    font-size: 11px;
+    float: right;
+    margin-right: 7%;
+}
+
+.genre-level {
+    width: 80%;
+    height: 8px;
+    background-color: #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-left: 2%; /* Utilisation de marges relatives */
+    margin-bottom: 2%; /* Utilisation d'une marge relative */
+    float: right;
+    margin-right: 7%;
+}
+
+.genre-percent {
+    height: 100%;
+    border-radius: 10px;
 }

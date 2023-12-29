@@ -2,6 +2,7 @@
 <html lang="fr">
   	<head>
     	<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     	<title>Accueil</title>
     	<link rel="stylesheet" href="/css/accueil.css">
     	<meta name="viewport" content="width=device-width, initial-scale=0.1">
@@ -32,29 +33,35 @@
 			<div id="liste_emprunts"></div>
 		</div>
       	<div class="right-info">
+			<h2 id="titre-gauche">Mes statistiques:</h2>
         	<div id="calendrier" class="calendar">
-          	<table>
-            	<h3></h3>
-				<nav>
-					<button id="prev"></button>
-					<button id="next"></button>
-				</nav>
-          	</table>
-          	<section>
-            	<ul class="days">
-              		<li>Dim</li>
-              		<li>Lun</li>
-              		<li>Mar</li>
-              		<li>Mer</li>
-              		<li>Jeu</li>
-              		<li>Ven</li>
-              		<li>Sam</li>
-            	</ul>
-            	<ul class="dates"></ul>
-          	</section>
-        </div>
+				<table>
+					<h3></h3>
+					<nav>
+						<button id="prev"></button>
+						<button id="next"></button>
+					</nav>
+				</table>
+				<section>
+					<ul class="days">
+						<li>Di</li>
+						<li>Lu</li>
+						<li>Ma</li>
+						<li>Me</li>
+						<li>Je</li>
+						<li>Ve</li>
+						<li>Sa</li>
+					</ul>
+					<ul class="dates"></ul>
+				</section>
+			</div>
+			<div class="graphe">
+				<p style="margin-left:8%; margin-top: 4%; font-size:16px; font-weight: bold;">Vos Genres préferés<br/></p>
+				<div id="stats"></div>
+			</div>
+		</div>
   	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script> 
+  	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   	<script src="/js/general.js"></script>
   	<script src="/js/navbar.js"></script>
     <script src="/js/accueil.js"></script>

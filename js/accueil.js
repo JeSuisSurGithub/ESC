@@ -112,3 +112,37 @@ navs.forEach((nav) => {
     });
 });
 render_calendar();
+
+// Statistiques
+const palette32 = [
+    "#000000","#222034","#45283c","#663931","#8f563b","#df7126",
+    "#d9a066","#eec39a","#fbf236","#99e550","#6abe30","#37946e",
+    "#4b692f","#524b24","#323c39","#3f3f74","#306082","#5b6ee1",
+    "#639bff","#5fcde4","#cbdbfc","#1adeb3","#9badb7","#847e87",
+    "#696a6a","#595652","#76428a","#ac3232","#d95763","#d77bba",
+    "#8f974a","#8a6f30",
+]
+
+(async () => {
+    const tag_stats = document.getElementById("stats");
+    const emprunts = await api_statut_emprunt();
+    if (emprunts.code > 0) {
+        let frequences = {};
+        for (let i = 0; i < emprunts.val.genre.length; i++) {
+            let genre = emprunts.val.genre[i];
+            frequences[genre] = frequences[genre] ? frequences[genre] + 1 : 1;
+        }
+        let n_emprunt_total = Object.values(frequences).reduce((total, val) => total + val, 0);
+        for (let i = 0; i < Object.keys(frequences).length; i++) {
+            tag_stats.innerHTML += `
+                <div class="genre">
+                    <div class="genre-name" style="font-weight: bold;">${Object.keys(frequences)[i]}</div>
+                    <div class="genre-level">
+                        <div style="background-color: ${palette32[i]}; width: ${(Object.values(frequences)[i] / n_emprunt_total) * 100}%;" class="genre-percent"></div>
+                    </div>
+                </div>`;
+        }
+    } else {
+        window.alert(G_CODE_ERREURS[emprunts.code]);
+    }
+})();
