@@ -5,7 +5,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
-
 }
 
 body{
@@ -13,8 +12,8 @@ body{
     min-height: 100vh;
     overflow-x: hidden;
     font-family: Poppins, sans-serif;
-
 }
+
 header{
     position: absolute;
     top: 0;
@@ -70,7 +69,6 @@ header ul li a::before{
     transform: scaleX(0);
     transition: transform 0.5s ease-in-out;
     transform-origin: right;
-     
 }
 
 header ul li a:hover::before{
@@ -145,6 +143,7 @@ header .search{
     padding-left: 50px;
     display: inline-flex;
     flex-wrap: wrap;
+    flex-direction: column;
 }
 
 #titre-gauche{
@@ -156,15 +155,16 @@ header .search{
 img{
     max-width: 90px;
     padding: 5px;
+    float: left;
 }
 
-.texte{
+.texte {
     display: inline-block;
 }
 
 .card {
     width: 500px;
-    height: 150px;
+    /* height: 150px; */
     background: rgb(255, 255, 255);
     border-radius: 0.4em;
     box-shadow: 0.3em 0.3em 0.7em #00000015;
@@ -173,7 +173,7 @@ img{
     margin-bottom: 30px;
     margin-left: 30px
    }
-   
+
 .card:hover {
     border: #ffffff 0.2em solid;
-   }
+}

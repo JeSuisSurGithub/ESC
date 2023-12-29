@@ -3,7 +3,9 @@
     const sortie = document.getElementById("liste_emprunts")
     const livres_empruntes = await api_statut_emprunt();
     if (livres_empruntes.code > 0) {
-        if (livres_empruntes.val.id_l.length === 0) {
+        // Si aucun emprunt ou tout emprunts rendu
+        if (livres_empruntes.val.rendu.length === 0 ||
+            livres_empruntes.val.rendu.reduce((total, val) => total + val, 0) === livres_empruntes.val.rendu.length) {
             sortie.innerHTML = `
                             <div class="card">
                                 <img src="/img/croix.png">
@@ -127,7 +129,8 @@ const palette32 = [
     const tag_stats = document.getElementById("stats");
     const emprunts = await api_statut_emprunt();
     if (emprunts.code > 0) {
-        if (emprunts.val.genre.length === 0) {
+        if (emprunts.val.rendu.length === 0 ||
+            emprunts.val.rendu.reduce((total, val) => total + val, 0) === emprunts.val.rendu.length) {
             tag_stats.innerHTML = "Vous n'avez aucun emprunt actif";
         }
         let frequences = {};
