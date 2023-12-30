@@ -68,8 +68,8 @@
         }, 1000);
 
         api_uid_nfc().then((requete_uid) => {
+            clearInterval(intervalle);
             if (requete_uid.code > 0) {
-                clearInterval(intervalle);
 
                 const redirection = construire_requete_get(decodeURIComponent(provenance), {
                     code: requete_uid.code,
@@ -77,6 +77,8 @@
                     uid: requete_uid.val
                 });
                 window.location.href = redirection;
+            } else {
+                window.alert(G_CODE_ERREURS[requete_uid.code])
             }
         });
     </script>

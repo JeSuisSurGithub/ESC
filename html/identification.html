@@ -27,15 +27,14 @@
         	</div>
       	</header>
         <div class="left-info">
-            <h2 id="titre-gauche">Cliquez et scannez pour identifier une carte!:</h2>
+            <h2 id="titre-gauche">Cliquez et scannez pour identifier une carte:</h2>
             <div class="card">
                 <div class="texte">
                     <input type="button" onclick="identifier()" value="Identifier"><br>
                     <p id="compteur"></p>
                 </div>
             </div>
-            <div id="res_ident" class="card">
-            </div>
+            <div id="res_ident"></div>
         </div>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -65,20 +64,23 @@
                             if (res_hist.code > 0) {
                                 const sortie = document.getElementById("res_ident");
                                 // Si n'a jamais été emprunté ou emprunté mais rendu
-                                const disponible = (res_hist.val.rendu.length === 0 || res_hist.val.rendu[res_hist.val.rendu.length - 1] === 1);
+                                const disponible
+                                    = (res_hist.val.rendu.length === 0 || res_hist.val.rendu[res_hist.val.rendu.length - 1] === 1);
                                 sortie.innerHTML = `
-                                        <img src="/upload/${res_hist.val.nom_image[0]}">
+                                    <div class="card">
+                                        <img src="/upload/${requete_livre.val.nom_image[index]}">
                                         <div class="texte">
                                             <p>
-                                                Titre : ${res_hist.val.titre[0]}<br/>
-                                                Genre: ${res_hist.val.genre[0]}<br/>
-                                                Rayon: ${res_hist.val.rayon[0]}<br/>
-                                                Date de Parution: ${res_hist.val.date_parution[0]}<br/>
-                                                Disponible: ${disponible}
+                                                Titre : ${requete_livre.val.titre[index]}<br/>
+                                                Genre: ${requete_livre.val.genre[index]}<br/>
+                                                Rayon: ${requete_livre.val.rayon[index]}<br/>
+                                                Date de Parution: ${requete_livre.val.date_parution[index]}<br/>
+                                                Disponibilité: ${disponible}
                                             </p>
-                                        </div>`;
+                                        </div>
+                                    </div>`;
                             } else {
-                                window.alert(G_CODE_ERREURS[res_hist.code])
+                                window.alert(G_CODE_ERREURS[res_hist.code]);
                             }
                         } else {
                             window.alert("Carte de livre inconnue");
