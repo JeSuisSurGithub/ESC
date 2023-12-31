@@ -119,15 +119,9 @@ async def rqt_obtenir_livre():
             "nom_image": []}
 
         for ligne in resultats:
-            json["id"].append(ligne["id"])
-            json["titre"].append(ligne["titre"])
-            json["genre"].append(ligne["genre"])
-            json["auteur"].append(ligne["auteur"])
-            json["editeur"].append(ligne["editeur"])
-            json["rayon"].append(ligne["rayon"])
-            json["date_parution"].append(ligne["date_parution"])
-            json["uid_nfc"].append(ligne["uid_nfc"])
-            json["nom_image"].append(ligne["nom_image"])
+            for cle in json.keys():
+                json[cle].append(ligne[cle])
+
         return (erreurs.OK_RQT_LIVRE_LIST, json)
     except Exception as e:
         print(f"Error: {e}")
@@ -182,20 +176,9 @@ async def rqt_obtenir_emprunts_u(id_u):
             "rendu": []}
 
         for ligne in resultats:
-            json["id_l"].append(ligne["id_l"])
-            json["titre"].append(ligne["titre"])
-            json["genre"].append(ligne["genre"])
-            json["auteur"].append(ligne["auteur"])
-            json["editeur"].append(ligne["editeur"])
-            json["rayon"].append(ligne["rayon"])
-            json["date_parution"].append(ligne["date_parution"])
-            json["uid_nfc"].append(ligne["uid_nfc"])
-            json["nom_image"].append(ligne["nom_image"])
-            json["id_e"].append(ligne["id_e"])
-            json["id_u"].append(ligne["id_u"])
-            json["date_debut"].append(ligne["date_debut"])
-            json["date_fin"].append(ligne["date_fin"])
-            json["rendu"].append(ligne["rendu"])
+            for cle in json.keys():
+                json[cle].append(ligne[cle])
+
         return (erreurs.OK_RQT_EMPRUNT_LIST_COMPTE, json)
     except Exception as e:
         print(f"Error: {e}")
@@ -226,20 +209,9 @@ async def rqt_obtenir_emprunts_l(id_l):
             "rendu": []}
 
         for ligne in resultats:
-            json["id_l"].append(ligne["id_l"])
-            json["titre"].append(ligne["titre"])
-            json["genre"].append(ligne["genre"])
-            json["auteur"].append(ligne["auteur"])
-            json["editeur"].append(ligne["editeur"])
-            json["rayon"].append(ligne["rayon"])
-            json["date_parution"].append(ligne["date_parution"])
-            json["uid_nfc"].append(ligne["uid_nfc"])
-            json["nom_image"].append(ligne["nom_image"])
-            json["id_e"].append(ligne["id_e"])
-            json["id_u"].append(ligne["id_u"])
-            json["date_debut"].append(ligne["date_debut"])
-            json["date_fin"].append(ligne["date_fin"])
-            json["rendu"].append(ligne["rendu"])
+            for cle in json.keys():
+                json[cle].append(ligne[cle])
+
         return (erreurs.OK_RQT_EMPRUNT_LIST_LIVRE, json)
     except Exception as e:
         print(f"Error: {e}")
