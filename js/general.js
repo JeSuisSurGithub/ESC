@@ -154,10 +154,12 @@ function api_desinscription(email, motdepasse) {
     });
 }
 
-function api_ajout(titre, genre, rayon, date_parution, uid_nfc, nom_image, image_b64) {
+function api_ajout(titre, genre, auteur, editeur, rayon, date_parution, uid_nfc, nom_image, image_b64) {
     return requete_post("/api_ajout", {
         titre: titre,
         genre: genre,
+        auteur: auteur,
+        editeur: editeur,
         rayon: rayon,
         date_parution: date_parution,
         uid_nfc: uid_nfc,

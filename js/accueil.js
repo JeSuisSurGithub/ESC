@@ -25,6 +25,8 @@
                                         <p>
                                             Titre : ${livres_empruntes.val.titre[i]} <br/>
                                             Genre: ${livres_empruntes.val.genre[i]} <br/>
+                                            Auteur: ${livres_empruntes.val.auteur[i]} <br/>
+                                            Editeur: ${livres_empruntes.val.editeur[i]} <br/>
                                             Date d'emprunt: ${livres_empruntes.val.date_debut[i]} <br/>
                                             Date de retour: ${livres_empruntes.val.date_fin[i]} <br/>
                                             <br/>

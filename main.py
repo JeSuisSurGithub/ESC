@@ -35,6 +35,8 @@ class JSONConnexion(BaseModel):
 class JSONAjoutLivre(BaseModel):
     titre: str
     genre: str
+    auteur: str
+    editeur: str
     rayon: str
     date_parution: str
     uid_nfc: str
@@ -132,13 +134,15 @@ async def api_ajout(info_ajout: JSONAjoutLivre):
 
         titre = info_ajout.titre
         genre = info_ajout.genre
+        auteur = info_ajout.auteur
+        editeur = info_ajout.editeur
         rayon = info_ajout.rayon
         date_parution = info_ajout.date_parution
         uid_nfc = info_ajout.uid_nfc
         nom_image = info_ajout.nom_image
         image_b64 = info_ajout.image_b64
 
-        code, val = await requetes.rqt_ajout_livre(titre, genre, rayon, date_parution, uid_nfc, nom_image)
+        code, val = await requetes.rqt_ajout_livre(titre, genre, auteur, editeur, rayon, date_parution, uid_nfc, nom_image)
 
         try:
             with open(f"upload/{nom_image}", "wb") as f:

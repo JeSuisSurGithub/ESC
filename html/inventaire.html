@@ -32,6 +32,8 @@
                 <div class="texte">
                     <input type="text" id="titre" placeholder="Titre" name="titre"><br/>
                     <input type="text" id="genre" placeholder="Genre" name="genre"><br/>
+                    <input type="text" id="auteur" placeholder="Auteur" name="auteur"><br/>
+                    <input type="text" id="editeur" placeholder="Editeur" name="editeur"><br/>
                     <input type="text" id="rayon" placeholder="Rayon" name="rayon"><br/>
                     <input type="date" id="date_parution" placeholder="Date de Parution" name="date_parution"><br/>
                     <input type="file" id="image_couverture" placeholder="Image de Couverture" name="image_couverture"><br/>
@@ -49,6 +51,8 @@
             async function ajout_livre() {
                 const tag_titre         = document.getElementById("titre");
                 const tag_genre         = document.getElementById("genre");
+                const tag_auteur         = document.getElementById("auteur");
+                const tag_editeur         = document.getElementById("editeur");
                 const tag_rayon         = document.getElementById("rayon");
                 const tag_parution      = document.getElementById("date_parution");
                 const tag_couverture    = document.getElementById("image_couverture");
@@ -60,6 +64,12 @@
                 }
                 if (tag_genre.value.length < 1) {
                     info += "Vous devez spécifier le genre\n";
+                }
+                if (tag_auteur.value.length < 1) {
+                    info += "Vous devez spécifier l'auteur\n";
+                }
+                if (tag_editeur.value.length < 1) {
+                    info += "Vous devez spécifier l'éditeur\n";
                 }
                 if (tag_rayon.value.length < 1) {
                     info += "Vous devez spécifier le rayon\n";
@@ -96,6 +106,8 @@
                         const res_ajout = await api_ajout(
                             tag_titre.value,
                             tag_genre.value,
+                            tag_auteur.value,
+                            tag_editeur.value,
                             tag_rayon.value,
                             tag_parution.value,
                             res.val,

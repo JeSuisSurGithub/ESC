@@ -85,13 +85,15 @@ async def rqt_supprimer_compte(id_u):
         print(f"Error: {e}")
         return (erreurs.ER_RQT_COMPTE_SUPP, None)
 
-async def rqt_ajout_livre(titre, genre, rayon, date_parution, uid_nfc, nom_image):
+async def rqt_ajout_livre(titre, genre, auteur, editeur, rayon, date_parution, uid_nfc, nom_image):
     try:
-        requete = '''INSERT INTO LIVRE (titre, genre, rayon, date_parution, uid_nfc, nom_image)
-            VALUES (:titre, :genre, :rayon, :date_parution, :uid_nfc, :nom_image)'''
+        requete = '''INSERT INTO LIVRE (titre, genre, auteur, editeur, rayon, date_parution, uid_nfc, nom_image)
+            VALUES (:titre, :genre, :auteur, :editeur, :rayon, :date_parution, :uid_nfc, :nom_image)'''
         await G_DB.execute(requete, {
             "titre": titre,
             "genre": genre,
+            "auteur": auteur,
+            "editeur": editeur,
             "rayon": rayon,
             "date_parution": date_parution,
             "uid_nfc": uid_nfc,
@@ -103,12 +105,14 @@ async def rqt_ajout_livre(titre, genre, rayon, date_parution, uid_nfc, nom_image
 
 async def rqt_obtenir_livre():
     try:
-        requete = "SELECT id, titre, genre, rayon, date_parution, uid_nfc, nom_image FROM LIVRE"
+        requete = "SELECT id, titre, genre, auteur, editeur, rayon, date_parution, uid_nfc, nom_image FROM LIVRE"
         resultats = await G_DB.fetch_all(requete)
         json = {
             "id": [],
             "titre": [],
             "genre": [],
+            "auteur": [],
+            "editeur": [],
             "rayon": [],
             "date_parution": [],
             "uid_nfc": [],
@@ -118,6 +122,8 @@ async def rqt_obtenir_livre():
             json["id"].append(ligne["id"])
             json["titre"].append(ligne["titre"])
             json["genre"].append(ligne["genre"])
+            json["auteur"].append(ligne["auteur"])
+            json["editeur"].append(ligne["editeur"])
             json["rayon"].append(ligne["rayon"])
             json["date_parution"].append(ligne["date_parution"])
             json["uid_nfc"].append(ligne["uid_nfc"])
@@ -154,7 +160,7 @@ async def rqt_emprunter(id_u, id_l, date_debut, date_fin):
 async def rqt_obtenir_emprunts_u(id_u):
     try:
         requete = ''' SELECT
-            LIVRE.id as id_l, titre, genre, rayon, date_parution, uid_nfc, nom_image,
+            LIVRE.id as id_l, titre, genre, auteur, editeur, rayon, date_parution, uid_nfc, nom_image,
             EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
             FROM LIVRE JOIN EMPRUNT
                 ON LIVRE.id==EMPRUNT.id_l WHERE id_u=:id_u'''
@@ -163,6 +169,8 @@ async def rqt_obtenir_emprunts_u(id_u):
             "id_l": [],
             "titre": [],
             "genre": [],
+            "auteur": [],
+            "editeur": [],
             "rayon": [],
             "date_parution": [],
             "uid_nfc": [],
@@ -177,6 +185,8 @@ async def rqt_obtenir_emprunts_u(id_u):
             json["id_l"].append(ligne["id_l"])
             json["titre"].append(ligne["titre"])
             json["genre"].append(ligne["genre"])
+            json["auteur"].append(ligne["auteur"])
+            json["editeur"].append(ligne["editeur"])
             json["rayon"].append(ligne["rayon"])
             json["date_parution"].append(ligne["date_parution"])
             json["uid_nfc"].append(ligne["uid_nfc"])
@@ -194,7 +204,7 @@ async def rqt_obtenir_emprunts_u(id_u):
 async def rqt_obtenir_emprunts_l(id_l):
     try:
         requete = '''SELECT
-            LIVRE.id as id_l, titre, genre, rayon, date_parution, uid_nfc, nom_image,
+            LIVRE.id as id_l, titre, genre, auteur, editeur, rayon, date_parution, uid_nfc, nom_image,
             EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
             FROM LIVRE JOIN EMPRUNT
                 ON LIVRE.id==EMPRUNT.id_l WHERE id_l=:id_l'''
@@ -203,6 +213,8 @@ async def rqt_obtenir_emprunts_l(id_l):
             "id_l": [],
             "titre": [],
             "genre": [],
+            "auteur": [],
+            "editeur": [],
             "rayon": [],
             "date_parution": [],
             "uid_nfc": [],
@@ -217,6 +229,8 @@ async def rqt_obtenir_emprunts_l(id_l):
             json["id_l"].append(ligne["id_l"])
             json["titre"].append(ligne["titre"])
             json["genre"].append(ligne["genre"])
+            json["auteur"].append(ligne["auteur"])
+            json["editeur"].append(ligne["editeur"])
             json["rayon"].append(ligne["rayon"])
             json["date_parution"].append(ligne["date_parution"])
             json["uid_nfc"].append(ligne["uid_nfc"])

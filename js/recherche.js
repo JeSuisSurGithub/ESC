@@ -1,10 +1,9 @@
-function recherche(entree, vtitre, vgenre) {
+function recherche(entree, vtitre, vgenre, vauteur) {
     const termes = entree.split(" ");
     let vid = []
 
     boucle_ext: for (let i = 0; i < vtitre.length; i++) {
         let titre = vtitre[i];
-
         for (const terme of termes) {
             if (titre.toLowerCase().includes(terme.toLowerCase())) {
                 vid.push(i);
@@ -19,6 +18,14 @@ function recherche(entree, vtitre, vgenre) {
                 continue boucle_ext;
             }
         };
+
+        let auteur = vauteur[i];
+        for (const terme of termes) {
+            if (auteur.toLowerCase().includes(terme.toLowerCase())) {
+                vid.push(i);
+                continue boucle_ext;
+            }
+        };
     }
     return vid;
 }
@@ -29,7 +36,7 @@ function recherche(entree, vtitre, vgenre) {
     const livres = await api_livres();
     if (livres.code > 0) {
         const entree = decodeURIComponent(parametre_get("entree"));
-        const indices = recherche(entree, livres.val.titre, livres.val.genre);
+        const indices = recherche(entree, livres.val.titre, livres.val.genre, livres.val.auteur);
         if (indices.length === 0) {
             sortie.innerHTML = `
                             <div class="card">
@@ -49,6 +56,8 @@ function recherche(entree, vtitre, vgenre) {
                                     <p>
                                         Titre : ${livres.val.titre[indices[i]]} <br/>
                                         Genre: ${livres.val.genre[indices[i]]} <br/>
+                                        Auteur: ${livres.val.auteur[indices[i]]} <br/>
+                                        Editeur: ${livres.val.editeur[indices[i]]} <br/>
                                         Rayon: ${livres.val.rayon[indices[i]]} <br/>
                                         Date de Parution: ${livres.val.date_parution[indices[i]]} <br/>
                                         <br/>
