@@ -151,26 +151,20 @@ async def rqt_emprunter(id_u, id_l, date_debut, date_fin):
         print(f"Error: {e}")
         return (erreurs.ER_RQT_EMPRUNT_CREA, None)
 
-async def rqt_obtenir_emprunts_u(id_u):
+async def rqt_obtenir_emprunts(id_u):
     try:
-        requete = ''' SELECT
-            LIVRE.id as id_l, titre, genre, auteur, editeur, rayon, date_parution, uid_nfc, nom_image,
-            EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
+        requete = '''SELECT titre, genre, auteur, editeur, date_parution, nom_image,
+            date_debut, date_fin, rendu
             FROM LIVRE JOIN EMPRUNT
                 ON LIVRE.id==EMPRUNT.id_l WHERE id_u=:id_u'''
         resultats = await G_DB.fetch_all(requete, {"id_u": id_u})
         json = {
-            "id_l": [],
             "titre": [],
             "genre": [],
             "auteur": [],
             "editeur": [],
-            "rayon": [],
             "date_parution": [],
-            "uid_nfc": [],
             "nom_image": [],
-            "id_e": [],
-            "id_u": [],
             "date_debut": [],
             "date_fin": [],
             "rendu": []}
@@ -179,43 +173,48 @@ async def rqt_obtenir_emprunts_u(id_u):
             for cle in json.keys():
                 json[cle].append(ligne[cle])
 
-        return (erreurs.OK_RQT_EMPRUNT_LIST_COMPTE, json)
+        return (erreurs.OK_RQT_EMPRUNT_LIST, json)
     except Exception as e:
         print(f"Error: {e}")
-        return(erreurs.ER_RQT_EMPRUNT_LIST_COMPTE, None)
+        return(erreurs.ER_RQT_EMPRUNT_LIST, None)
 
-async def rqt_obtenir_emprunts_l(id_l):
+async def rqt_obtenir_livre_par_uid(uid_nfc):
     try:
         requete = '''SELECT
-            LIVRE.id as id_l, titre, genre, auteur, editeur, rayon, date_parution, uid_nfc, nom_image,
-            EMPRUNT.id as id_e, id_u, date_debut, date_fin, rendu
+            titre, genre, auteur, editeur, rayon, date_parution, nom_image, EMPRUNT.id as id_e, id_u, rendu,
             FROM LIVRE JOIN EMPRUNT
-                ON LIVRE.id==EMPRUNT.id_l WHERE id_l=:id_l'''
-        resultats = await G_DB.fetch_all(requete, {"id_l": id_l})
+                ON LIVRE.id==EMPRUNT.id_l WHERE uid_nfc=:uid_nfc
+                ORDER BY EMPRUNT.id DESC LIMIT 1'''
+        resultats = await G_DB.fetch_all(requete, {"uid_nfc": uid_nfc})
         json = {
-            "id_l": [],
-            "titre": [],
-            "genre": [],
-            "auteur": [],
-            "editeur": [],
-            "rayon": [],
-            "date_parution": [],
-            "uid_nfc": [],
-            "nom_image": [],
-            "id_e": [],
-            "id_u": [],
-            "date_debut": [],
-            "date_fin": [],
-            "rendu": []}
+            "titre": None,
+            "genre": None,
+            "auteur": None,
+            "editeur": None,
+            "rayon": None,
+            "date_parution": None,
+            "nom_image": None,
+            "id_e": None,
+            "id_u": None,
+            "rendu": None}
 
-        for ligne in resultats:
-            for cle in json.keys():
-                json[cle].append(ligne[cle])
+        if len(resultats) != 0:
+            json = {
+                "titre": resultats[0]["titre"],
+                "genre": resultats[0]["genre"],
+                "auteur": resultats[0]["auteur"],
+                "editeur": resultats[0]["editeur"],
+                "rayon": resultats[0]["rayon"],
+                "date_parution": resultats[0]["date_parution"],
+                "nom_image": resultats[0]["nom_image"],
+                "id_e": resultats[0]["id_e"],
+                "id_u": resultats[0]["id_u"],
+                "rendu": resultats[0]["rendu"]}
 
-        return (erreurs.OK_RQT_EMPRUNT_LIST_LIVRE, json)
+        return (erreurs.OK_RQT_LIVRE_INFO_UID, json)
     except Exception as e:
         print(f"Error: {e}")
-        return (erreurs.ER_RQT_EMPRUNT_LIST_LIVRE, None)
+        return (erreurs.ER_RQT_LIVRE_INFO_UID, None)
 
 async def rqt_retour(id_e):
     try:

@@ -52,11 +52,10 @@ async function verifier_action() {
     if (code > 0) {
         const info_conn = await api_statut();
         if (info_conn.code > 0) {
-            const requete_livre = await api_livres();
-            if (requete_livre.code > 0) {
-                const index = requete_livre.val.uid_nfc.indexOf(parametre_get("uid"))
-
-                if (parametre_get("action") == "emprunt") {
+            if (parametre_get("action") === "emprunt") {
+                const requete_livre = await api_livres();
+                if (requete_livre.code > 0) {
+                    const index = requete_livre.val.uid_nfc.indexOf(parametre_get("uid"));
                     if (index !== -1) {
                         const resultat = await api_emprunt(requete_livre.val.id[index]);
                         window.alert(G_CODE_ERREURS[resultat.code]);
@@ -64,20 +63,21 @@ async function verifier_action() {
                     } else {
                         window.alert("Carte de livre inconnue");
                     }
-                } else if (parametre_get("action") == "retour") {
-                    if (index !== -1) {
-                        const resultat = await api_retour(requete_livre.val.id[index]);
-                        window.alert(G_CODE_ERREURS[resultat.code]);
-                        window.location.href = window.location.href.split("?")[0];
-                    } else {
-                        window.alert("Carte de livre inconnue");
-                    }
-                } else {
-                    window.alert("Action impossible")
+                }
+                else {
+                    window.alert(G_CODE_ERREURS[requete_livre.code]);
                 }
             }
-            else {
-                window.alert(G_CODE_ERREURS[requete_livre.code]);
+            else if (parametre_get("action") == "retour") {
+                if (index !== -1) {
+                    const resultat = await api_retour(parametre_get("uid"));
+                    window.alert(G_CODE_ERREURS[resultat.code]);
+                    window.location.href = window.location.href.split("?")[0];
+                } else {
+                    window.alert("Carte de livre inconnue");
+                }
+            } else {
+                window.alert("Action impossible")
             }
         } else {
             window.alert(G_CODE_ERREURS[info_conn.code]);

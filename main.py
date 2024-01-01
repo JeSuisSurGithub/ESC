@@ -33,17 +33,17 @@ DUREE_EMPRUNT_SEMAINE = 2
 G_INFO_CONNEXION = None
 G_CAPTEUR_EN_UTILISATION = False
 
-class JSONInscription(BaseModel):
+class JsonInscription(BaseModel):
     email: str
     motdepasse: str
     pseudo: str
     naissance: str
 
-class JSONConnexion(BaseModel):
+class JsonConnexion(BaseModel):
     email: str
     motdepasse: str
 
-class JSONAjoutLivre(BaseModel):
+class JsonAjoutLivre(BaseModel):
     titre: str
     genre: str
     auteur: str
@@ -54,8 +54,11 @@ class JSONAjoutLivre(BaseModel):
     nom_image: str
     image_b64: str
 
-class JSONIDLivre(BaseModel):
+class JsonIdLivre(BaseModel):
     id_l: str
+
+class JsonUidLivre(BaseModel):
+    uid: str
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -93,7 +96,7 @@ async def api_deconnexion():
     return {"code": erreurs.OK_API_DECONNECT}
 
 @app.post("/api_inscription")
-async def api_inscription(info_reg: JSONInscription):
+async def api_inscription(info_reg: JsonInscription):
     global G_INFO_CONNEXION
 
     email = info_reg.email
@@ -108,7 +111,7 @@ async def api_inscription(info_reg: JSONInscription):
     return {"code": code, "val": val}
 
 @app.post("/api_connexion")
-async def api_connexion(info_conn: JSONConnexion):
+async def api_connexion(info_conn: JsonConnexion):
     global G_INFO_CONNEXION
 
     email = info_conn.email
@@ -120,7 +123,7 @@ async def api_connexion(info_conn: JSONConnexion):
     return {"code": code, "val": val}
 
 @app.post("/api_desinscription")
-async def api_desinscription(info_conn: JSONConnexion):
+async def api_desinscription(info_conn: JsonConnexion):
     global G_INFO_CONNEXION
 
     # Admin si grade = 0, Usager régulier si grade != 0
@@ -138,7 +141,7 @@ async def api_desinscription(info_conn: JSONConnexion):
         return {"code": erreurs.ER_API_DROIT_USAGER}
 
 @app.post("/api_ajout")
-async def api_ajout(info_ajout: JSONAjoutLivre):
+async def api_ajout(info_ajout: JsonAjoutLivre):
     global G_INFO_CONNEXION
 
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):
@@ -170,7 +173,7 @@ async def api_livres():
     return {"code": code, "val": val}
 
 @app.post("/api_retrait")
-async def api_retrait(info_supp: JSONIDLivre):
+async def api_retrait(info_supp: JsonIdLivre):
     global G_INFO_CONNEXION
 
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):
@@ -180,7 +183,7 @@ async def api_retrait(info_supp: JSONIDLivre):
     return {"code": erreurs.ER_API_DROIT_ADMIN}
 
 @app.post("/api_emprunt")
-async def api_emprunt(info_emprunt: JSONIDLivre):
+async def api_emprunt(info_emprunt: JsonIdLivre):
     global G_INFO_CONNEXION
 
     id_l = info_emprunt.id_l
@@ -201,36 +204,38 @@ async def api_emprunt(info_emprunt: JSONIDLivre):
             return {"code": code}
     return {"code": erreurs.ER_API_DROIT_USAGER}
 
-@app.get("/api_statut_emprunt")
-async def api_statut_emprunt():
+@app.get("/api_liste_emprunts")
+async def api_liste_emprunts():
     global G_INFO_CONNEXION
 
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
-        code, val = await requetes.rqt_obtenir_emprunts_u(G_INFO_CONNEXION["id"])
+        code, val = await requetes.rqt_obtenir_emprunts(G_INFO_CONNEXION["id"])
         return {"code": code, "val": val}
     return {"code": erreurs.ER_API_DROIT_USAGER}
 
-@app.get("/api_hist_livre")
-async def api_hist_livre(id_l: str):
-    code, val = await requetes.rqt_obtenir_emprunts_l(id_l)
+@app.get("/api_info_livre")
+async def api_info_livre(uid_nfc: str):
+    code, val = await requetes.rqt_obtenir_livre_par_uid(uid_nfc)
     return {"code": code, "val": val}
 
 @app.post("/api_retour")
-async def api_retour(info_retour: JSONIDLivre):
+async def api_retour(info_retour: JsonUidLivre):
     global G_INFO_CONNEXION
 
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
-        id_l = info_retour.id_l
-        code, val = await requetes.rqt_obtenir_emprunts_l(id_l)
+        uid = info_retour.uid
+        code, val = await requetes.rqt_obtenir_livre_par_uid(uid)
 
-        # Vérifie si il a déja été rendu ou est emprunté depuis un autre compte
-        if (len(val["rendu"]) == 0):
+        # Aucun emprunt
+        if (val["rendu"] == None):
             return {"code": erreurs.ER_API_EMPRUNT_INACTIF}
 
-        elif (val["rendu"][-1] == True):
+        # Emprunt rendu
+        elif (val["rendu"] == True):
             return {"code": erreurs.ER_API_EMPRUNT_INACTIF}
 
-        elif (val["id_u"][-1] != G_INFO_CONNEXION["id"]):
+        # Emprunté depuis un compte différent
+        elif (val["id_u"] != G_INFO_CONNEXION["id"]):
             return {"code": erreurs.ER_API_EMPRUNT_DROIT_COMPTE}
 
         else:

@@ -15,10 +15,10 @@ OK_RQT_LIVRE_SUPP           =   6
 ER_RQT_LIVRE_SUPP           =  -6
 OK_RQT_EMPRUNT_CREA         =   7
 ER_RQT_EMPRUNT_CREA         =  -7
-OK_RQT_EMPRUNT_LIST_COMPTE  =   8
-ER_RQT_EMPRUNT_LIST_COMPTE  =  -8
-OK_RQT_EMPRUNT_LIST_LIVRE   =   9
-ER_RQT_EMPRUNT_LIST_LIVRE   =  -9
+OK_RQT_EMPRUNT_LIST         =   8
+ER_RQT_EMPRUNT_LIST         =  -8
+OK_RQT_LIVRE_INFO_UID       =   9
+ER_RQT_LIVRE_INFO_UID       =  -9
 OK_RQT_EMPRUNT_MOD_RETOUR   =  10
 ER_RQT_EMPRUNT_MOD_RETOUR   = -10
 
@@ -54,10 +54,10 @@ G_CODE_ERREURS = {
     ER_RQT_LIVRE_SUPP           : "Retrait du livre échoué",
     OK_RQT_EMPRUNT_CREA         : "Emprunt réussi",
     ER_RQT_EMPRUNT_CREA         : "Emprunt échoué",
-    OK_RQT_EMPRUNT_LIST_COMPTE  : "Listage des emprunts par compte réussi",
-    ER_RQT_EMPRUNT_LIST_COMPTE  : "Listage des emprunts par compte échoué",
-    OK_RQT_EMPRUNT_LIST_LIVRE   : "Listage des emprunts par livres réussi",
-    ER_RQT_EMPRUNT_LIST_LIVRE   : "Listage des emprunts par livres échoué",
+    OK_RQT_EMPRUNT_LIST         : "Listage des emprunts par compte réussi",
+    ER_RQT_EMPRUNT_LIST         : "Listage des emprunts par compte échoué",
+    OK_RQT_LIVRE_INFO_UID       : "Obtention des informations par UID réussi",
+    ER_RQT_LIVRE_INFO_UID       : "Obtention des informations par UID échoué",
     OK_RQT_EMPRUNT_MOD_RETOUR   : "Retour réussi",
     ER_RQT_EMPRUNT_MOD_RETOUR   : "Retour échoué",
     OK_API_INFO_CONN            : "Obtention du statut de connexion réussi",

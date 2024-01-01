@@ -9,14 +9,14 @@ const palette32 = [
 
 // Liste emprunts
 (async () => {
-    const emprunts = await api_statut_emprunt();
+    const emprunts = await api_liste_emprunts();
     if (emprunts.code > 0) {
         // Affichage
         {
             const sortie = document.getElementById("liste_emprunts")
+            let n_emprunts = emprunts.val.titre.length;
             // Si aucun emprunt ou tout emprunts rendu
-            if (emprunts.val.rendu.length === 0 ||
-                emprunts.val.rendu.reduce((total, val) => total + val, 0) === emprunts.val.rendu.length) {
+            if (n_emprunts === 0 || emprunts.val.rendu.reduce((total, val) => total + val, 0) === n_emprunts) {
                 sortie.innerHTML = `
                                 <div class="card">
                                     <img src="/img/croix.png">
@@ -27,7 +27,7 @@ const palette32 = [
                                     </div>
                                 </div>`
             }
-            for (let i = 0; i < emprunts.val.id_l.length; i++) {
+            for (let i = 0; i < n_emprunts; i++) {
                 if (emprunts.val.rendu[i] === 0) {
                     sortie.innerHTML += `
                                     <div class="card">
@@ -38,6 +38,7 @@ const palette32 = [
                                                 Genre: ${emprunts.val.genre[i]} <br/>
                                                 Auteur: ${emprunts.val.auteur[i]} <br/>
                                                 Editeur: ${emprunts.val.editeur[i]} <br/>
+                                                Date de Parution: ${emprunts.val.date_parution[i]} <br/>
                                                 Date d'emprunt: ${emprunts.val.date_debut[i]} <br/>
                                                 Date de retour: ${emprunts.val.date_fin[i]} <br/>
                                                 <br/>
@@ -51,24 +52,20 @@ const palette32 = [
         // Stats
         {
             const tag_stats = document.getElementById("stats");
-            if (emprunts.val.rendu.length === 0 ||
-                emprunts.val.rendu.reduce((total, val) => total + val, 0) === emprunts.val.rendu.length) {
-                tag_stats.innerHTML = "Vous n'avez aucun emprunt actif";
+            if (n_emprunts === 0) {
+                tag_stats.innerHTML = "Vous n'avez aucun emprunt";
             }
             let frequences = {};
-            for (let i = 0; i < emprunts.val.genre.length; i++) {
-                if (emprunts.val.rendu[i] === 0) {
-                    let genre = emprunts.val.genre[i];
-                    frequences[genre] = frequences[genre] ? frequences[genre] + 1 : 1;
-                }
+            for (let i = 0; i < n_emprunts; i++) {
+                let genre = emprunts.val.genre[i];
+                frequences[genre] = frequences[genre] ? frequences[genre] + 1 : 1;
             }
-            let n_emprunt_total = Object.values(frequences).reduce((total, val) => total + val, 0);
             for (let i = 0; i < Object.keys(frequences).length; i++) {
                 tag_stats.innerHTML += `
                     <div class="genre">
                         <div class="genre-name" style="font-weight: bold;">${Object.keys(frequences)[i]}</div>
                         <div class="genre-level">
-                            <div style="background-color: ${palette32[i]}; width: ${(Object.values(frequences)[i] / n_emprunt_total) * 100}%;" class="genre-percent"></div>
+                            <div style="background-color: ${palette32[i]}; width: ${(Object.values(frequences)[i] / n_emprunts) * 100}%;" class="genre-percent"></div>
                         </div>
                     </div>`;
             }

@@ -14,10 +14,10 @@ const OK_RQT_LIVRE_SUPP = 6;
 const ER_RQT_LIVRE_SUPP = -6;
 const OK_RQT_EMPRUNT_CREA = 7;
 const ER_RQT_EMPRUNT_CREA = -7;
-const OK_RQT_EMPRUNT_LIST_COMPTE = 8;
-const ER_RQT_EMPRUNT_LIST_COMPTE = -8;
-const OK_RQT_EMPRUNT_LIST_LIVRE = 9;
-const ER_RQT_EMPRUNT_LIST_LIVRE = -9;
+const OK_RQT_EMPRUNT_LIST = 8;
+const ER_RQT_EMPRUNT_LIST = -8;
+const OK_RQT_LIVRE_INFO_UID = 9;
+const ER_RQT_LIVRE_INFO_UID = -9;
 const OK_RQT_EMPRUNT_MOD_RETOUR = 10;
 const ER_RQT_EMPRUNT_MOD_RETOUR = -10;
 
@@ -52,10 +52,10 @@ const G_CODE_ERREURS = {
     [ER_RQT_LIVRE_SUPP]: "Retrait du livre échoué",
     [OK_RQT_EMPRUNT_CREA]: "Emprunt réussi",
     [ER_RQT_EMPRUNT_CREA]: "Emprunt échoué",
-    [OK_RQT_EMPRUNT_LIST_COMPTE]: "Listage des emprunts par compte réussi",
-    [ER_RQT_EMPRUNT_LIST_COMPTE]: "Listage des emprunts par compte échoué",
-    [OK_RQT_EMPRUNT_LIST_LIVRE]: "Listage des emprunts par livres réussi",
-    [ER_RQT_EMPRUNT_LIST_LIVRE]: "Listage des emprunts par livres échoué",
+    [OK_RQT_EMPRUNT_LIST]: "Listage des emprunts par compte réussi",
+    [ER_RQT_EMPRUNT_LIST]: "Listage des emprunts par compte échoué",
+    [OK_RQT_LIVRE_INFO_UID]: "Obtention des informations par UID réussi",
+    [ER_RQT_LIVRE_INFO_UID]: "Obtention des informations par UID échoué",
     [OK_RQT_EMPRUNT_MOD_RETOUR]: "Retour réussi",
     [ER_RQT_EMPRUNT_MOD_RETOUR]: "Retour échoué",
     [OK_API_INFO_CONN]: "Obtention du statut de connexion réussi",
@@ -180,16 +180,16 @@ function api_emprunt(id_l) {
     return requete_post("/api_emprunt", {"id_l": id_l});
 }
 
-function api_statut_emprunt() {
-    return requete_get("/api_statut_emprunt", {});
+function api_liste_emprunts() {
+    return requete_get("/api_liste_emprunts", {});
 }
 
-function api_hist_livre(id_l) {
-    return requete_get("/api_hist_livre", {"id_l": id_l});
+function api_info_livre(uid_nfc) {
+    return requete_get("/api_info_livre", {"uid_nfc": uid_nfc});
 }
 
-function api_retour(id_l) {
-    return requete_post("/api_retour", {"id_l": id_l});
+function api_retour(uid_nfc) {
+    return requete_post("/api_retour", {"uid_nfc": uid_nfc});
 }
 
 function api_uid_nfc() {

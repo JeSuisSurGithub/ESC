@@ -17,12 +17,11 @@ async function identifier() {
         if (requete_livre.code > 0) {
             const index = requete_livre.val.uid_nfc.indexOf(res.val);
             if (index !== -1) {
-                const res_hist = await api_hist_livre(index + 1); // Les ID commencent à 1
+                const res_hist = await api_info_livre(res.val);
                 if (res_hist.code > 0) {
                     const sortie = document.getElementById("res_ident");
                     // Si n'a jamais été emprunté ou emprunté mais rendu
-                    const disponible
-                        = (res_hist.val.rendu.length === 0 || res_hist.val.rendu[res_hist.val.rendu.length - 1] === 1);
+                    const disponible = (res_hist.val.rendu === null)|| (res_hist.val.rendu === true);
                     sortie.innerHTML = `
                         <div class="card">
                             <img src="/upload/${requete_livre.val.nom_image[index]}">
