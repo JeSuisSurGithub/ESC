@@ -16,7 +16,7 @@
 3. Une fois que le temps soit écoulé ou qu'une carte soit scannée la page redirige vers la page d'origine en lui retransmettant l'UID de la carte NFC ainsi que l'action originellement souhaitée c'est à dire ici l'emprunt
 4. La page va ainsi demander au serveur le livre avec l'UID correspondant
 5. Si il y'a eu un résultat alors la page va effectuer une requête d'emprunt au serveur en spécifiant l'ID du livre
-6. Enfin si le livre est disponible et que l'utilisateur est connecté, l'emprunt est marqué dans la BDD et l'utilisatuer en est informé grâce au code statuts
+6. Enfin si le livre est disponible et que l'utilisateur est connecté, l'emprunt est marqué dans la BDD et l'utilisateur en est informé grâce au code statuts
 
 ### Schéma
 ![logo](/fonctionnement.png)
