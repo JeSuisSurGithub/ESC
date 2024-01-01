@@ -18,16 +18,21 @@
 5. Si il y'a eu un résultat alors la page va effectuer une requête d'emprunt au serveur en spécifiant l'ID du livre
 6. Enfin si le livre est disponible et que l'utilisateur est connecté, l'emprunt est marqué dans la BDD et l'utilisatuer en est informé grâce au code statuts
 
+### Schéma
+![logo](/fonctionnement.png)
+
 ## Guide d'installation
-1.  Avoir installé git et python3 `sudo apt install git python3`
-1.  Suivre les instructions pour installer [SPI-Py](https://github.com/lthiery/SPI-Py)
-2.  Cloner le dépot `git clone https://github.com/JeSuisSurGithub/ESC`
-3.  Installer les libraries nécessaires `pip install -r requirements.txt`
-4.  Initialiser la base de données `cd db && ./init_db.sh && cd ..`
-5.  Lancer le serveur `./main.py`
+1.  Installer git et python3 avec `sudo apt install git python3`
+2.  Activer la communication SPI avec `raspi-config`
+2.  Suivre les instructions pour installer [SPI-Py](https://github.com/lthiery/SPI-Py)
+3.  Cloner le dépot `git clone https://github.com/JeSuisSurGithub/ESC`
+4.  Installer les libraries nécessaires `pip install -r requirements.txt`
+5.  Initialiser la base de données `cd db && ./init_db.sh && cd ..`
+6.  Lancer le serveur `./main.py`
 
 ## A faire!
 - [ ] Bugfix affichage et stylisation page
+- [ ] Optmisation/Spécialisation requêtes sql
 
 ## Fini
 - [X] Inscription (Page, en commun avec connexion)
