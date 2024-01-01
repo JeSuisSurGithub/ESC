@@ -251,7 +251,7 @@ async def api_uid_nfc():
             if (G_EST_RASPBERRYPI):
                 return nfc.lire_uid_nfc()
             else:
-                return (erreurs.OK_NFC_CAPTEUR_UID, input("Veuillez entrer l'UID: "))
+                return (erreurs.OK_NFC_CAPTEUR_UID_MANUEL, input("Veuillez entrer l'UID: "))
 
         code, val = timeout10()
         G_CAPTEUR_EN_UTILISATION = False
