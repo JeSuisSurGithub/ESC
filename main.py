@@ -11,10 +11,21 @@ import uvicorn
 
 import base64
 from datetime import datetime, timedelta
+import io
 from pathlib import Path
 
+# https://raspberrypi.stackexchange.com/questions/5100/detect-that-a-python-program-is-running-on-the-pi
+def est_raspberrypi():
+    try:
+        with io.open('/sys/firmware/devicetree/base/model', 'r') as m:
+            if 'raspberry pi' in m.read().lower(): return True
+    except Exception: pass
+    return False
+G_EST_RASPBERRYPI = est_raspberrypi();
+
 import erreurs
-import nfc
+if G_EST_RASPBERRYPI:
+    import nfc
 import requetes
 
 DUREE_EMPRUNT_SEMAINE = 2
@@ -237,7 +248,10 @@ async def api_uid_nfc():
         G_CAPTEUR_EN_UTILISATION = True
         @timeout(10)
         def timeout10():
-            return nfc.lire_uid_nfc()
+            if (G_EST_RASPBERRYPI):
+                return nfc.lire_uid_nfc()
+            else:
+                return (erreurs.OK_NFC_CAPTEUR_UID, input("Veuillez entrer l'UID: "))
 
         code, val = timeout10()
         G_CAPTEUR_EN_UTILISATION = False

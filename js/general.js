@@ -32,7 +32,7 @@ const ER_API_EMPRUNT_DROIT_COMPTE = -17;
 const ER_API_CAPTEUR_OCCUPE = -18;
 
 const OK_NFC_CAPTEUR_UID = 19;
-const ER_NFC_CAPTEUR_DESACTIVE = -20;
+const OK_NFC_CAPTEUR_UID_MANUEL = 20;
 const ER_NFC_CAPTEUR_AUTORISATION = -21;
 const ER_NFC_CAPTEUR_TIMEOUT = -22;
 
@@ -68,7 +68,7 @@ const G_CODE_ERREURS = {
     [ER_API_EMPRUNT_DROIT_COMPTE]: "Le livre doit être rendu depuis le compte d'emprunt",
     [ER_API_CAPTEUR_OCCUPE]: "Capteur occupé",
     [OK_NFC_CAPTEUR_UID]: "Obtention de l'UID réussi",
-    [ER_NFC_CAPTEUR_DESACTIVE]: "Capteur désactivé",
+    [OK_NFC_CAPTEUR_UID_MANUEL]: "Obtention de l'UID réussi (manuel)",
     [ER_NFC_CAPTEUR_AUTORISATION]: "Carte verrouillée",
     [ER_NFC_CAPTEUR_TIMEOUT]: "Timeout écoulé"
 };

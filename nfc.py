@@ -7,18 +7,15 @@
 # FONCTIONS:
 # Lecture de l'UID du tag nfc
 
-# Décommenter sur RPi
-# import RPi.GPIO as GPIO
-# import signal
-# import MFRC522
+import RPi.GPIO as GPIO
+import signal
+import MFRC522
 
 from timeout_decorator import TimeoutError
 
 import erreurs
 
 def lire_uid_nfc() -> str:
-    # Commenter sur RPi
-    return (erreurs.ER_NFC_CAPTEUR_DESACTIVE, None)
     try:
         continue_reading = True
 
