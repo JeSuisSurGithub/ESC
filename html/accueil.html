@@ -5,22 +5,21 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     	<title>Accueil</title>
     	<link rel="stylesheet" href="/css/accueil.css">
-    	<meta name="viewport" content="width=device-width, initial-scale=0.1">
   	</head>
     <body>
       	<header>
         	<a href="/html/accueil.html" class="logo">ESC</a>
         	<div class="group">
           		<ul class="navigation">
-            		<li><a onclick="emprunter()">Emprunter</a></li>
+            		<li><a onclick="emprunt()">Emprunter</a></li>
             		<li><a onclick="retour()">Rendre</a></li>
-            		<li><a href="/html/desinscription.html">Désinscription</a></li>
+            		<li><a onclick="desinscription()">Désinscription</a></li>
             		<li><a onclick="deconnexion()">Déconnection</a></li>
           		</ul>
 				<div class="search">
 					<span class="icon">
-					<ion-icon name="search-outline" class="searchBtn"></ion-icon>
-					<ion-icon name="close-outline" class="closeBtn"></ion-icon>
+						<ion-icon name="search-outline" class="searchBtn"></ion-icon>
+						<ion-icon name="close-outline" class="closeBtn"></ion-icon>
 					</span>
 				</div>
         	</div>
@@ -60,10 +59,10 @@
 				<div id="stats"></div>
 			</div>
 		</div>
-  	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  	<script src="/js/api.js"></script>
-  	<script src="/js/navbar.js"></script>
-    <script src="/js/accueil.js"></script>
-  </body>
+		<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+		<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+		<script src="/js/api.js"></script>
+		<script src="/js/navbar.js"></script>
+		<script src="/js/accueil.js"></script>
+  	</body>
 </html>

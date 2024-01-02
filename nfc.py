@@ -1,5 +1,5 @@
 # IMPORTE
-# GPIO, signal et MFRC522 pour la lecture du capteur NFC
+# GPIO, MFRC522 et signal pour la lecture du capteur NFC
 # timeout_decorator pour le timeout de 10 secondes
 #
 # PLAN DES DEFINITIONS
@@ -8,14 +8,15 @@
 # Lecture de l'UID du tag nfc
 
 import RPi.GPIO as GPIO
-import signal
 import MFRC522
 
 from timeout_decorator import TimeoutError
 
+import signal
+
 import erreurs
 
-def lire_uid_nfc() -> str:
+def nfc_lire_uid():
     try:
         continue_reading = True
 

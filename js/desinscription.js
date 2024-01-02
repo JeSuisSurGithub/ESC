@@ -14,10 +14,10 @@ async function desinscription() {
         return;
     }
 
-    const res = await api_desinscription(tag_email.value, tag_motdepasse.value);
-    if (res.code > 0) {
+    const requete_desinscription = await api_desinscription(tag_email.value, tag_motdepasse.value);
+    if (requete_desinscription.code > 0) {
         window.location.href = window.location.origin;
     } else {
-        window.alert(G_CODE_ERREURS[res.code]);
+        window.alert(G_CODE_ERREURS[requete_desinscription.code]);
     }
 }

@@ -24,7 +24,7 @@ async function ajout_livre() {
     if (tag_rayon.value.length < 1) {
         info += "Vous devez spécifier le rayon\n";
     }
-    if (tag_parution.value == "" || aujourdhui_yyyy_mm_dd() <= tag_parution.value) {
+    if (tag_parution.value === "" || aujourdhui_yyyy_mm_dd() <= tag_parution.value) {
         info += "Vous devez spécifier une date valide\n";
     }
     if (tag_couverture.files.length < 1) {
@@ -45,9 +45,9 @@ async function ajout_livre() {
         }
     }, 1000);
 
-    const res = await api_uid_nfc();
-    if (res.code > 0) {
-        clearInterval(intervalle);
+    const requete_uid = await api_uid_nfc();
+    clearInterval(intervalle);
+    if (requete_uid.code > 0) {
         const image_couverture = tag_couverture.files[0];
 
         const lecteur = new FileReader();
@@ -60,7 +60,7 @@ async function ajout_livre() {
                 tag_editeur.value,
                 tag_rayon.value,
                 tag_parution.value,
-                res.val,
+                requete_uid.val,
                 image_couverture.name,
                 image_b64
             );
@@ -68,7 +68,7 @@ async function ajout_livre() {
         };
         lecteur.readAsDataURL(image_couverture);
     } else {
-        window.alert(G_CODE_ERREURS[res.code])
+        window.alert(G_CODE_ERREURS[requete_uid.code])
     }
 }
 
@@ -85,14 +85,13 @@ async function retrait_livre() {
         }
     }, 1000);
 
-    const res = await api_uid_nfc();
-    if (res.code > 0) {
-        clearInterval(intervalle);
-        const requete_livre = await api_livres();
+    const requete_uid = await api_uid_nfc();
+    clearInterval(intervalle);
+    if (requete_uid.code > 0) {
+        const requete_livre = await api_info_livre(requete_uid.val);
         if (requete_livre.code > 0) {
-            const index = requete_livre.val.uid_nfc.indexOf(res.val);
-            if (index !== -1) {
-                const res_retrait = await api_retrait(requete_livre.val.id[index]);
+            if (requete_livre.val.id !== null) {
+                const res_retrait = await api_suppression_livre(requete_livre.val.id);
                 window.alert(G_CODE_ERREURS[res_retrait.code])
             } else {
                 window.alert("Carte de livre inconnue");
@@ -101,6 +100,6 @@ async function retrait_livre() {
             window.alert(G_CODE_ERREURS[requete_livre.code])
         }
     } else {
-        window.alert(G_CODE_ERREURS[res.code])
+        window.alert(G_CODE_ERREURS[requete_uid.code])
     }
 }

@@ -1,7 +1,7 @@
 CREATE TABLE UTILISATEUR (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL UNIQUE,
-    mdp TEXT NOT NULL,
+    hash_mdp TEXT NOT NULL,
     pseudo TEXT NOT NULL,
     date_naissance DATE NOT NULL,
     grade INTEGER

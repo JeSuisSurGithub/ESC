@@ -7,17 +7,15 @@ const palette32 = [
     "#847e87", "#d77bba",
 ];
 
-// Liste emprunts
-(async () => {
-    const emprunts = await api_liste_emprunts();
-    if (emprunts.code > 0) {
-        // Affichage
+api_liste_emprunts().then((requete_emprunts) => {
+    if (requete_emprunts.code > 0) {
+        const n_emprunts = requete_emprunts.val.titre.length;
+        // Affichage emprunts
         {
-            const sortie = document.getElementById("liste_emprunts")
-            let n_emprunts = emprunts.val.titre.length;
+            const tag_liste_emprunts = document.getElementById("liste_emprunts")
             // Si aucun emprunt ou tout emprunts rendu
-            if (n_emprunts === 0 || emprunts.val.rendu.reduce((total, val) => total + val, 0) === n_emprunts) {
-                sortie.innerHTML = `
+            if (requete_emprunts.val.rendu.reduce((total, val) => total + val, 0) === n_emprunts) {
+                tag_liste_emprunts.innerHTML = `
                                 <div class="card">
                                     <img src="/img/croix.png">
                                     <div class="texte">
@@ -26,29 +24,29 @@ const palette32 = [
                                         </p>
                                     </div>
                                 </div>`
-            }
-            for (let i = 0; i < n_emprunts; i++) {
-                if (emprunts.val.rendu[i] === 0) {
-                    sortie.innerHTML += `
-                                    <div class="card">
-                                        <img src="/upload/${emprunts.val.nom_image[i]}" >
-                                        <div class="texte">
-                                            <p>
-                                                Titre : ${emprunts.val.titre[i]} <br/>
-                                                Genre: ${emprunts.val.genre[i]} <br/>
-                                                Auteur: ${emprunts.val.auteur[i]} <br/>
-                                                Editeur: ${emprunts.val.editeur[i]} <br/>
-                                                Date de Parution: ${emprunts.val.date_parution[i]} <br/>
-                                                Date d'emprunt: ${emprunts.val.date_debut[i]} <br/>
-                                                Date de retour: ${emprunts.val.date_fin[i]} <br/>
-                                                <br/>
-                                            </p>
-                                        </div>
-                                    </div>`
+            } else {
+                for (let i = 0; i < n_emprunts; i++) {
+                    if (requete_emprunts.val.rendu[i] === 0) {
+                        tag_liste_emprunts.innerHTML += `
+                                        <div class="card">
+                                            <img src="/upload/${requete_emprunts.val.nom_image[i]}" >
+                                            <div class="texte">
+                                                <p>
+                                                    Titre : ${requete_emprunts.val.titre[i]} <br/>
+                                                    Genre: ${requete_emprunts.val.genre[i]} <br/>
+                                                    Auteur: ${requete_emprunts.val.auteur[i]} <br/>
+                                                    Editeur: ${requete_emprunts.val.editeur[i]} <br/>
+                                                    Date de Parution: ${requete_emprunts.val.date_parution[i]} <br/>
+                                                    Date d'emprunt: ${requete_emprunts.val.date_debut[i]} <br/>
+                                                    Date de retour: ${requete_emprunts.val.date_fin[i]} <br/>
+                                                    <br/>
+                                                </p>
+                                            </div>
+                                        </div>`
+                    }
                 }
             }
         }
-
         // Stats
         {
             const tag_stats = document.getElementById("stats");
@@ -57,15 +55,16 @@ const palette32 = [
             }
             let frequences = {};
             for (let i = 0; i < n_emprunts; i++) {
-                let genre = emprunts.val.genre[i];
+                const genre = emprunts.val.genre[i];
                 frequences[genre] = frequences[genre] ? frequences[genre] + 1 : 1;
             }
             for (let i = 0; i < Object.keys(frequences).length; i++) {
+                const pourcentage = (Object.values(frequences)[i] / n_emprunts) * 100;
                 tag_stats.innerHTML += `
                     <div class="genre">
                         <div class="genre-name" style="font-weight: bold;">${Object.keys(frequences)[i]}</div>
                         <div class="genre-level">
-                            <div style="background-color: ${palette32[i]}; width: ${(Object.values(frequences)[i] / n_emprunts) * 100}%;" class="genre-percent"></div>
+                            <div style="background-color: ${palette32[i]}; width: ${pourcentage}%;" class="genre-percent"></div>
                         </div>
                     </div>`;
             }
@@ -73,7 +72,7 @@ const palette32 = [
     } else {
         window.alert(G_CODE_ERREURS[emprunts.code]);
     }
-})();
+});
 
 // Calendrier
 const header = document.querySelector(".calendar h3");

@@ -22,16 +22,16 @@ async function inscription() {
         return;
     }
 
-    const res = await api_inscription(tag_email.value, tag_motdepasse.value, tag_pseudo.value, tag_naissance.value);
-    if (res.code > 0) {
-        const res_conn = await api_connexion(tag_email.value, tag_motdepasse.value);
-        if (res_conn.code > 0) {
+    const requete_inscription = await api_inscription(tag_email.value, tag_motdepasse.value, tag_pseudo.value, tag_naissance.value);
+    if (requete_inscription.code > 0) {
+        const requete_connexion = await api_connexion(tag_email.value, tag_motdepasse.value);
+        if (requete_connexion.code > 0) {
             window.location.href = `${window.location.origin}/html/accueil.html`;
         } else {
-            window.alert(G_CODE_ERREURS[res_conn.code]);
+            window.alert(G_CODE_ERREURS[requete_connexion.code]);
         }
     } else {
-        window.alert(G_CODE_ERREURS[res.code]);
+        window.alert(G_CODE_ERREURS[requete_inscription.code]);
     }
 }
 
@@ -51,10 +51,10 @@ async function connexion() {
         return;
     }
 
-    const res = await api_connexion(tag_email.value, tag_motdepasse.value);
-    if (res.code > 0) {
+    const requete_connexion = await api_connexion(tag_email.value, tag_motdepasse.value);
+    if (requete_connexion.code > 0) {
         window.location.href = `${window.location.origin}/html/accueil.html`;
     } else {
-        window.alert(G_CODE_ERREURS[res.code]);
+        window.alert(G_CODE_ERREURS[requete_connexion.code]);
     }
 }

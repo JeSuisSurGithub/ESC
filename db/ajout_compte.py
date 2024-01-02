@@ -17,11 +17,12 @@ async def deconnexion_bd():
 async def ajouter_compte(email, mdp, pseudo, date_naissance, grade):
     try:
         hash_mdp = bcrypt.hashpw(mdp.encode("utf-8"), bcrypt.gensalt())
-        requete = '''INSERT INTO UTILISATEUR (email, mdp, pseudo, date_naissance, grade)
-            VALUES (:email, :mdp, :pseudo, :date_naissance, :grade)'''
+        requete = '''INSERT
+            INTO UTILISATEUR (email, hash_mdp, pseudo, date_naissance, grade)
+            VALUES (:email, :hash_mdp, :pseudo, :date_naissance, :grade)'''
         await G_DB.execute(requete, {
             "email": email,
-            "mdp": hash_mdp,
+            "hash_mdp": hash_mdp,
             "pseudo": pseudo,
             "date_naissance": date_naissance,
             "grade": grade})

@@ -8,7 +8,7 @@
 + Toute la logique de la barre de navigation se trouve dans navbar.js
 * Les scripts init_db.sh init.sql et ajout_compte.py servent à initialiser la base de données
 + Le code du serveur se trouve à la racine
-* Les communications entre le frontend et le backend se font via le format json et des interfaces GET et POST, l'intégrité des informations communiquées est assurée par une table des code de statut définie dans erreurs.py et au début de api.js et définissent aussi les messages d'erreur à afficher. Les codes de statut positifs signalent qu'il y'a pas eu d'erreur et ceux négatif signalent qu'il y'en a eu.
+* Les communications entre le frontend et le backend se font via le format json et des interfaces GET et POST, l'intégrité des informations communiquées est assurée par une table des code de statut définie dans erreurs.py et au début de api.js. Ils définissent aussi les messages d'erreur à afficher. Les codes de statut positifs signalent qu'il y'a pas eu d'erreur et ceux négatif signalent qu'il y'en a eu.
 
 ### Exemple de fonctionnement pour l'emprunt
 1. Vous cliquez sur emprunt
@@ -32,7 +32,6 @@
 
 ## A faire!
 - [ ] Bugfix affichage et stylisation page
-- [ ] Optmisation/Spécialisation requêtes sql
 
 ## Fini
 - [X] Inscription (Page, en commun avec connexion)

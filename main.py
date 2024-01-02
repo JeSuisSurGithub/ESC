@@ -12,6 +12,7 @@ import uvicorn
 import base64
 from datetime import datetime, timedelta
 import io
+import os
 from pathlib import Path
 
 # https://raspberrypi.stackexchange.com/questions/5100/detect-that-a-python-program-is-running-on-the-pi
@@ -21,17 +22,17 @@ def est_raspberrypi():
             if 'raspberry pi' in m.read().lower(): return True
     except Exception: pass
     return False
+
+DUREE_EMPRUNT_SEMAINE = 2
+
+G_INFO_CONNEXION = None
+G_CAPTEUR_EN_UTILISATION = False
 G_EST_RASPBERRYPI = est_raspberrypi();
 
 import erreurs
 if G_EST_RASPBERRYPI:
     import nfc
 import requetes
-
-DUREE_EMPRUNT_SEMAINE = 2
-
-G_INFO_CONNEXION = None
-G_CAPTEUR_EN_UTILISATION = False
 
 class JsonInscription(BaseModel):
     email: str
@@ -54,11 +55,11 @@ class JsonAjoutLivre(BaseModel):
     nom_image: str
     image_b64: str
 
-class JsonIdLivre(BaseModel):
-    id_l: str
-
 class JsonUidLivre(BaseModel):
-    uid: str
+    uid_nfc: str
+
+class JsonRecherche(BaseModel):
+    termes: list
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -83,12 +84,12 @@ def racine() -> str:
 @app.get("/api_statut")
 async def api_statut():
     global G_INFO_CONNEXION
-
+    # Pas connecté
     if G_INFO_CONNEXION == None:
         return {"code": erreurs.ER_API_INFO_CONN}
     return {"code": erreurs.OK_API_INFO_CONN, "val": G_INFO_CONNEXION}
 
-@app.post("/api_deconnexion")
+@app.get("/api_deconnexion")
 async def api_deconnexion():
     global G_INFO_CONNEXION
 
@@ -96,17 +97,17 @@ async def api_deconnexion():
     return {"code": erreurs.OK_API_DECONNECT}
 
 @app.post("/api_inscription")
-async def api_inscription(info_reg: JsonInscription):
+async def api_inscription(info_inscription: JsonInscription):
     global G_INFO_CONNEXION
 
-    email = info_reg.email
-    motdepasse = info_reg.motdepasse
-    pseudo = info_reg.pseudo
-    naissance = info_reg.naissance
+    email = info_inscription.email
+    motdepasse = info_inscription.motdepasse
+    pseudo = info_inscription.pseudo
+    naissance = info_inscription.naissance
 
-    code, val = await requetes.rqt_ajouter_compte(email, motdepasse, pseudo, naissance)
+    code, val = await requetes.rqt_ajout_compte(email, motdepasse, pseudo, naissance)
+    # Déconnecte le compte auquel il est actuellement connecté
     if (code > 0):
-        # On déconnecte le compte au cas ou il est actuellement connecté à un compte
         G_INFO_CONNEXION = None
     return {"code": code, "val": val}
 
@@ -118,6 +119,7 @@ async def api_connexion(info_conn: JsonConnexion):
     motdepasse = info_conn.motdepasse
 
     code, val = await requetes.rqt_connexion_compte(email, motdepasse)
+    # Preuve de connexion
     if (code > 0):
         G_INFO_CONNEXION = val
     return {"code": code, "val": val}
@@ -131,17 +133,19 @@ async def api_desinscription(info_conn: JsonConnexion):
         email = info_conn.email
         motdepasse = info_conn.motdepasse
 
+        # Vérification identifiants
         code, val = await requetes.rqt_connexion_compte(email, motdepasse)
         if (code > 0):
-            code, val = await requetes.rqt_supprimer_compte(G_INFO_CONNEXION["id"])
+            # Suppression et déconnexion
+            code, val = await requetes.rqt_suppression_compte(val["id"])
             if (code > 0):
                 G_INFO_CONNEXION = None
         return {"code": code, "val": val}
     else:
         return {"code": erreurs.ER_API_DROIT_USAGER}
 
-@app.post("/api_ajout")
-async def api_ajout(info_ajout: JsonAjoutLivre):
+@app.post("/api_ajout_livre")
+async def api_ajout_livre(info_ajout: JsonAjoutLivre):
     global G_INFO_CONNEXION
 
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):
@@ -156,50 +160,73 @@ async def api_ajout(info_ajout: JsonAjoutLivre):
         nom_image = info_ajout.nom_image
         image_b64 = info_ajout.image_b64
 
-        code, val = await requetes.rqt_ajout_livre(titre, genre, auteur, editeur, rayon, date_parution, uid_nfc, nom_image)
-
         try:
             with open(f"upload/{nom_image}", "wb") as f:
                 f.write(base64.b64decode(image_b64))
         except:
             return {"code": erreurs.ER_RQT_LIVRE_CREA}
 
+        code, val = await requetes.rqt_ajout_livre(titre, genre, auteur, editeur, rayon, date_parution, uid_nfc, nom_image)
+
         return {"code": code, "val": val}
     return {"code": erreurs.ER_API_DROIT_ADMIN}
 
-@app.get("/api_livres")
-async def api_livres():
-    code, val = await requetes.rqt_obtenir_livre()
+@app.get("/api_info_livre")
+async def api_info_livre(uid_nfc: str):
+    code, val = await requetes.rqt_info_livre_par_uid(uid_nfc)
     return {"code": code, "val": val}
 
-@app.post("/api_retrait")
-async def api_retrait(info_supp: JsonIdLivre):
+@app.post("/api_recherche_livre")
+async def api_recherche_livre(info_recherche: JsonRecherche):
+    termes = info_recherche.termes
+    code, val = await requetes.rqt_info_livres_par_termes(termes)
+    return {"code": code, "val": val}
+
+@app.post("/api_suppression_livre")
+async def api_suppression_livre(info_suppression: JsonUidLivre):
     global G_INFO_CONNEXION
 
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):
-        # Effacer l'image de couverture ?
-        code, val = await requetes.rqt_retirer_livre(info_supp.id_l)
+        # Vérification de la disponibilité du livre
+        code, val = await requetes.rqt_info_emprunt_par_uid(info_suppression.uid_nfc)
+        if (code > 0):
+            if (val["disponible"] != None) and (val["disponible"] == False):
+                return {"code": erreurs.ER_API_EMPRUNT_ACTIF}
+
+            # Obtention chemin d'image
+            code, val = await requetes.rqt_livre_par_uid(uid_nfc)
+            if (code > 0):
+                nom_image = val['nom_image']
+
+                # Suppression
+                code, val = await requetes.rqt_retrait_livre(info_supp.uid_nfc)
+                if (code > 0):
+                    os.remove(f"upload/{nom_image}")
+
         return {"code": code, "val": val}
     return {"code": erreurs.ER_API_DROIT_ADMIN}
 
 @app.post("/api_emprunt")
-async def api_emprunt(info_emprunt: JsonIdLivre):
+async def api_emprunt(info_emprunt: JsonUidLivre):
     global G_INFO_CONNEXION
 
-    id_l = info_emprunt.id_l
+    uid_nfc = info_emprunt.uid_nfc
 
     date_debut = datetime.now()
     date_fin = datetime.now() + timedelta(weeks=DUREE_EMPRUNT_SEMAINE)
 
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
-        code, val = await requetes.rqt_obtenir_emprunts_l(id_l)
+        # Vérifie si il déja été emprunté
+        code, val = await requetes.rqt_info_emprunt_par_uid(uid_nfc)
         if (code > 0):
-            # Vérifie si il déja été emprunté
-            if (len(val["rendu"]) != 0) and (val["rendu"][-1] == False):
+            if (val["disponible"] != None) and (val["disponible"] == False):
                 return {"code": erreurs.ER_API_EMPRUNT_ACTIF}
-            else:
-                code, val = await requetes.rqt_emprunter(G_INFO_CONNEXION["id"], id_l, date_debut.strftime("%Y-%m-%d"), date_fin.strftime("%Y-%m-%d"))
-                return {"code": code, "val": val}
+
+            # Obtention de l'ID Livre
+            code, val = await requetes.rqt_livre_par_uid(uid_nfc)
+            if (code > 0):
+                code, val = await requetes.rqt_emprunt(G_INFO_CONNEXION["id"],  val["id"], date_debut.strftime("%Y-%m-%d"), date_fin.strftime("%Y-%m-%d"))
+            return {"code": code, "val": val}
         else :
             return {"code": code}
     return {"code": erreurs.ER_API_DROIT_USAGER}
@@ -209,13 +236,13 @@ async def api_liste_emprunts():
     global G_INFO_CONNEXION
 
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
-        code, val = await requetes.rqt_obtenir_emprunts(G_INFO_CONNEXION["id"])
+        code, val = await requetes.rqt_liste_emprunts_par_compte(G_INFO_CONNEXION["id"])
         return {"code": code, "val": val}
     return {"code": erreurs.ER_API_DROIT_USAGER}
 
-@app.get("/api_info_livre")
-async def api_info_livre(uid_nfc: str):
-    code, val = await requetes.rqt_obtenir_livre_par_uid(uid_nfc)
+@app.get("/api_info_emprunt")
+async def api_info_emprunt(uid_nfc: str):
+    code, val = await requetes.rqt_info_emprunt_par_uid(uid_nfc)
     return {"code": code, "val": val}
 
 @app.post("/api_retour")
@@ -223,23 +250,21 @@ async def api_retour(info_retour: JsonUidLivre):
     global G_INFO_CONNEXION
 
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] != 0):
-        uid = info_retour.uid
-        code, val = await requetes.rqt_obtenir_livre_par_uid(uid)
+        uid_nfc = info_retour.uid_nfc
 
-        # Aucun emprunt
-        if (val["rendu"] == None):
-            return {"code": erreurs.ER_API_EMPRUNT_INACTIF}
+        # Vérification de si le livre a été emprunté
+        code, val = await requetes.rqt_info_emprunt_par_uid(uid_nfc)
+        if (code > 0):
+            # Aucun emprunt
+            if (val["disponible"] == None) or (val["disponible"] == True):
+                return {"code": erreurs.ER_API_EMPRUNT_INACTIF}
 
-        # Emprunt rendu
-        elif (val["rendu"] == True):
-            return {"code": erreurs.ER_API_EMPRUNT_INACTIF}
+            # Emprunté depuis un compte différent
+            if (val["id_u"] != G_INFO_CONNEXION["id"]):
+                return {"code": erreurs.ER_API_EMPRUNT_DROIT_COMPTE}
 
-        # Emprunté depuis un compte différent
-        elif (val["id_u"] != G_INFO_CONNEXION["id"]):
-            return {"code": erreurs.ER_API_EMPRUNT_DROIT_COMPTE}
+            code, val = await requetes.rqt_retour_emprunt(val["id_e"])
 
-        else:
-            code, val = await requetes.rqt_retour(val["id_e"][-1])
             return {"code": code, "val": val}
     return {"code": erreurs.ER_API_DROIT_USAGER}
 
@@ -254,7 +279,7 @@ async def api_uid_nfc():
         @timeout(10)
         def timeout10():
             if (G_EST_RASPBERRYPI):
-                return nfc.lire_uid_nfc()
+                return nfc.nfc_lire_uid()
             else:
                 return (erreurs.OK_NFC_CAPTEUR_UID_MANUEL, input("Veuillez entrer l'UID: "))
 
