@@ -31,7 +31,7 @@
 6.  Lancer le serveur `./main.py`
 
 ## A faire!
-- [ ] Bugfix affichage et stylisation page
+- [ ] Redirection préventive de garde
 
 ## Fini
 - [X] Inscription (Page, en commun avec connexion)

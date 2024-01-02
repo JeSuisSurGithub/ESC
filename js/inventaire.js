@@ -53,7 +53,7 @@ async function ajout_livre() {
         const lecteur = new FileReader();
         lecteur.onloadend = async function (event) {
             const image_b64 = event.target.result.split(',')[1];
-            const res_ajout = await api_ajout(
+            const res_ajout = await api_ajout_livre(
                 tag_titre.value,
                 tag_genre.value,
                 tag_auteur.value,
