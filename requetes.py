@@ -33,6 +33,8 @@ G_DB = databases.Database("sqlite:///./db/esc.sqlite")
 
 async def rqt_connexion():
     await G_DB.connect()
+    # Fonctionne pas
+    await G_DB.execute("PRAGMA foreign_keys = ON;")
 
 async def rqt_deconnexion():
     await G_DB.disconnect()
@@ -117,9 +119,8 @@ async def rqt_ajout_livre(titre, genre, auteur, editeur, rayon, date_parution, u
 async def rqt_info_livre_par_uid(uid_nfc):
     try:
         requete = '''SELECT
-            id, titre, genre, auteur, editeur, rayon, date_parution, nom_image,
-            FROM LIVRE uid_nfc=:uid_nfc
-            ORDER BY EMPRUNT.id DESC LIMIT 1'''
+            id, titre, genre, auteur, editeur, rayon, date_parution, nom_image
+            FROM LIVRE WHERE uid_nfc=:uid_nfc'''
 
         resultats = await G_DB.fetch_all(requete, {"uid_nfc": uid_nfc})
 
@@ -150,12 +151,15 @@ async def rqt_info_livres_par_termes(termes):
             FROM LIVRE'''
 
         # Recherche par titre, genre et auteur
-        part_recherche = " OR ".join([f"(titre LIKE :terme_{i} OR genre LIKE :terme_{i} OR auteur LIKE :terme_{i})" for i in range(len(termes))])
+        part_recherche = " AND ".join([
+f"(titre COLLATE NOCASE LIKE :terme_{i}"
+f" OR genre COLLATE NOCASE LIKE :terme_{i}"
+f" OR auteur COLLATE NOCASE LIKE :terme_{i})" for i in range(len(termes))])
         requete = f"{part_select} WHERE {part_recherche}"
 
         param = {}
         for i in range(len(termes)):
-            param[f"terme_{i}"] = f"'%{termes[i]}%'"
+            param[f"terme_{i}"] = f"%{termes[i]}%"
 
         resultats = await G_DB.fetch_all(requete, param)
 

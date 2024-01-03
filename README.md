@@ -30,9 +30,6 @@
 5.  Initialiser la base de données `cd db && ./init_db.sh && cd ..`
 6.  Lancer le serveur `./main.py`
 
-## A faire!
-- [ ] Redirection préventive de garde
-
 ## Fini
 - [X] Inscription (Page, en commun avec connexion)
 - [X] Connexion (Page, en commun avec inscription)

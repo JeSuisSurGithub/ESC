@@ -26,7 +26,11 @@ async function inscription() {
     if (requete_inscription.code > 0) {
         const requete_connexion = await api_connexion(tag_email.value, tag_motdepasse.value);
         if (requete_connexion.code > 0) {
-            window.location.href = `${window.location.origin}/html/accueil.html`;
+            if (requete_connexion.val.grade === 0) {
+                window.location.href = `${window.location.origin}/html/inventaire.html`;
+            } else {
+                window.location.href = `${window.location.origin}/html/accueil.html`;
+            }
         } else {
             window.alert(G_CODE_ERREURS[requete_connexion.code]);
         }
@@ -53,7 +57,11 @@ async function connexion() {
 
     const requete_connexion = await api_connexion(tag_email.value, tag_motdepasse.value);
     if (requete_connexion.code > 0) {
-        window.location.href = `${window.location.origin}/html/accueil.html`;
+        if (requete_connexion.val.grade === 0) {
+            window.location.href = `${window.location.origin}/html/inventaire.html`;
+        } else {
+            window.location.href = `${window.location.origin}/html/accueil.html`;
+        }
     } else {
         window.alert(G_CODE_ERREURS[requete_connexion.code]);
     }

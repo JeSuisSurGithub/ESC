@@ -1,3 +1,6 @@
+-- Fonctionne pas
+PRAGMA foreign_keys = ON;
+
 CREATE TABLE UTILISATEUR (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL UNIQUE,
@@ -26,6 +29,7 @@ CREATE TABLE EMPRUNT (
     date_debut DATE NOT NULL,
     date_fin DATE NOT NULL,
     rendu BOOLEAN,
+    -- Fonctionne pas
     FOREIGN KEY (id_u) REFERENCES UTILISATEUR(id) ON DELETE CASCADE,
     FOREIGN KEY (id_l) REFERENCES LIVRE(id) ON DELETE CASCADE
 );

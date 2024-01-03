@@ -13,6 +13,7 @@
           		<ul class="navigation">
             		<li><a onclick="emprunt()">Emprunter</a></li>
             		<li><a onclick="retour()">Rendre</a></li>
+					<li><a onclick="identification()">Identifier</a></li>
             		<li><a onclick="desinscription()">Désinscription</a></li>
             		<li><a onclick="deconnexion()">Déconnection</a></li>
           		</ul>
@@ -27,9 +28,8 @@
           		<input type="text" id="valeurs" placeholder="rechercher . . .">
         	</div>
       	</header>
-        <div class="left-info">
-            <h2 id="titre-gauche">Résultats de recherche:</h2>
-            <div id="liste_resultats"></div>
+		<h2 id="titre-gauche">Résultats de recherche:</h2>
+		<div class="left-info" id="liste_resultats">
         </div>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

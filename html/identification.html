@@ -13,6 +13,7 @@
           		<ul class="navigation">
             		<li><a onclick="emprunt()">Emprunter</a></li>
             		<li><a onclick="retour()">Rendre</a></li>
+                    <li><a onclick="identification()">Identifier</a></li>
             		<li><a onclick="desinscription()">Désinscription</a></li>
             		<li><a onclick="deconnexion()">Déconnection</a></li>
           		</ul>
@@ -30,9 +31,8 @@
         <div class="left-info">
             <h2 id="titre-gauche">Cliquez et scannez pour identifier une carte:</h2>
             <div class="card">
-                <div class="texte" style="display: inline-block; width: fit-content; padding: 4px;">
-                    <a onclick="identifier()">Identifier</a><br>
-                    <p id="compteur"></p>
+                <div class="texte" style="display: flex; justify-content: center; padding: 4px;">
+                    <button class="bouton" onclick="identifier()">Identifier</button><br>
                 </div>
             </div>
             <div id="res_ident"></div>

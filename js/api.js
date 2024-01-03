@@ -77,8 +77,8 @@ const G_CODE_ERREURS = {
 
     [ER_API_DROIT_ADMIN]: "Vous n'êtes pas un administrateur",
     [ER_API_DROIT_USAGER]: "Vous n'êtes pas un usager",
-    [ER_API_EMPRUNT_ACTIF]: "Livre déjà emprunté",
-    [ER_API_EMPRUNT_INACTIF]: "Livre non emprunté",
+    [ER_API_EMPRUNT_ACTIF]: "Action impossible, livre(s) en emprunt",
+    [ER_API_EMPRUNT_INACTIF]: "Action impossible, livre(s) non emprunté",
     [ER_API_EMPRUNT_DROIT_COMPTE]: "Le livre doit être rendu depuis le compte d'emprunt",
     [ER_API_CAPTEUR_OCCUPE]: "Capteur occupé",
 
@@ -149,7 +149,7 @@ function api_deconnexion() {
 
 function api_inscription(email, motdepasse, pseudo, date_naissance) {
     return requete_post("/api_inscription", {
-        email, motdepasse, pseudo, naissance
+        email, motdepasse, pseudo, date_naissance
     });
 }
 

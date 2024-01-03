@@ -1,3 +1,18 @@
+api_statut().then((requete_statut) => {
+    if (requete_statut.code > 0) {
+        // Connecté
+        if (requete_statut.val.grade === 0) {
+            // Admin
+        } else {
+            // Usager
+            window.location.href = `${window.location.origin}/accueil.html`
+        }
+    } else {
+        // Pas connecté
+        window.location.href = `${window.location.origin}`
+    }
+});
+
 async function ajout_livre() {
     const tag_titre         = document.getElementById("titre");
     const tag_genre         = document.getElementById("genre");
@@ -47,6 +62,7 @@ async function ajout_livre() {
 
     const requete_uid = await api_uid_nfc();
     clearInterval(intervalle);
+    tag_compteur.innerHTML = "Gestion d'inventaire";
     if (requete_uid.code > 0) {
         const image_couverture = tag_couverture.files[0];
 
@@ -87,18 +103,10 @@ async function retrait_livre() {
 
     const requete_uid = await api_uid_nfc();
     clearInterval(intervalle);
+    tag_compteur.innerHTML = "Gestion d'inventaire";
     if (requete_uid.code > 0) {
-        const requete_livre = await api_info_livre(requete_uid.val);
-        if (requete_livre.code > 0) {
-            if (requete_livre.val.id !== null) {
-                const res_retrait = await api_suppression_livre(requete_livre.val.id);
-                window.alert(G_CODE_ERREURS[res_retrait.code])
-            } else {
-                window.alert("Carte de livre inconnue");
-            }
-        } else {
-            window.alert(G_CODE_ERREURS[requete_livre.code])
-        }
+        const res_retrait = await api_suppression_livre(requete_uid.val);
+        window.alert(G_CODE_ERREURS[res_retrait.code])
     } else {
         window.alert(G_CODE_ERREURS[requete_uid.code])
     }

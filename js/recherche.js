@@ -16,22 +16,22 @@ if (parametre_get("entree") !== null) {
                                 </div>
                             </div>`
             } else {
-                for (let i = 0; i < indices.length; i++) {
+                for (let i = 0; i < n_resultats; i++) {
                     tag_liste_resultats.innerHTML += `
-                                    <div class="card">
-                                        <img src="/upload/${requete_recherche.val.nom_image[indices[i]]}" >
-                                        <div class="texte">
-                                            <p>
-                                                Titre : ${requete_recherche.val.titre[indices[i]]} <br/>
-                                                Genre: ${requete_recherche.val.genre[indices[i]]} <br/>
-                                                Auteur: ${requete_recherche.val.auteur[indices[i]]} <br/>
-                                                Editeur: ${requete_recherche.val.editeur[indices[i]]} <br/>
-                                                Rayon: ${requete_recherche.val.rayon[indices[i]]} <br/>
-                                                Date de Parution: ${requete_recherche.val.date_parution[indices[i]]} <br/>
-                                                <br/>
-                                            </p>
-                                        </div>
-                                    </div>`
+                                <div class="card">
+                                    <img src="/upload/${requete_recherche.val.nom_image[i]}" >
+                                    <div class="texte">
+                                        <p>
+                                            Titre : ${requete_recherche.val.titre[i]} <br/>
+                                            Genre: ${requete_recherche.val.genre[i]} <br/>
+                                            Auteur: ${requete_recherche.val.auteur[i]} <br/>
+                                            Editeur: ${requete_recherche.val.editeur[i]} <br/>
+                                            Rayon: ${requete_recherche.val.rayon[i]} <br/>
+                                            Date de Parution: ${requete_recherche.val.date_parution[i]} <br/>
+                                            <br/>
+                                        </p>
+                                    </div>
+                                </div>`;
                 }
             }
         } else {

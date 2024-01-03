@@ -1,5 +1,6 @@
 # IMPORTE
 # GPIO, MFRC522 et signal pour la lecture du capteur NFC
+# io pour vérifier la plateforme d'exécution
 # timeout_decorator pour le timeout de 10 secondes
 #
 # PLAN DES DEFINITIONS
@@ -7,8 +8,20 @@
 # FONCTIONS:
 # Lecture de l'UID du tag nfc
 
-import RPi.GPIO as GPIO
-import MFRC522
+import io
+# https://raspberrypi.stackexchange.com/questions/5100/detect-that-a-python-program-is-running-on-the-pi
+def est_raspberrypi():
+    try:
+        with io.open('/sys/firmware/devicetree/base/model', 'r') as m:
+            if 'raspberry pi' in m.read().lower(): return True
+    except Exception: pass
+    return False
+
+G_EST_RASPBERRYPI = est_raspberrypi()
+
+if G_EST_RASPBERRYPI:
+    import RPi.GPIO as GPIO
+    import MFRC522
 
 from timeout_decorator import TimeoutError
 
@@ -18,6 +31,8 @@ import erreurs
 
 def nfc_lire_uid():
     try:
+        if not G_EST_RASPBERRYPI:
+            return (erreurs.OK_NFC_CAPTEUR_UID_MANUEL, input("Veuillez entrer l'UID: "))
         continue_reading = True
 
         def end_read(signal, frame):

@@ -1,5 +1,5 @@
 async function identifier() {
-    const tag_compteur = document.getElementById("compteur");
+    const tag_compteur = document.getElementById("titre-gauche");
     const tag_res_ident = document.getElementById("res_ident");
 
     let temps_limite = 10;
@@ -14,13 +14,14 @@ async function identifier() {
 
     const requete_uid = await api_uid_nfc();
     clearInterval(intervalle);
+    tag_compteur.innerHTML = "Cliquez et scannez pour identifier une carte:";
     if (requete_uid.code > 0) {
         const requete_livre = await api_info_livre(requete_uid.val);
         if (requete_livre.code > 0) {
             if (requete_livre.val.id !== null) {
                 const requete_emprunt = await api_info_emprunt(requete_uid.val);
                 if (requete_emprunt.code > 0) {
-                    const disponible = (res_hist.val.disponible === null)|| (res_hist.val.disponible === true);
+                    const disponible = (requete_emprunt.val.disponible === null)|| (requete_emprunt.val.disponible === true);
                     tag_res_ident.innerHTML = `
                             <div class="card">
                                 <img src="/upload/${requete_livre.val.nom_image}">
@@ -32,7 +33,7 @@ async function identifier() {
                                         Editeur: ${requete_livre.val.editeur}<br/>
                                         Rayon: ${requete_livre.val.rayon}<br/>
                                         Date de Parution: ${requete_livre.val.date_parution}<br/>
-                                        Disponibilité: ${disponible}
+                                        Disponibilité: ${disponible ? "Oui" : "Non"}
                                     </p>
                                 </div>
                             </div>`;

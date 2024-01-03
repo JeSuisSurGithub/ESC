@@ -31,6 +31,14 @@ async function deconnexion() {
     window.location.href = window.location.origin;
 }
 
+async function identification() {
+    window.location.href = `${window.location.origin}/html/identification.html`;
+}
+
+async function inventaire() {
+    window.location.href = `${window.location.origin}/html/inventaire.html`;
+}
+
 async function desinscription() {
     window.location.href = `${window.location.origin}/html/desinscription.html`;
 }

@@ -4,16 +4,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <title>Inventaire</title>
-        <link rel="stylesheet" href="/css/recherche.css">
+        <link rel="stylesheet" href="/css/inventaire.css">
     </head>
     <body>
         <header>
-        	<a href="/html/accueil.html" class="logo">ESC</a>
+        	<a href="/html/inventaire.html" class="logo">ESC</a>
         	<div class="group">
           		<ul class="navigation">
-            		<li><a onclick="emprunt()">Emprunter</a></li>
-            		<li><a onclick="retour()">Rendre</a></li>
-            		<li><a onclick="desinscription()">Désinscription</a></li>
+            		<li><a onclick="inventaire()">Inventaire</a></li>
             		<li><a onclick="deconnexion()">Déconnection</a></li>
           		</ul>
 				<div class="search">
@@ -27,22 +25,25 @@
           		<input type="text" id="valeurs" placeholder="rechercher . . .">
         	</div>
       	</header>
+        <h2 style="margin-top: 120px; color: #FFF; text-align: center;" id="compteur">Gestion d'inventaire</h2>
         <div class="left-info">
-            <h2 id="titre-gauche">Cliquez et scannez pour identifier une carte!:</h2>
-            <div class="card">
-                <div class="texte">
-                    <input type="text" id="titre" placeholder="Titre" name="titre"><br/>
-                    <input type="text" id="genre" placeholder="Genre" name="genre"><br/>
-                    <input type="text" id="auteur" placeholder="Auteur" name="auteur"><br/>
-                    <input type="text" id="editeur" placeholder="Editeur" name="editeur"><br/>
-                    <input type="text" id="rayon" placeholder="Rayon" name="rayon"><br/>
-                    <input type="date" id="date_parution" placeholder="Date de Parution" name="date_parution"><br/>
-                    <input type="file" id="image_couverture" placeholder="Image de Couverture" name="image_couverture"><br/>
-                    <input type="button" onclick="ajout_livre()" value="Ajout"><br/>
-                    <input type="button" onclick="retrait_livre()" value="Retrait"><br/>
-                    <p id="compteur"></p>
-                </div>
-            </div>
+            <h2 id="titre-gauche">Entrez les information du livre à ajouter:</h2>
+            <form class="form">
+                <input class="input" type="text" id="titre" placeholder="Titre" name="titre"><br/>
+                <input class="input" type="text" id="genre" placeholder="Genre" name="genre"><br/>
+                <input class="input" type="text" id="auteur" placeholder="Auteur" name="auteur"><br/>
+                <input class="input" type="text" id="editeur" placeholder="Editeur" name="editeur"><br/>
+                <input class="input" type="text" id="rayon" placeholder="Rayon" name="rayon"><br/>
+                <input class="input" type="date" id="date_parution" placeholder="Date de Parution" name="date_parution"><br/>
+                <input class="input" type="file" id="image_couverture" placeholder="Image de Couverture" name="image_couverture"><br/>
+                <input class="button-confirm" type="button" onclick="ajout_livre()" value="Ajout"><br/>
+            </form>
+        </div>
+        <div class="right-info">
+            <h2 id="titre-gauche">Entrez les information du livre à retirer:</h2>
+            <form class="form">
+                <input class="button-confirm" type="button" onclick="retrait_livre()" value="Retrait"><br/>
+            </form>
         </div>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

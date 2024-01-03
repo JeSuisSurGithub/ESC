@@ -3,7 +3,7 @@
 
 from contextlib import asynccontextmanager
 from pydantic import BaseModel
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from timeout_decorator import timeout
@@ -11,34 +11,23 @@ import uvicorn
 
 import base64
 from datetime import datetime, timedelta
-import io
 import os
 from pathlib import Path
-
-# https://raspberrypi.stackexchange.com/questions/5100/detect-that-a-python-program-is-running-on-the-pi
-def est_raspberrypi():
-    try:
-        with io.open('/sys/firmware/devicetree/base/model', 'r') as m:
-            if 'raspberry pi' in m.read().lower(): return True
-    except Exception: pass
-    return False
 
 DUREE_EMPRUNT_SEMAINE = 2
 
 G_INFO_CONNEXION = None
 G_CAPTEUR_EN_UTILISATION = False
-G_EST_RASPBERRYPI = est_raspberrypi();
 
 import erreurs
-if G_EST_RASPBERRYPI:
-    import nfc
+import nfc
 import requetes
 
 class JsonInscription(BaseModel):
     email: str
     motdepasse: str
     pseudo: str
-    naissance: str
+    date_naissance: str
 
 class JsonConnexion(BaseModel):
     email: str
@@ -103,9 +92,9 @@ async def api_inscription(info_inscription: JsonInscription):
     email = info_inscription.email
     motdepasse = info_inscription.motdepasse
     pseudo = info_inscription.pseudo
-    naissance = info_inscription.naissance
+    date_naissance = info_inscription.date_naissance
 
-    code, val = await requetes.rqt_ajout_compte(email, motdepasse, pseudo, naissance)
+    code, val = await requetes.rqt_ajout_compte(email, motdepasse, pseudo, date_naissance)
     # Déconnecte le compte auquel il est actuellement connecté
     if (code > 0):
         G_INFO_CONNEXION = None
@@ -136,8 +125,15 @@ async def api_desinscription(info_conn: JsonConnexion):
         # Vérification identifiants
         code, val = await requetes.rqt_connexion_compte(email, motdepasse)
         if (code > 0):
+            # Vérification
+            code, val = await requetes.rqt_liste_emprunts_par_compte(G_INFO_CONNEXION["id"])
+
+            # Tout livres empruntés rendu
+            if sum(val["rendu"]) != len(val["rendu"]):
+                return {"code": erreurs.ER_API_EMPRUNT_ACTIF}
+
             # Suppression et déconnexion
-            code, val = await requetes.rqt_suppression_compte(val["id"])
+            code, val = await requetes.rqt_suppression_compte(G_INFO_CONNEXION["id"])
             if (code > 0):
                 G_INFO_CONNEXION = None
         return {"code": code, "val": val}
@@ -186,20 +182,22 @@ async def api_recherche_livre(info_recherche: JsonRecherche):
 async def api_suppression_livre(info_suppression: JsonUidLivre):
     global G_INFO_CONNEXION
 
+    uid_nfc = info_suppression.uid_nfc
+
     if (G_INFO_CONNEXION != None) and (G_INFO_CONNEXION["grade"] == 0):
         # Vérification de la disponibilité du livre
-        code, val = await requetes.rqt_info_emprunt_par_uid(info_suppression.uid_nfc)
+        code, val = await requetes.rqt_info_emprunt_par_uid(uid_nfc)
         if (code > 0):
             if (val["disponible"] != None) and (val["disponible"] == False):
                 return {"code": erreurs.ER_API_EMPRUNT_ACTIF}
 
             # Obtention chemin d'image
-            code, val = await requetes.rqt_livre_par_uid(uid_nfc)
+            code, val = await requetes.rqt_info_livre_par_uid(uid_nfc)
             if (code > 0):
                 nom_image = val['nom_image']
 
                 # Suppression
-                code, val = await requetes.rqt_retrait_livre(info_supp.uid_nfc)
+                code, val = await requetes.rqt_suppression_livre(uid_nfc)
                 if (code > 0):
                     os.remove(f"upload/{nom_image}")
 
@@ -223,9 +221,9 @@ async def api_emprunt(info_emprunt: JsonUidLivre):
                 return {"code": erreurs.ER_API_EMPRUNT_ACTIF}
 
             # Obtention de l'ID Livre
-            code, val = await requetes.rqt_livre_par_uid(uid_nfc)
+            code, val = await requetes.rqt_info_livre_par_uid(uid_nfc)
             if (code > 0):
-                code, val = await requetes.rqt_emprunt(G_INFO_CONNEXION["id"],  val["id"], date_debut.strftime("%Y-%m-%d"), date_fin.strftime("%Y-%m-%d"))
+                code, val = await requetes.rqt_ajout_emprunt(G_INFO_CONNEXION["id"],  val["id"], date_debut.strftime("%Y-%m-%d"), date_fin.strftime("%Y-%m-%d"))
             return {"code": code, "val": val}
         else :
             return {"code": code}
@@ -278,10 +276,7 @@ async def api_uid_nfc():
         G_CAPTEUR_EN_UTILISATION = True
         @timeout(10)
         def timeout10():
-            if (G_EST_RASPBERRYPI):
-                return nfc.nfc_lire_uid()
-            else:
-                return (erreurs.OK_NFC_CAPTEUR_UID_MANUEL, input("Veuillez entrer l'UID: "))
+            return nfc.nfc_lire_uid()
 
         code, val = timeout10()
         G_CAPTEUR_EN_UTILISATION = False
