@@ -12,7 +12,7 @@ api_statut().then((requete_statut) => {
         // Connecté
         if (requete_statut.val.grade === 0) {
             // Admin
-            window.location.href = `${window.location.origin}/inventaire.html`
+            window.location.href = `${window.location.origin}/html/inventaire.html`
         } else {
             // Usager
             api_liste_emprunts().then((requete_emprunts) => {

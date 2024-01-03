@@ -5,7 +5,7 @@ api_statut().then((requete_statut) => {
             // Admin
         } else {
             // Usager
-            window.location.href = `${window.location.origin}/accueil.html`
+            window.location.href = `${window.location.origin}/html/accueil.html`
         }
     } else {
         // Pas connecté
