@@ -15,6 +15,7 @@ import os
 from pathlib import Path
 
 DUREE_EMPRUNT_SEMAINE = 2
+VERSION = "1.0.0"
 
 G_INFO_CONNEXION = None
 G_CAPTEUR_EN_UTILISATION = False
@@ -283,4 +284,23 @@ async def api_uid_nfc():
         return {"code": code, "val": val}
 
 if __name__ == "__main__":
+    print("                                                   .,cccccccccccccccc:.         ")
+    print("                                                  'lxkkkkkkkkkkkkkk0NNc         ")
+    print("         .clllllll,   .,coool:'    .;loooo:.    .cxxxxxxxd;,oxo,;dc;ONc         ")
+    print("         cNMXOkkkkc  .xNNOdxOXk.  ,OWXkxx0NXl.  '0MMMMMMMNlcXMXcoWk:ONc         ")
+    print("         cNWd.       cNMO'   ..  'OMK;   .lxc.  '0MMMMMMMWlcXMXcoWk:ONc         ")
+    print("         cNMKdoool,  'OWN0xol;.  :XMO.          '0MMMMMMMNl;ddd;oWk:ONc         ")
+    print("         cNMXkxxxx;   .:odk0NW0; :NMO.          '0MMMMMMMWo,coc,dWk:ONc         ")
+    print("         cNWd.        ..   .oWMx.,0M0,    ,c;.  '0MMMMMMMMXXWMWXNMk:ONc         ")
+    print("         cNMKdoooo;  :00dlco0WK:  cXWOlclxNWx.  '0MMMMMMMMMMMMMMMMk:ONc         ")
+    print("         ,dxxxxxxx:  .:dkOOkxl'    'lxOOOkd:.   '0MMMMMMMMMMMMMMMMk:ONc         ")
+    print("                                                '0MMMMMMMMMMMMMMMMk:ONc         ")
+    print("                                                '0MMMMMMMMMMMMMMMMk:ONc         ")
+    print("                                                '0MMMMMMMMMMMMMMMMk:ON:         ")
+    print("                                                .kMMMMMMMMMMMMMMMMk:xo.         ")
+    print("                                                 'oO00000000000000o..           ")
+    print("                                                    ..............              ")
+    print(f"ESC v{VERSION}, https://github.com/JeSuisSurGithub/ESC                         ")
+    print(f"    Le Gestionnaire de bibliothèque par carte sans contact                     ")
+    print(f"    Projet de Buhard Guilian, Wassim Ghrab et Xia Marc-Antoine                 ")
     uvicorn.run(app, port=8080, host="0.0.0.0")

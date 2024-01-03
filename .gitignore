@@ -2,5 +2,6 @@
 /__pycache__
 
 # Stockage propre à chaque instance
+/archive.zip
 /db/esc.sqlite
 /upload/**
