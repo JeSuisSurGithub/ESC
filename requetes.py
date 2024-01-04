@@ -240,17 +240,17 @@ async def rqt_liste_emprunts_par_compte(id_u):
 async def rqt_info_emprunt_par_uid(uid_nfc):
     try:
         requete = '''SELECT
-            rendu as disponible, id_u, EMPRUNT.id as id_e
+            rendu, id_u, EMPRUNT.id as id_e
             FROM LIVRE JOIN EMPRUNT
             ON LIVRE.id==EMPRUNT.id_l WHERE uid_nfc=:uid_nfc
             ORDER BY EMPRUNT.id DESC LIMIT 1'''
 
         resultats = await G_DB.fetch_all(requete, {"uid_nfc": uid_nfc})
 
-        json = {"disponible": None, "id_u": None, "id_e": None}
+        json = {"rendu": None, "id_u": None, "id_e": None}
 
         if len(resultats) != 0:
-            json["disponible"] = resultats[0]["disponible"]
+            json["rendu"] = resultats[0]["rendu"]
             json["id_u"] = resultats[0]["id_u"]
             json["id_e"] = resultats[0]["id_e"]
 

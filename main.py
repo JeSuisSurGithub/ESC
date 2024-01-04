@@ -189,7 +189,7 @@ async def api_suppression_livre(info_suppression: JsonUidLivre):
         # Vérification de la disponibilité du livre
         code, val = await requetes.rqt_info_emprunt_par_uid(uid_nfc)
         if (code > 0):
-            if (val["disponible"] != None) and (val["disponible"] == False):
+            if (val["rendu"] != None) and (val["rendu"] == False):
                 return {"code": erreurs.ER_API_EMPRUNT_ACTIF}
 
             # Obtention chemin d'image
@@ -218,7 +218,7 @@ async def api_emprunt(info_emprunt: JsonUidLivre):
         # Vérifie si il déja été emprunté
         code, val = await requetes.rqt_info_emprunt_par_uid(uid_nfc)
         if (code > 0):
-            if (val["disponible"] != None) and (val["disponible"] == False):
+            if (val["rendu"] != None) and (val["rendu"] == False):
                 return {"code": erreurs.ER_API_EMPRUNT_ACTIF}
 
             # Obtention de l'ID Livre
@@ -255,7 +255,7 @@ async def api_retour(info_retour: JsonUidLivre):
         code, val = await requetes.rqt_info_emprunt_par_uid(uid_nfc)
         if (code > 0):
             # Aucun emprunt
-            if (val["disponible"] == None) or (val["disponible"] == True):
+            if (val["rendu"] == None) or (val["rendu"] == True):
                 return {"code": erreurs.ER_API_EMPRUNT_INACTIF}
 
             # Emprunté depuis un compte différent

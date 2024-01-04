@@ -21,7 +21,7 @@ async function identifier() {
             if (requete_livre.val.id !== null) {
                 const requete_emprunt = await api_info_emprunt(requete_uid.val);
                 if (requete_emprunt.code > 0) {
-                    const disponible = (requete_emprunt.val.disponible === null)|| (requete_emprunt.val.disponible === true);
+                    const disponible = (requete_emprunt.val.rendu === null)|| (requete_emprunt.val.rendu === true);
                     tag_res_ident.innerHTML = `
                             <div class="card">
                                 <img src="/upload/${requete_livre.val.nom_image}">
